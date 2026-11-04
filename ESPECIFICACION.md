@@ -2,8 +2,14 @@
 
 **Cliente:** CONEQUISA – Departamento de Maquinaria Open Pit, Mina La Libertad (Volcán / Mojón), Equinox Gold
 **Dueño del producto:** Junior Valles, Ingeniero de Confiabilidad
-**Versión de la especificación:** 1.0 – 04/11/2026
+**Versión de la especificación:** 2.0 – 04/11/2026
+**Repositorio:** https://github.com/junivalles-cmd/inspecciones-flota
 **Referencia funcional:** `referencia/Sistema_Inspecciones_Flota_v1.html`. Es la v1 ya funcionando, un HTML de un solo archivo; usarla como base de comportamiento.
+
+## Historial de versiones
+
+- **1.0 (04/11/2026):** especificación inicial, a partir de la v1 ya en uso.
+- **2.0 (04/11/2026):** reescritura modular de la app (`core`/`store`/`ui` separados, con pruebas unitarias de la regla de estado); estructura de carpetas de `INSPECCIONES/` cambiada de "por flota" a "por tipo de inspección + mes" (sección 4); botón de exportar a Excel el programa semanal/mensual de inspecciones (sección 3.4.2); corrección del combo "Control" del formulario de registrar, que podía quedar sin opciones; eliminación de los campos Horómetro y N.º de hallazgos del formulario de registrar (sección 3.4.3 y 5); publicación en GitHub Pages.
 
 ---
 
@@ -89,13 +95,14 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
    - Botón **"Programa semanal/mensual (Excel)"**: genera un `.xlsx` con diseño (encabezado institucional, pastillas de color por estado) con dos hojas, *Semana* y *Mes*, con los equipos a inspeccionar en los próximos 7 y 30 días respectivamente (ventana móvil desde hoy, no semana/mes calendario). Siempre incluye VENCIDA y SIN REGISTRO en ambas hojas, sin importar el horizonte.
 3. **Registrar inspección**
    - Equipo (autocompletar por código; debajo muestra descripción, modelo, flota y ubicación).
-   - Control (solo los que aplican al equipo).
+   - Control (solo los que aplican al equipo; **siempre tiene al menos la opción "Inspección general" cargada desde que se abre la pantalla**, aunque todavía no se haya escrito ningún código de equipo — en la v1 este combo podía quedar vacío si se entraba a la pestaña sin pasar por el botón [Registrar] del tablero).
    - Fecha (por defecto hoy; no se permiten fechas futuras).
    - Proveedor (se autocompleta: el del equipo, o Jhon May si es AFEX).
-   - Inspector, Horómetro, Resultado (Sin hallazgos / Con hallazgos / Equipo fuera de servicio), N.º de hallazgos y Observaciones.
+   - Inspector / técnico, Resultado (Sin hallazgos / Con hallazgos / Equipo fuera de servicio) y Observaciones.
    - Adjuntos múltiples (PDF, imágenes, Excel, Word).
    - Muestra la ruta destino antes de guardar.
    - El botón [Registrar] del tablero abre esta pantalla con equipo, control y fecha ya llenos.
+   - **Quitados en la v2:** los campos Horómetro y N.º de hallazgos (no se piden al registrar; ver sección 5 sobre el historial de registros antiguos que sí los tienen).
 4. **Historial**
    - Lista de inspecciones, la más reciente primero.
    - Filtros: equipo, control, rango de fechas.
@@ -137,6 +144,12 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 - **Concurrencia:** antes de escribir `inspecciones.json` o `equipos.json`, volver a leer el archivo y agregar o modificar sobre lo leído. Así se evita pisar lo que otro usuario guardó. La app relee `inspecciones.json` cada 60 s cuando la pestaña está visible.
 - **v1 técnica:** File System Access API (`showDirectoryPicker`, modo readwrite), y el handle se guarda en IndexedDB para reconectar. Solo funciona en Chrome o Edge de escritorio.
 
+### 4.1 Distribución de la app (v2)
+
+- `dist/index.html`: build empacado (`npm run build`), para abrir con doble clic.
+- `docs/index.html`: copia de `dist/index.html` (`npm run build:pages`), publicada con GitHub Pages en `https://junivalles-cmd.github.io/inspecciones-flota/`. El repositorio es público para que Pages funcione gratis; eso expone el código y los datos de `datos_iniciales/` (no hay contraseñas ni datos financieros, solo la lista de equipos y proveedores).
+- Abrir la app desde el link de Pages o desde el archivo local tiene el mismo comportamiento: `showDirectoryPicker` sigue pidiendo elegir la carpeta de Drive en la máquina de quien la usa; no hay backend ni datos compartidos por internet.
+
 ## 5. Modelo de datos
 
 ### equipos.json (arreglo)
@@ -162,15 +175,14 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
   "fecha": "2026-11-04",      // ISO, fecha de la inspección (no del registro)
   "proveedor": "NIMAC",
   "inspector": "Emilio Díaz",
-  "horometro": 12345,
   "resultado": "Sin hallazgos",
-  "hallazgos": 0,
   "obs": "texto",
   "archivos": ["INSPECCIONES/CAT - NIMAC/518/2026-11-04_GENERAL_1.pdf"],  // rutas relativas a la raíz
   "creado": "2026-11-04T16:20:00.000Z",
   "usuario": "Junior Valles"
 }
 ```
+- `horometro` y `hallazgos`: campos de la v1, ya no se piden en el formulario de registrar (sección 3.4.3). Los registros antiguos que los tengan se siguen mostrando igual en Historial; los nuevos registros simplemente no los incluyen.
 
 ### config.json
 ```json

@@ -64,17 +64,14 @@ async function guardar() {
       fecha,
       proveedor: $('rProv').value.trim(),
       inspector: $('rInsp').value.trim(),
-      horometro: $('rHor').value,
       resultado: $('rRes').value,
-      hallazgos: $('rHall').value,
       obs: $('rObs').value.trim(),
       archivos: rutas,
       creado: new Date().toISOString(),
       usuario: nombreUsuario(),
     };
     D.inspecciones = await actualizarJSON('inspecciones.json', [], (actuales) => [...actuales, registro]);
-    ['rHor', 'rObs', 'rInsp'].forEach((id) => ($(id).value = ''));
-    $('rHall').value = 0;
+    ['rObs', 'rInsp'].forEach((id) => ($(id).value = ''));
     $('rFiles').value = '';
     onGuardado();
     mostrarMensaje(`Inspección de ${e.codigo} guardada${rutas.length ? ' con ' + rutas.length + ' archivo(s)' : ''}.`);
@@ -90,4 +87,7 @@ export function initRegistrar(cbs) {
   $('rTipo').onchange = actualizarProveedorYDestino;
   $('rFecha').oninput = actualizarDestino;
   $('bGuardar').onclick = guardar;
+  // El HTML trae <select id="rTipo"> vacío; sin esto, el combo "Control" queda sin
+  // opciones hasta que alguien escribe un código de equipo (bug reportado por el usuario).
+  actualizarInfoYTipos();
 }
