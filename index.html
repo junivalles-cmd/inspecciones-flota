@@ -10,7 +10,7 @@
 <header>
   <div><h1>Inspecciones de Flota</h1><div class="sub">CONEQUISA · Maquinaria Open Pit · Mina La Libertad</div></div>
   <div class="sp"></div>
-  <span class="pill" id="pFolder">Sin carpeta</span>
+  <span class="pill" id="pFolder"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a1 1 0 0 1 1-1h4.5l1.5 2H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z"/></svg>Sin carpeta</span>
   <span class="pill" id="pUser"></span>
 </header>
 <nav id="nav" class="hide">
@@ -23,7 +23,8 @@
 <main>
   <div id="msg"></div>
   <section id="welcome" class="welcome card">
-    <h2 style="color:var(--az)">Conectar carpeta compartida</h2>
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a1 1 0 0 1 1-1h4.5l1.5 2H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z"/></svg>
+    <h2 style="color:var(--az);margin-top:8px">Conectar carpeta compartida</h2>
     <p>Elija la carpeta de Google Drive donde se guardarán las inspecciones (por ejemplo <b>G:\Mi unidad\INSPECCIONES FLOTA</b> o una carpeta compartida sincronizada con Drive para escritorio).<br>
     La app guarda ahí los informes ordenados por flota y equipo, y el registro de inspecciones en <b>_SISTEMA</b>. Todos los que abran la app sobre la misma carpeta ven la misma información.</p>
     <p class="mut">Funciona en Google Chrome o Microsoft Edge. La primera vez carga los equipos y las fechas del archivo de control.</p>
@@ -41,7 +42,7 @@
         <select id="fEst"><option value="">Todos los estados</option><option>VENCIDA</option><option>PROGRAMAR</option><option>SIN REGISTRO</option><option>AL DÍA</option></select>
         <select id="fUb"><option value="">Todas las ubicaciones</option></select>
         <span class="sp" style="flex:1"></span>
-        <button class="btn sec sm" id="bExcelProg">📅 Programa semanal/mensual (Excel)</button>
+        <button class="btn sec sm" id="bExcelProg"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Programa semanal/mensual (Excel)</button>
         <button class="btn sec sm" id="bCsvEst">Exportar estado (CSV)</button>
       </div>
       <div class="tw"><table><thead><tr><th>Código</th><th>Ahorrativo</th><th>Descripción</th><th>Modelo</th><th>Ubicación</th><th>Control</th><th>Proveedor</th><th>Última</th><th>Próxima</th><th class="right">Días</th><th>Estado</th><th></th></tr></thead><tbody id="tbEst"></tbody></table></div>

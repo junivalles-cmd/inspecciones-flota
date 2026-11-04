@@ -4,6 +4,7 @@ import { exportarCSV } from './csv.js';
 import { D } from '../state.js';
 import { CONTROLES_NOMBRE } from '../core/dominio.js';
 import { abrirArchivo, actualizarJSON } from '../store/fs.js';
+import { iconoClip } from './iconos.js';
 
 const LIMITE_FILAS = 800;
 let filasVisibles = [];
@@ -31,7 +32,7 @@ export function renderHistorial() {
     .slice(0, LIMITE_FILAS)
     .map(
       (i) => `<tr><td>${formatearFecha(i.fecha)}</td><td><b>${esc(i.codigo)}</b></td><td>${CONTROLES_NOMBRE[i.tipo] || i.tipo}</td><td>${esc(i.proveedor)}</td><td>${esc(i.inspector)}</td><td class="right">${esc(i.horometro)}</td><td>${esc(i.resultado)}</td><td class="right">${esc(i.hallazgos)}</td><td>${esc(i.obs)}</td>
-     <td>${(i.archivos || []).map((a, k) => `<button class="lnk" data-accion="abrir" data-ruta="${esc(a)}">📎${k + 1}</button>`).join(' ')}</td><td class="mut">${esc(i.usuario)}</td><td><button class="lnk" data-accion="eliminar" data-id="${i.id}" title="Eliminar registro">✕</button></td></tr>`
+     <td>${(i.archivos || []).map((a, k) => `<button class="lnk" data-accion="abrir" data-ruta="${esc(a)}">${iconoClip()}${k + 1}</button>`).join(' ')}</td><td class="mut">${esc(i.usuario)}</td><td><button class="lnk" data-accion="eliminar" data-id="${i.id}" title="Eliminar registro">✕</button></td></tr>`
     )
     .join('');
   $('cntHis').textContent = f.length + ' inspecciones' + (f.length > LIMITE_FILAS ? ` (se muestran las ${LIMITE_FILAS} más recientes)` : '');

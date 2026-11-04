@@ -1,5 +1,5 @@
 import './styles.css';
-import { $, mostrarMensaje, nombreUsuario } from './ui/dom.js';
+import { $, esc, mostrarMensaje, nombreUsuario } from './ui/dom.js';
 import { D } from './state.js';
 import { llenarSelectoresEstaticos, llenarSelectoresDinamicos } from './ui/compartido.js';
 import { mostrarTab, initNavegacion } from './ui/navegacion.js';
@@ -10,6 +10,7 @@ import { initEquipos, renderEquipos } from './ui/equipos.js';
 import { initConfig, renderConfig } from './ui/config.js';
 import { generarProgramaInspecciones } from './ui/excel.js';
 import { migrarEquiposFaltantes, migrarInspeccionesFaltantes } from './core/equipos.js';
+import { iconoCarpeta, iconoUsuario } from './ui/iconos.js';
 import {
   soportado,
   elegirCarpeta,
@@ -26,7 +27,7 @@ function renderTodo() {
   renderHistorial();
   renderEquipos();
   renderConfig();
-  $('pUser').textContent = nombreUsuario() ? '👤 ' + nombreUsuario() : '👤 sin usuario';
+  $('pUser').innerHTML = iconoUsuario() + esc(nombreUsuario() || 'sin usuario');
 }
 
 // Si la carpeta tiene equipos.json/inspecciones.json guardados con una versión
@@ -56,7 +57,7 @@ async function cargarDatos() {
 }
 
 async function entrarAlTablero(handle, inicializado) {
-  $('pFolder').textContent = '📁 ' + handle.name;
+  $('pFolder').innerHTML = iconoCarpeta() + esc(handle.name);
   $('cFolder').textContent = 'Carpeta conectada: ' + handle.name;
   if (inicializado) mostrarMensaje('Carpeta preparada: se cargaron los equipos y las inspecciones anteriores.');
   await cargarDatos();
