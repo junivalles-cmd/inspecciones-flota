@@ -2,7 +2,7 @@
 
 **Cliente:** CONEQUISA – Departamento de Maquinaria Open Pit, Mina La Libertad (Volcán / Mojón), Equinox Gold
 **Dueño del producto:** Junior Valles, Ingeniero de Confiabilidad
-**Versión de la especificación:** 2.2 – 04/11/2026
+**Versión de la especificación:** 2.3 – 04/11/2026
 **Repositorio:** https://github.com/junivalles-cmd/inspecciones-flota
 **Referencia funcional:** `referencia/Sistema_Inspecciones_Flota_v1.html`. Es la v1 ya funcionando, un HTML de un solo archivo; usarla como base de comportamiento.
 
@@ -12,6 +12,7 @@
 - **2.0 (04/11/2026):** reescritura modular de la app (`core`/`store`/`ui` separados, con pruebas unitarias de la regla de estado); estructura de carpetas de `INSPECCIONES/` cambiada de "por flota" a "por tipo de inspección + mes" (sección 4); botón de exportar a Excel el programa semanal/mensual de inspecciones (sección 3.4.2); corrección del combo "Control" del formulario de registrar, que podía quedar sin opciones; eliminación de los campos Horómetro y N.º de hallazgos del formulario de registrar (sección 3.4.3 y 5); publicación en GitHub Pages.
 - **2.1 (04/11/2026):** cada equipo tiene ahora un `id` interno oculto e inmutable, y dos códigos visibles y editables, `codigo` y `codigo2` (sección 3.4.5); las inspecciones se enlazan al equipo por ese `id` (no por el código), para que renombrar un código no pierda el historial calculado en el Tablero (sección 5).
 - **2.2 (04/11/2026):** corregido el botón [Editar] de Equipos, que abría el formulario como si fuera "Agregar equipo" cuando la carpeta ya tenía `equipos.json`/`inspecciones.json` guardados con una versión anterior a la 2.1 (sin `id` ni `equipoId`). Ahora, al conectar una carpeta así, la app completa esos campos automáticamente la primera vez que carga (sección 4.1).
+- **2.3 (04/11/2026):** se llenó `codigo2` en `datos_iniciales/equipos.json` para 47 de los 112 equipos, usando la columna "Ahorrativo" de `EQUIPOS MINA LL 2026.xlsx` (sección 6).
 
 ---
 
@@ -212,7 +213,8 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 - **inspecciones.json:** 150 registros de carga inicial: 9 GENERAL y 47 de cada control AFEX. Fechas de junio y julio de 2026, por eso casi todo aparece VENCIDO o SIN REGISTRO; es correcto.
 - **config.json:** frecuencias por defecto.
 - **Códigos normalizados:** 2091→20-91, 2096→20-96, 20102→20-102, 20107→20-107.
-- **id / codigo2:** los 112 equipos trajeron su `id` asignado en orden de aparición en el archivo (`E001`…`E112`) y `codigo2` vacío (`""`); cada inspección de carga inicial trae el `equipoId` correspondiente. El `codigo2` real de cada equipo se llena después desde la pantalla Equipos — no se inventó ningún valor.
+- **id:** los 112 equipos trajeron su `id` asignado en orden de aparición en el archivo (`E001`…`E112`); cada inspección de carga inicial trae el `equipoId` correspondiente.
+- **codigo2:** se llenó para 47 de los 112 equipos con la columna "Ahorrativo" de `EQUIPOS MINA LL 2026.xlsx` (hoja "Datos"), cruzando por código normalizado. Los 65 restantes quedaron con `codigo2` vacío porque el maestro no tenía valor en esa columna para ellos, o porque esa columna traía un nombre de ubicación en vez de un código (4 camionetas: 80168, 80173, P174, P210) — eso se descartó. El equipo 05-0763 no aparece en ese maestro (según la sección 6, se incluyó aparte), así que tampoco tiene `codigo2` de ahí.
 
 ## 7. Validaciones
 

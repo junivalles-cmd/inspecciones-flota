@@ -2,7 +2,7 @@
  {
   "id": "E001",
   "codigo": "518",
-  "codigo2": "",
+  "codigo2": "T-01",
   "descripcion": "Tractor de orugas",
   "modelo": "D9R",
   "ubicacion": "Volcán",
@@ -26,7 +26,7 @@
  {
   "id": "E003",
   "codigo": "549",
-  "codigo2": "",
+  "codigo2": "T-04",
   "descripcion": "Tractor de orugas",
   "modelo": "D6T XL",
   "ubicacion": "Volcán",
@@ -38,7 +38,7 @@
  {
   "id": "E004",
   "codigo": "550",
-  "codigo2": "",
+  "codigo2": "T-05",
   "descripcion": "Tractor de orugas",
   "modelo": "D6T XL",
   "ubicacion": "Mojón",
@@ -50,7 +50,7 @@
  {
   "id": "E005",
   "codigo": "568",
-  "codigo2": "",
+  "codigo2": "T-06",
   "descripcion": "Tractor de orugas",
   "modelo": "D8T",
   "ubicacion": "Volcán",
@@ -302,7 +302,7 @@
  {
   "id": "E026",
   "codigo": "45-69",
-  "codigo2": "",
+  "codigo2": "A02",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -314,7 +314,7 @@
  {
   "id": "E027",
   "codigo": "45-71",
-  "codigo2": "",
+  "codigo2": "A03",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -326,7 +326,7 @@
  {
   "id": "E028",
   "codigo": "45-75",
-  "codigo2": "",
+  "codigo2": "A04",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -338,7 +338,7 @@
  {
   "id": "E029",
   "codigo": "45-77",
-  "codigo2": "",
+  "codigo2": "A05",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -350,7 +350,7 @@
  {
   "id": "E030",
   "codigo": "45-79",
-  "codigo2": "",
+  "codigo2": "A06",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -362,7 +362,7 @@
  {
   "id": "E031",
   "codigo": "45-80",
-  "codigo2": "",
+  "codigo2": "A07",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -374,7 +374,7 @@
  {
   "id": "E032",
   "codigo": "45-86",
-  "codigo2": "",
+  "codigo2": "A01",
   "descripcion": "Camión articulado",
   "modelo": "745C",
   "ubicacion": "Volcán",
@@ -386,7 +386,7 @@
  {
   "id": "E033",
   "codigo": "45-87",
-  "codigo2": "",
+  "codigo2": "A09",
   "descripcion": "Camión articulado",
   "modelo": "745C",
   "ubicacion": "Volcán",
@@ -398,7 +398,7 @@
  {
   "id": "E034",
   "codigo": "45-89",
-  "codigo2": "",
+  "codigo2": "A10",
   "descripcion": "Camión articulado",
   "modelo": "745C",
   "ubicacion": "Volcán",
@@ -410,7 +410,7 @@
  {
   "id": "E035",
   "codigo": "45-91",
-  "codigo2": "",
+  "codigo2": "A11",
   "descripcion": "Camión articulado",
   "modelo": "745C",
   "ubicacion": "Volcán",
@@ -542,7 +542,7 @@
  {
   "id": "E046",
   "codigo": "45-6035",
-  "codigo2": "",
+  "codigo2": "A15",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -554,7 +554,7 @@
  {
   "id": "E047",
   "codigo": "45-6037",
-  "codigo2": "",
+  "codigo2": "A17",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -566,7 +566,7 @@
  {
   "id": "E048",
   "codigo": "45-6043",
-  "codigo2": "",
+  "codigo2": "A13",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Volcán",
@@ -578,7 +578,7 @@
  {
   "id": "E049",
   "codigo": "45-6055",
-  "codigo2": "",
+  "codigo2": "A19",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -590,7 +590,7 @@
  {
   "id": "E050",
   "codigo": "45-6056",
-  "codigo2": "",
+  "codigo2": "A20",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -602,7 +602,7 @@
  {
   "id": "E051",
   "codigo": "45-6063",
-  "codigo2": "",
+  "codigo2": "A23",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -614,7 +614,7 @@
  {
   "id": "E052",
   "codigo": "45-6064",
-  "codigo2": "",
+  "codigo2": "A24",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -626,7 +626,7 @@
  {
   "id": "E053",
   "codigo": "45-6065",
-  "codigo2": "",
+  "codigo2": "A25",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -638,7 +638,7 @@
  {
   "id": "E054",
   "codigo": "45-6067",
-  "codigo2": "",
+  "codigo2": "A26",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -650,7 +650,7 @@
  {
   "id": "E055",
   "codigo": "45-6068",
-  "codigo2": "",
+  "codigo2": "A27",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -662,7 +662,7 @@
  {
   "id": "E056",
   "codigo": "45-6020",
-  "codigo2": "",
+  "codigo2": "A12",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Volcán",
@@ -674,7 +674,7 @@
  {
   "id": "E057",
   "codigo": "45-6036",
-  "codigo2": "",
+  "codigo2": "A16",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -686,7 +686,7 @@
  {
   "id": "E058",
   "codigo": "45-6047",
-  "codigo2": "",
+  "codigo2": "A18",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -698,7 +698,7 @@
  {
   "id": "E059",
   "codigo": "45-6057",
-  "codigo2": "",
+  "codigo2": "A14",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Volcán",
@@ -710,7 +710,7 @@
  {
   "id": "E060",
   "codigo": "45-6058",
-  "codigo2": "",
+  "codigo2": "A21",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -722,7 +722,7 @@
  {
   "id": "E061",
   "codigo": "45-6059",
-  "codigo2": "",
+  "codigo2": "A22",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -770,7 +770,7 @@
  {
   "id": "E065",
   "codigo": "50-4772",
-  "codigo2": "",
+  "codigo2": "V-16",
   "descripcion": "Camion volquete",
   "modelo": "GR64BX",
   "ubicacion": "",
@@ -782,7 +782,7 @@
  {
   "id": "E066",
   "codigo": "50-4773",
-  "codigo2": "",
+  "codigo2": "V-17",
   "descripcion": "Camion volquete",
   "modelo": "GR64BX",
   "ubicacion": "",
@@ -794,7 +794,7 @@
  {
   "id": "E067",
   "codigo": "50-194",
-  "codigo2": "",
+  "codigo2": "V-01",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -806,7 +806,7 @@
  {
   "id": "E068",
   "codigo": "50-199",
-  "codigo2": "",
+  "codigo2": "V-02",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -818,7 +818,7 @@
  {
   "id": "E069",
   "codigo": "50-200",
-  "codigo2": "",
+  "codigo2": "V-03",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -830,7 +830,7 @@
  {
   "id": "E070",
   "codigo": "50-204",
-  "codigo2": "",
+  "codigo2": "V-04",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -842,7 +842,7 @@
  {
   "id": "E071",
   "codigo": "50-217",
-  "codigo2": "",
+  "codigo2": "V-05",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -854,7 +854,7 @@
  {
   "id": "E072",
   "codigo": "50-226",
-  "codigo2": "",
+  "codigo2": "V-06",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -866,7 +866,7 @@
  {
   "id": "E073",
   "codigo": "50-4770",
-  "codigo2": "",
+  "codigo2": "V-14",
   "descripcion": "Camion volquete",
   "modelo": "GR64BX",
   "ubicacion": "",
@@ -878,7 +878,7 @@
  {
   "id": "E074",
   "codigo": "50-4771",
-  "codigo2": "",
+  "codigo2": "V-15",
   "descripcion": "Camion volquete",
   "modelo": "GR64BX",
   "ubicacion": "",
@@ -890,7 +890,7 @@
  {
   "id": "E075",
   "codigo": "50-253",
-  "codigo2": "",
+  "codigo2": "V-07",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -902,7 +902,7 @@
  {
   "id": "E076",
   "codigo": "50-255",
-  "codigo2": "",
+  "codigo2": "V-08",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -914,7 +914,7 @@
  {
   "id": "E077",
   "codigo": "50-256",
-  "codigo2": "",
+  "codigo2": "V-09",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -926,7 +926,7 @@
  {
   "id": "E078",
   "codigo": "50-259",
-  "codigo2": "",
+  "codigo2": "V-10",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -938,7 +938,7 @@
  {
   "id": "E079",
   "codigo": "50-267",
-  "codigo2": "",
+  "codigo2": "V-11",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -950,7 +950,7 @@
  {
   "id": "E080",
   "codigo": "50-310",
-  "codigo2": "",
+  "codigo2": "V-12",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -962,7 +962,7 @@
  {
   "id": "E081",
   "codigo": "50-311",
-  "codigo2": "",
+  "codigo2": "V-13",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
