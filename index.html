@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inspecciones de Flota</title>
+<link rel="stylesheet" href="/src/styles.css">
+</head>
+<body>
+<header>
+  <div><h1>Inspecciones de Flota</h1><div class="sub">CONEQUISA · Maquinaria Open Pit · Mina La Libertad</div></div>
+  <div class="sp"></div>
+  <span class="pill" id="pFolder">Sin carpeta</span>
+  <span class="pill" id="pUser"></span>
+</header>
+<nav id="nav" class="hide">
+  <button data-t="tab-tablero" class="on">Tablero</button>
+  <button data-t="tab-registrar">Registrar inspección</button>
+  <button data-t="tab-historial">Historial</button>
+  <button data-t="tab-equipos">Equipos</button>
+  <button data-t="tab-config">Configuración</button>
+</nav>
+<main>
+  <div id="msg"></div>
+  <section id="welcome" class="welcome card">
+    <h2 style="color:var(--az)">Conectar carpeta compartida</h2>
+    <p>Elija la carpeta de Google Drive donde se guardarán las inspecciones (por ejemplo <b>G:\Mi unidad\INSPECCIONES FLOTA</b> o una carpeta compartida sincronizada con Drive para escritorio).<br>
+    La app guarda ahí los informes ordenados por flota y equipo, y el registro de inspecciones en <b>_SISTEMA</b>. Todos los que abran la app sobre la misma carpeta ven la misma información.</p>
+    <p class="mut">Funciona en Google Chrome o Microsoft Edge. La primera vez carga los equipos y las fechas del archivo de control.</p>
+    <p><button class="btn" id="bPick">Elegir carpeta</button> <button class="btn sec hide" id="bRe">Reconectar a la última carpeta</button></p>
+    <p id="noApi" class="msg err hide">Este navegador no permite trabajar con carpetas. Abra el archivo con Google Chrome o Microsoft Edge.</p>
+  </section>
+
+  <section id="tab-tablero" class="tab hide">
+    <div class="grid" id="kpis"></div>
+    <div class="card">
+      <div class="filters">
+        <input id="fBus" placeholder="Buscar código, modelo, descripción…" style="min-width:240px">
+        <select id="fFlota"><option value="">Todas las flotas</option></select>
+        <select id="fTipo"><option value="">Todos los controles</option></select>
+        <select id="fEst"><option value="">Todos los estados</option><option>VENCIDA</option><option>PROGRAMAR</option><option>SIN REGISTRO</option><option>AL DÍA</option></select>
+        <select id="fUb"><option value="">Todas las ubicaciones</option></select>
+        <span class="sp" style="flex:1"></span>
+        <button class="btn sec sm" id="bExcelProg">📅 Programa semanal/mensual (Excel)</button>
+        <button class="btn sec sm" id="bCsvEst">Exportar estado (CSV)</button>
+      </div>
+      <div class="tw"><table><thead><tr><th>Código</th><th>Descripción</th><th>Modelo</th><th>Ubicación</th><th>Control</th><th>Proveedor</th><th>Última</th><th>Próxima</th><th class="right">Días</th><th>Estado</th><th></th></tr></thead><tbody id="tbEst"></tbody></table></div>
+      <div class="mut" id="cntEst" style="margin-top:6px"></div>
+    </div>
+  </section>
+
+  <section id="tab-registrar" class="tab hide">
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--az)">Registrar inspección</h3>
+      <div class="form">
+        <div><label>Equipo *</label><input id="rEq" list="dlEq" placeholder="Escriba el código"><datalist id="dlEq"></datalist><div class="mut" id="rEqInfo"></div></div>
+        <div><label>Control *</label><select id="rTipo"></select></div>
+        <div><label>Fecha de la inspección *</label><input id="rFecha" type="date"></div>
+        <div><label>Proveedor</label><input id="rProv"></div>
+        <div><label>Inspector / técnico</label><input id="rInsp"></div>
+        <div><label>Horómetro</label><input id="rHor" type="number" min="0"></div>
+        <div><label>Resultado</label><select id="rRes"><option>Sin hallazgos</option><option>Con hallazgos</option><option>Equipo fuera de servicio</option></select></div>
+        <div><label>N.º de hallazgos</label><input id="rHall" type="number" min="0" value="0"></div>
+        <div class="full"><label>Observaciones / hallazgos principales</label><textarea id="rObs"></textarea></div>
+        <div class="full"><label>Informe y fotos (PDF, imágenes, Excel, Word) – se guardan en la carpeta del equipo</label><input id="rFiles" type="file" multiple></div>
+      </div>
+      <p><button class="btn" id="bGuardar">Guardar inspección</button> <span class="mut" id="rDest"></span></p>
+    </div>
+  </section>
+
+  <section id="tab-historial" class="tab hide">
+    <div class="card">
+      <div class="filters">
+        <input id="hBus" placeholder="Código de equipo…" list="dlEq">
+        <select id="hTipo"><option value="">Todos los controles</option></select>
+        <input id="hDesde" type="date" title="Desde"><input id="hHasta" type="date" title="Hasta">
+        <span style="flex:1"></span><button class="btn sec sm" id="bCsvHis">Exportar historial (CSV)</button>
+      </div>
+      <div class="tw"><table><thead><tr><th>Fecha</th><th>Código</th><th>Control</th><th>Proveedor</th><th>Inspector</th><th class="right">Horóm.</th><th>Resultado</th><th class="right">Hall.</th><th>Observaciones</th><th>Archivos</th><th>Registró</th><th></th></tr></thead><tbody id="tbHis"></tbody></table></div>
+      <div class="mut" id="cntHis" style="margin-top:6px"></div>
+    </div>
+  </section>
+
+  <section id="tab-equipos" class="tab hide">
+    <div class="card">
+      <div class="filters"><input id="eBus" placeholder="Buscar…"><span style="flex:1"></span><button class="btn sm" id="bNuevoEq">+ Agregar equipo</button></div>
+      <div class="tw"><table><thead><tr><th>Código</th><th>Descripción</th><th>Modelo</th><th>Ubicación</th><th>Flota</th><th>Proveedor</th><th>AFEX</th><th>Activo</th><th></th></tr></thead><tbody id="tbEq"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="tab-config" class="tab hide">
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--az)">Frecuencias y avisos</h3>
+      <div class="tw" style="max-height:none"><table><thead><tr><th>Control</th><th>Aplica a</th><th>Frecuencia (días)</th><th>Avisar PROGRAMAR con (días de anticipación)</th></tr></thead><tbody id="tbCfg"></tbody></table></div>
+      <p><button class="btn" id="bCfg">Guardar configuración</button></p>
+      <h3 style="color:var(--az)">Usuario de este equipo</h3>
+      <p><input id="cUser" placeholder="Nombre de quien registra"> <button class="btn sec" id="bUser">Guardar nombre</button></p>
+      <h3 style="color:var(--az)">Carpeta</h3>
+      <p class="mut" id="cFolder"></p>
+      <p><button class="btn sec" id="bCambiar">Cambiar carpeta</button> <button class="btn sec" id="bRecargar">Recargar datos</button></p>
+    </div>
+  </section>
+</main>
+
+<div id="modal" class="modal hide"><div class="card" id="modalBody"></div></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

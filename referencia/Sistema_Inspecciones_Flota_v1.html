@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inspecciones de Flota</title>
+<style>
+:root{--az:#1e3a5f;--az2:#2b5283;--bg:#f4f6f9;--card:#fff;--line:#e3e7ed;--tx:#1f2937;--mut:#5b6472;
+--ok:#1e7b34;--okb:#e3f4e8;--pr:#8a5a00;--prb:#fff3d6;--ve:#b42318;--veb:#fde4e4;--sr:#5b6472;--srb:#eef0f3;
+--okc:#2e9e4f;--prc:#e8a317;--vec:#d14343;--src:#a3aab5}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--tx);font-size:14px}
+header{background:var(--az);color:#fff;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+header h1{font-size:18px;margin:0;font-weight:600}header .sub{opacity:.8;font-size:12px}
+header .sp{flex:1}.pill{background:rgba(255,255,255,.15);padding:4px 10px;border-radius:12px;font-size:12px}
+nav{background:#fff;border-bottom:1px solid var(--line);display:flex;gap:4px;padding:0 16px;overflow-x:auto}
+nav button{border:0;background:none;padding:12px 14px;font-size:14px;color:var(--mut);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+nav button.on{color:var(--az);border-bottom-color:var(--az);font-weight:600}
+main{padding:16px 20px;max-width:1400px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.kc h3{margin:0 0 6px;font-size:13px;color:var(--mut);font-weight:600}.kc .big{font-size:26px;font-weight:700;color:var(--az)}
+.bar{display:flex;height:10px;border-radius:5px;overflow:hidden;margin:8px 0;background:var(--srb)}.bar span{display:block;height:100%}
+.leg{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11px;color:var(--mut)}.leg i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}th{background:var(--az);color:#fff;text-align:left;padding:8px;font-weight:600;position:sticky;top:0}
+td{padding:7px 8px;border-bottom:1px solid var(--line)}tr:nth-child(even) td{background:#f9fafc}
+.tw{max-height:62vh;overflow:auto;border:1px solid var(--line);border-radius:8px}
+.st{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap}
+.st.AL{background:var(--okb);color:var(--ok)}.st.PR{background:var(--prb);color:var(--pr)}.st.VE{background:var(--veb);color:var(--ve)}.st.SR{background:var(--srb);color:var(--sr)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+input,select,textarea{font:inherit;padding:7px 9px;border:1px solid #cdd4dd;border-radius:6px;background:#fff;color:var(--tx)}
+textarea{width:100%;min-height:70px}label{font-size:12px;color:var(--mut);display:block;margin-bottom:3px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.form .full{grid-column:1/-1}
+.form input,.form select{width:100%}
+.btn{background:var(--az);color:#fff;border:0;border-radius:6px;padding:8px 14px;cursor:pointer;font:inherit;font-weight:600}
+.btn:hover{background:var(--az2)}.btn.sec{background:#fff;color:var(--az);border:1px solid var(--az)}.btn.sm{padding:4px 9px;font-size:12px;font-weight:500}
+.btn:disabled{opacity:.5;cursor:default}.lnk{color:var(--az2);cursor:pointer;text-decoration:underline;background:none;border:0;font:inherit;padding:0 4px}
+.msg{padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:13px}.msg.ok{background:var(--okb);color:var(--ok)}.msg.err{background:var(--veb);color:var(--ve)}.msg.info{background:#eaf1fb;color:var(--az)}
+.welcome{max-width:640px;margin:40px auto;text-align:center}.welcome p{color:var(--mut);line-height:1.5}
+.hide{display:none!important}.mut{color:var(--mut);font-size:12px}.right{text-align:right}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:9}
+.modal .card{max-width:760px;width:100%;max-height:90vh;overflow:auto}
+@media print{nav,header .sp,.filters,.btn{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Inspecciones de Flota</h1><div class="sub">CONEQUISA · Maquinaria Open Pit · Mina La Libertad</div></div>
+  <div class="sp"></div>
+  <span class="pill" id="pFolder">Sin carpeta</span>
+  <span class="pill" id="pUser"></span>
+</header>
+<nav id="nav" class="hide">
+  <button data-t="tab-tablero" class="on">Tablero</button>
+  <button data-t="tab-registrar">Registrar inspección</button>
+  <button data-t="tab-historial">Historial</button>
+  <button data-t="tab-equipos">Equipos</button>
+  <button data-t="tab-config">Configuración</button>
+</nav>
+<main>
+  <div id="msg"></div>
+  <section id="welcome" class="welcome card">
+    <h2 style="color:var(--az)">Conectar carpeta compartida</h2>
+    <p>Elija la carpeta de Google Drive donde se guardarán las inspecciones (por ejemplo <b>G:\Mi unidad\INSPECCIONES FLOTA</b> o una carpeta compartida sincronizada con Drive para escritorio).<br>
+    La app guarda ahí los informes ordenados por flota y equipo, y el registro de inspecciones en <b>_SISTEMA</b>. Todos los que abran la app sobre la misma carpeta ven la misma información.</p>
+    <p class="mut">Funciona en Google Chrome o Microsoft Edge. La primera vez carga los 112 equipos y las fechas del archivo de control.</p>
+    <p><button class="btn" id="bPick">Elegir carpeta</button> <button class="btn sec hide" id="bRe">Reconectar a la última carpeta</button></p>
+    <p id="noApi" class="msg err hide">Este navegador no permite trabajar con carpetas. Abra el archivo con Google Chrome o Microsoft Edge.</p>
+  </section>
+
+  <section id="tab-tablero" class="tab hide">
+    <div class="grid" id="kpis"></div>
+    <div class="card">
+      <div class="filters">
+        <input id="fBus" placeholder="Buscar código, modelo, descripción…" style="min-width:240px">
+        <select id="fFlota"><option value="">Todas las flotas</option></select>
+        <select id="fTipo"><option value="">Todos los controles</option></select>
+        <select id="fEst"><option value="">Todos los estados</option><option>VENCIDA</option><option>PROGRAMAR</option><option>SIN REGISTRO</option><option>AL DÍA</option></select>
+        <select id="fUb"><option value="">Todas las ubicaciones</option></select>
+        <span class="sp" style="flex:1"></span>
+        <button class="btn sec sm" id="bCsvEst">Exportar estado (CSV)</button>
+      </div>
+      <div class="tw"><table><thead><tr><th>Código</th><th>Descripción</th><th>Modelo</th><th>Ubicación</th><th>Control</th><th>Proveedor</th><th>Última</th><th>Próxima</th><th class="right">Días</th><th>Estado</th><th></th></tr></thead><tbody id="tbEst"></tbody></table></div>
+      <div class="mut" id="cntEst" style="margin-top:6px"></div>
+    </div>
+  </section>
+
+  <section id="tab-registrar" class="tab hide">
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--az)">Registrar inspección</h3>
+      <div class="form">
+        <div><label>Equipo *</label><input id="rEq" list="dlEq" placeholder="Escriba el código"><datalist id="dlEq"></datalist><div class="mut" id="rEqInfo"></div></div>
+        <div><label>Control *</label><select id="rTipo"></select></div>
+        <div><label>Fecha de la inspección *</label><input id="rFecha" type="date"></div>
+        <div><label>Proveedor</label><input id="rProv"></div>
+        <div><label>Inspector / técnico</label><input id="rInsp"></div>
+        <div><label>Horómetro</label><input id="rHor" type="number" min="0"></div>
+        <div><label>Resultado</label><select id="rRes"><option>Sin hallazgos</option><option>Con hallazgos</option><option>Equipo fuera de servicio</option></select></div>
+        <div><label>N.º de hallazgos</label><input id="rHall" type="number" min="0" value="0"></div>
+        <div class="full"><label>Observaciones / hallazgos principales</label><textarea id="rObs"></textarea></div>
+        <div class="full"><label>Informe y fotos (PDF, imágenes, Excel, Word) – se guardan en la carpeta del equipo</label><input id="rFiles" type="file" multiple></div>
+      </div>
+      <p><button class="btn" id="bGuardar">Guardar inspección</button> <span class="mut" id="rDest"></span></p>
+    </div>
+  </section>
+
+  <section id="tab-historial" class="tab hide">
+    <div class="card">
+      <div class="filters">
+        <input id="hBus" placeholder="Código de equipo…" list="dlEq">
+        <select id="hTipo"><option value="">Todos los controles</option></select>
+        <input id="hDesde" type="date" title="Desde"><input id="hHasta" type="date" title="Hasta">
+        <span style="flex:1"></span><button class="btn sec sm" id="bCsvHis">Exportar historial (CSV)</button>
+      </div>
+      <div class="tw"><table><thead><tr><th>Fecha</th><th>Código</th><th>Control</th><th>Proveedor</th><th>Inspector</th><th class="right">Horóm.</th><th>Resultado</th><th class="right">Hall.</th><th>Observaciones</th><th>Archivos</th><th>Registró</th><th></th></tr></thead><tbody id="tbHis"></tbody></table></div>
+      <div class="mut" id="cntHis" style="margin-top:6px"></div>
+    </div>
+  </section>
+
+  <section id="tab-equipos" class="tab hide">
+    <div class="card">
+      <div class="filters"><input id="eBus" placeholder="Buscar…"><span style="flex:1"></span><button class="btn sm" id="bNuevoEq">+ Agregar equipo</button></div>
+      <div class="tw"><table><thead><tr><th>Código</th><th>Descripción</th><th>Modelo</th><th>Ubicación</th><th>Flota</th><th>Proveedor</th><th>AFEX</th><th>Activo</th><th></th></tr></thead><tbody id="tbEq"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="tab-config" class="tab hide">
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--az)">Frecuencias y avisos</h3>
+      <div class="tw" style="max-height:none"><table><thead><tr><th>Control</th><th>Aplica a</th><th>Frecuencia (días)</th><th>Avisar PROGRAMAR con (días de anticipación)</th></tr></thead><tbody id="tbCfg"></tbody></table></div>
+      <p><button class="btn" id="bCfg">Guardar configuración</button></p>
+      <h3 style="color:var(--az)">Usuario de este equipo</h3>
+      <p><input id="cUser" placeholder="Nombre de quien registra"> <button class="btn sec" id="bUser">Guardar nombre</button></p>
+      <h3 style="color:var(--az)">Carpeta</h3>
+      <p class="mut" id="cFolder"></p>
+      <p><button class="btn sec" id="bCambiar">Cambiar carpeta</button> <button class="btn sec" id="bRecargar">Recargar datos</button></p>
+    </div>
+  </section>
+</main>
+
+<div id="modal" class="modal hide"><div class="card" id="modalBody"></div></div>
+
+<script>
+const SEED = {"equipos":[{"codigo":"518","descripcion":"Tractor de orugas","modelo":"D9R","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"05-0763","descripcion":"Tractor de orugas","modelo":"D8","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"549","descripcion":"Tractor de orugas","modelo":"D6T XL","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"550","descripcion":"Tractor de orugas","modelo":"D6T XL","ubicacion":"Mojón","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"568","descripcion":"Tractor de orugas","modelo":"D8T","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"1033","descripcion":"Cargador frontal","modelo":"950H","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"1044","descripcion":"Cargador frontal","modelo":"966L","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"15-31","descripcion":"Back hoe","modelo":"416E","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"15-59","descripcion":"Back hoe","modelo":"416F2","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"20-0016","descripcion":"Excavadora de orugas","modelo":"350","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"20-0021","descripcion":"Excavadora de orugas","modelo":"374","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"20-102","descripcion":"Excavadora de orugas","modelo":"336D2L","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"20-107","descripcion":"Excavadora de orugas","modelo":"336D2LXE","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"20-135","descripcion":"Excavadora de orugas","modelo":"320","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"20-136","descripcion":"Excavadora de orugas","modelo":"320D","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"20-75","descripcion":"Excavadora de orugas","modelo":"320D","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"20-85","descripcion":"Excavadora de orugas","modelo":"349D","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"20-91","descripcion":"Excavadora de orugas","modelo":"336D2LME","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"20-96","descripcion":"Excavadora de orugas","modelo":"336D","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"25-20","descripcion":"Motoniveladora","modelo":"120M","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"25-46","descripcion":"Motoniveladora","modelo":"140K","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"25-51","descripcion":"Motoniveladora","modelo":"140K","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"35-30","descripcion":"Vibrocompactadora","modelo":"CS54B","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"35-48","descripcion":"Vibrocompactadora","modelo":"CS54B","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"35-63","descripcion":"Vibrocompactadora","modelo":"CS54B","ubicacion":"","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"45-69","descripcion":"Camión articulado","modelo":"740B","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-71","descripcion":"Camión articulado","modelo":"740B","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-75","descripcion":"Camión articulado","modelo":"740B","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-77","descripcion":"Camión articulado","modelo":"740B","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-79","descripcion":"Camión articulado","modelo":"740B","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-80","descripcion":"Camión articulado","modelo":"740B","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-86","descripcion":"Camión articulado","modelo":"745C","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-87","descripcion":"Camión articulado","modelo":"745C","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-89","descripcion":"Camión articulado","modelo":"745C","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"45-91","descripcion":"Camión articulado","modelo":"745C","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"05-0761","descripcion":"Tractor de orugas","modelo":"D8","ubicacion":"Mojón","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"05-0783","descripcion":"Tractor de orugas","modelo":"D8","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"05-0870","descripcion":"Tractor de orugas","modelo":"D8","ubicacion":"Mojón","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"25-0726","descripcion":"Motoniveladora","modelo":"140G","ubicacion":"Mojón","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"20-0022","descripcion":"Excavadora de orugas","modelo":"374","ubicacion":"Mojón","flota":"CAT","proveedor":"NIMAC","afex":true},{"codigo":"15539","descripcion":"Generador","modelo":"C3.3","ubicacion":"Volcán","flota":"CAT","proveedor":"NIMAC","afex":false},{"codigo":"E2","descripcion":"Excavadora de orugas","modelo":"PC210LC-10M0","ubicacion":"Volcán","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"T2","descripcion":"Tractor de oruga","modelo":"D65EX-16","ubicacion":"Volcán","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"20-1083","descripcion":"Excavadora de orugas","modelo":"PC1250","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"20-5530","descripcion":"Excavadora de orugas","modelo":"PC500","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6035","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6037","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6043","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Volcán","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6055","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6056","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6063","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6064","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6065","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6067","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6068","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6020","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Volcán","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6036","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6047","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6057","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Volcán","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6058","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"45-6059","descripcion":"Camión articulado","modelo":"HM 400","ubicacion":"Mojón","flota":"KOMATSU","proveedor":"Construmarket","afex":true},{"codigo":"T9","descripcion":"Tractor de orugas","modelo":"D65EX-16","ubicacion":"Troja","flota":"KOMATSU","proveedor":"Construmarket","afex":false},{"codigo":"E8","descripcion":"Excavadora de orugas","modelo":"PC800","ubicacion":"Volcán","flota":"KOMATSU","proveedor":"Construmarket","afex":false},{"codigo":"455938","descripcion":"Camión articulado","modelo":"HM400-3M0","ubicacion":"Volcán","flota":"KOMATSU","proveedor":"Construmarket","afex":false},{"codigo":"50-4772","descripcion":"Camion volquete","modelo":"GR64BX","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-4773","descripcion":"Camion volquete","modelo":"GR64BX","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-194","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-199","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-200","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-204","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-217","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-226","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-4770","descripcion":"Camion volquete","modelo":"GR64BX","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-4771","descripcion":"Camion volquete","modelo":"GR64BX","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-253","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-255","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-256","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-259","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-267","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-310","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-311","descripcion":"Camion volquete","modelo":"GU813E","ubicacion":"","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-244","descripcion":"Camión volquete","modelo":"GU813","ubicacion":"Acarreo","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"50-304","descripcion":"Camión volquete","modelo":"7600 6X4","ubicacion":"Acarreo","flota":"VOLQUETES","proveedor":"","afex":false},{"codigo":"7608","descripcion":"Camion lubrico","modelo":"Ford F550","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"7614","descripcion":"Camion lubrico","modelo":"Foton BJ1226VPHG-1","ubicacion":"Mojón","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"80121","descripcion":"Camioneta","modelo":"Toyota Land Cruiser","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"80154","descripcion":"Camioneta","modelo":"Toyota HILUX","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"80168","descripcion":"Camioneta","modelo":"Toyota Land Cruiser","ubicacion":"Taller","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"80173","descripcion":"Camioneta","modelo":"Toyota HILUX","ubicacion":"Taller","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"80177","descripcion":"Camioneta","modelo":"Toyota Land Cruiser","ubicacion":"Taller","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"P174","descripcion":"Camioneta","modelo":"Toyota HILUX","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"P210","descripcion":"Camioneta","modelo":"Toyota HILUX","ubicacion":"Taller","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"5121","descripcion":"Cisterna de agua","modelo":"International 7600","ubicacion":"Acarreo","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"5137","descripcion":"Cisterna de agua","modelo":"International 7600","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"5139","descripcion":"Cisterna de agua","modelo":"Mack CV713","ubicacion":"Mojón","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"7630","descripcion":"Cisterna de combustible","modelo":"FOTON Auman","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":true},{"codigo":"7631","descripcion":"Cisterna de combustible","modelo":"FOTON Auman","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":true},{"codigo":"CD-03","descripcion":"Cisterna de combustible","modelo":"FOTON Auman","ubicacion":"Mojón","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":true},{"codigo":"GEN1","descripcion":"Generador","modelo":"GENMAC INFINITY","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"19005","descripcion":"Motosoldador generador","modelo":"LINCOLN Vantage 500","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"1900522","descripcion":"Motosoldador generador","modelo":"ABACUS 320KB","ubicacion":"Volcán","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"2000036","descripcion":"Torre de iluminacion","modelo":"SIMAQ TLK6000","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"2000496","descripcion":"Torre de iluminacion","modelo":"SIMAQ TLK6000","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"2000506","descripcion":"Torre de iluminacion","modelo":"SIMAQ TLK6000","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"2000651","descripcion":"Torre de iluminacion","modelo":"Chicago Pneumatic CPLT V.15 LED","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"2000776","descripcion":"Torre de iluminacion","modelo":"SIMAQ TLK6000","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"2000846","descripcion":"Torre de iluminacion","modelo":"SIMAQ TLK6000","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"200105","descripcion":"Torre de iluminacion","modelo":"WakerNeuson LTV6L","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"200107","descripcion":"Torre de iluminacion","modelo":"WakerNeuson LTV6L","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"200110","descripcion":"Torre de iluminacion","modelo":"Chicago Pneumatic CPLT V.15 LED","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"200111","descripcion":"Torre de iluminacion","modelo":"Chicago Pneumatic CPLT V.15 LED","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false},{"codigo":"2005146","descripcion":"Torre de iluminacion","modelo":"WakerNeuson LTV6L","ubicacion":"","flota":"AUXILIAR","proveedor":"Taller CONEQUISA","afex":false}],"inspecciones":[{"codigo":"518","tipo":"GENERAL","fecha":"2026-06-29","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"549","tipo":"GENERAL","fecha":"2026-06-16","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-69","tipo":"GENERAL","fecha":"2026-06-22","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-75","tipo":"GENERAL","fecha":"2026-06-22","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-79","tipo":"GENERAL","fecha":"2026-06-23","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-80","tipo":"GENERAL","fecha":"2025-08-29","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-87","tipo":"GENERAL","fecha":"2026-06-24","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-89","tipo":"GENERAL","fecha":"2026-06-24","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-91","tipo":"GENERAL","fecha":"2026-06-19","proveedor":"NIMAC","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"568","tipo":"AFEX_INSP","fecha":"2026-07-02","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"568","tipo":"AFEX_MANT","fecha":"2026-07-02","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"568","tipo":"AFEX_CERT","fecha":"2026-07-02","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0761","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0761","tipo":"AFEX_MANT","fecha":"2026-04-15","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0761","tipo":"AFEX_CERT","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0783","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0783","tipo":"AFEX_MANT","fecha":"2026-04-16","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0783","tipo":"AFEX_CERT","fecha":"2026-04-16","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0870","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0870","tipo":"AFEX_MANT","fecha":"2026-04-16","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"05-0870","tipo":"AFEX_CERT","fecha":"2026-04-16","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"T2","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"T2","tipo":"AFEX_MANT","fecha":"2026-04-18","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"T2","tipo":"AFEX_CERT","fecha":"2025-08-18","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"25-0726","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"25-0726","tipo":"AFEX_MANT","fecha":"2026-04-10","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"25-0726","tipo":"AFEX_CERT","fecha":"2026-03-08","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0022","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0022","tipo":"AFEX_MANT","fecha":"2026-04-11","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0022","tipo":"AFEX_CERT","fecha":"2026-04-16","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-1083","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-1083","tipo":"AFEX_MANT","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-1083","tipo":"AFEX_CERT","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-5530","tipo":"AFEX_INSP","fecha":"2026-06-08","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-5530","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-5530","tipo":"AFEX_CERT","fecha":"2026-02-13","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-91","tipo":"AFEX_INSP","fecha":"2026-06-28","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-91","tipo":"AFEX_MANT","fecha":"2026-06-28","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-91","tipo":"AFEX_CERT","fecha":"2026-06-28","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-96","tipo":"AFEX_INSP","fecha":"2026-07-01","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-96","tipo":"AFEX_MANT","fecha":"2026-07-01","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-96","tipo":"AFEX_CERT","fecha":"2026-07-01","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-102","tipo":"AFEX_INSP","fecha":"2026-06-29","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-102","tipo":"AFEX_MANT","fecha":"2026-06-29","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-102","tipo":"AFEX_CERT","fecha":"2026-06-29","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-107","tipo":"AFEX_INSP","fecha":"2026-06-27","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-107","tipo":"AFEX_MANT","fecha":"2026-06-27","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-107","tipo":"AFEX_CERT","fecha":"2026-06-27","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0016","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0016","tipo":"AFEX_MANT","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0016","tipo":"AFEX_CERT","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0021","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0021","tipo":"AFEX_MANT","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-0021","tipo":"AFEX_CERT","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-85","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-85","tipo":"AFEX_MANT","fecha":"2026-04-18","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"20-85","tipo":"AFEX_CERT","fecha":"2025-10-27","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"E2","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"E2","tipo":"AFEX_MANT","fecha":"2026-04-17","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"E2","tipo":"AFEX_CERT","fecha":"2025-08-18","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"7630","tipo":"AFEX_INSP","fecha":"2026-07-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"7630","tipo":"AFEX_MANT","fecha":"2026-07-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"7630","tipo":"AFEX_CERT","fecha":"2026-07-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"7631","tipo":"AFEX_INSP","fecha":"2026-07-01","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"7631","tipo":"AFEX_MANT","fecha":"2026-07-01","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"7631","tipo":"AFEX_CERT","fecha":"2026-07-01","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"1033","tipo":"AFEX_INSP","fecha":"2026-07-05","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"1033","tipo":"AFEX_MANT","fecha":"2026-07-05","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"1033","tipo":"AFEX_CERT","fecha":"2026-07-05","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"1044","tipo":"AFEX_INSP","fecha":"2026-06-08","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"1044","tipo":"AFEX_MANT","fecha":"2026-04-17","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"1044","tipo":"AFEX_CERT","fecha":"2025-08-18","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6035","tipo":"AFEX_INSP","fecha":"2026-06-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6035","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6035","tipo":"AFEX_CERT","fecha":"2026-03-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6037","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6037","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6037","tipo":"AFEX_CERT","fecha":"2026-03-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6043","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6043","tipo":"AFEX_MANT","fecha":"2026-04-10","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6043","tipo":"AFEX_CERT","fecha":"2026-03-04","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6055","tipo":"AFEX_INSP","fecha":"2026-06-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6055","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6055","tipo":"AFEX_CERT","fecha":"2026-03-01","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6056","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6056","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6056","tipo":"AFEX_CERT","fecha":"2026-03-04","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6063","tipo":"AFEX_INSP","fecha":"2026-06-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6063","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6063","tipo":"AFEX_CERT","fecha":"2026-03-02","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6064","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6064","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6064","tipo":"AFEX_CERT","fecha":"2026-03-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6065","tipo":"AFEX_INSP","fecha":"2026-06-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6065","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6065","tipo":"AFEX_CERT","fecha":"2026-03-01","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6067","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6067","tipo":"AFEX_MANT","fecha":"2026-04-11","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6067","tipo":"AFEX_CERT","fecha":"2026-03-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6068","tipo":"AFEX_INSP","fecha":"2026-06-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6068","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6068","tipo":"AFEX_CERT","fecha":"2026-02-12","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6020","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6020","tipo":"AFEX_MANT","fecha":"2026-04-18","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6020","tipo":"AFEX_CERT","fecha":"2025-09-24","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6036","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6036","tipo":"AFEX_MANT","fecha":"2026-04-10","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6036","tipo":"AFEX_CERT","fecha":"2026-03-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6047","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6047","tipo":"AFEX_MANT","fecha":"2026-04-11","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6047","tipo":"AFEX_CERT","fecha":"2026-02-27","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6057","tipo":"AFEX_INSP","fecha":"2026-06-07","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6057","tipo":"AFEX_MANT","fecha":"2026-04-11","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6057","tipo":"AFEX_CERT","fecha":"2026-02-28","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6058","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6058","tipo":"AFEX_MANT","fecha":"2026-04-09","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6058","tipo":"AFEX_CERT","fecha":"2026-02-28","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6059","tipo":"AFEX_INSP","fecha":"2026-06-06","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6059","tipo":"AFEX_MANT","fecha":"2026-04-10","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-6059","tipo":"AFEX_CERT","fecha":"2026-03-03","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-69","tipo":"AFEX_INSP","fecha":"2026-06-23","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-69","tipo":"AFEX_MANT","fecha":"2026-06-23","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-69","tipo":"AFEX_CERT","fecha":"2026-06-23","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-71","tipo":"AFEX_INSP","fecha":"2026-06-24","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-71","tipo":"AFEX_MANT","fecha":"2026-06-24","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-71","tipo":"AFEX_CERT","fecha":"2026-06-24","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-75","tipo":"AFEX_INSP","fecha":"2026-06-20","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-75","tipo":"AFEX_MANT","fecha":"2026-06-20","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-75","tipo":"AFEX_CERT","fecha":"2026-06-20","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-77","tipo":"AFEX_INSP","fecha":"2026-06-20","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-77","tipo":"AFEX_MANT","fecha":"2026-06-20","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-77","tipo":"AFEX_CERT","fecha":"2026-06-20","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-79","tipo":"AFEX_INSP","fecha":"2026-06-28","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-79","tipo":"AFEX_MANT","fecha":"2026-06-28","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-79","tipo":"AFEX_CERT","fecha":"2026-06-28","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-80","tipo":"AFEX_INSP","fecha":"2026-06-19","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-80","tipo":"AFEX_MANT","fecha":"2026-06-19","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-80","tipo":"AFEX_CERT","fecha":"2026-06-19","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-86","tipo":"AFEX_INSP","fecha":"2026-06-24","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-86","tipo":"AFEX_MANT","fecha":"2026-06-24","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-86","tipo":"AFEX_CERT","fecha":"2026-06-24","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-87","tipo":"AFEX_INSP","fecha":"2026-06-23","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-87","tipo":"AFEX_MANT","fecha":"2026-06-23","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-87","tipo":"AFEX_CERT","fecha":"2026-06-23","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-89","tipo":"AFEX_INSP","fecha":"2026-06-22","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-89","tipo":"AFEX_MANT","fecha":"2026-06-22","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-89","tipo":"AFEX_CERT","fecha":"2026-06-22","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-91","tipo":"AFEX_INSP","fecha":"2026-06-22","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-91","tipo":"AFEX_MANT","fecha":"2026-06-22","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"},{"codigo":"45-91","tipo":"AFEX_CERT","fecha":"2026-06-22","proveedor":"Jhon May","obs":"Carga inicial desde FORMATO DE INSPECCIONES"}]};
+const FLOTAS = {CAT:"NIMAC – Caterpillar", KOMATSU:"Construmarket – Komatsu", VOLQUETES:"Acarreo – Volquetes", AUXILIAR:"Flota auxiliar"};
+const CARP = {CAT:"CAT - NIMAC", KOMATSU:"KOMATSU - CONSTRUMARKET", VOLQUETES:"VOLQUETES - ACARREO", AUXILIAR:"FLOTA AUXILIAR"};
+const CTRL = {GENERAL:"Inspección general", AFEX_INSP:"AFEX – Inspección", AFEX_MANT:"AFEX – Mantenimiento", AFEX_CERT:"AFEX – Recertificación"};
+const DEF_CFG = {GENERAL:{f:30,a:10}, AFEX_INSP:{f:30,a:10}, AFEX_MANT:{f:90,a:15}, AFEX_CERT:{f:365,a:30}};
+const ST = {"AL DÍA":"AL","PROGRAMAR":"PR","VENCIDA":"VE","SIN REGISTRO":"SR"};
+const STC = {"AL DÍA":"var(--okc)","PROGRAMAR":"var(--prc)","VENCIDA":"var(--vec)","SIN REGISTRO":"var(--src)"};
+let root=null, D={equipos:[],inspecciones:[],config:{...DEF_CFG}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const pd=s=>{if(!s)return null;const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const fmt=s=>{if(!s)return "";const d=pd(s);return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear()};
+const user=()=>localStorage.getItem("insp_user")||"";
+function msg(t,k="ok"){$("msg").innerHTML=`<div class="msg ${k}">${t}</div>`;if(k!=="err")setTimeout(()=>{$("msg").innerHTML=""},5000)}
+const safe=s=>String(s).replace(/[\\/:*?"<>|]/g,"-").trim();
+
+// ---------- almacenamiento del handle ----------
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open("insp_flota",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function kvSet(k,v){const db=await idb();return new Promise(r=>{const t=db.transaction("kv","readwrite");t.objectStore("kv").put(v,k);t.oncomplete=r})}
+async function kvGet(k){const db=await idb();return new Promise(r=>{const q=db.transaction("kv").objectStore("kv").get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)})}
+
+// ---------- archivos ----------
+async function dirAt(path,create=true){let d=root;for(const p of path.split("/").filter(Boolean))d=await d.getDirectoryHandle(p,{create});return d}
+async function readJSON(name,fallback){try{const d=await dirAt("_SISTEMA");const f=await(await d.getFileHandle(name)).getFile();return JSON.parse(await f.text())}catch(e){return fallback}}
+async function writeJSON(name,data){const d=await dirAt("_SISTEMA");const h=await d.getFileHandle(name,{create:true});const w=await h.createWritable();await w.write(JSON.stringify(data,null,1));await w.close()}
+async function exists(name){try{const d=await dirAt("_SISTEMA",false);await d.getFileHandle(name);return true}catch(e){return false}}
+
+async function connect(h){
+  root=h; $("pFolder").textContent="📁 "+h.name; $("cFolder").textContent="Carpeta conectada: "+h.name;
+  if(!(await exists("equipos.json"))){
+    const s=SEED||{equipos:[],inspecciones:[]};
+    const ins=s.inspecciones.map((x,i)=>({id:"seed"+i,resultado:"",hallazgos:"",horometro:"",inspector:"",archivos:[],creado:new Date().toISOString(),usuario:"Carga inicial",...x}));
+    await writeJSON("equipos.json",s.equipos.map(e=>({...e,activo:true})));
+    await writeJSON("inspecciones.json",ins);
+    await writeJSON("config.json",DEF_CFG);
+    msg("Carpeta preparada: se cargaron "+s.equipos.length+" equipos y "+ins.length+" inspecciones anteriores.");
+  }
+  await load();
+  $("welcome").classList.add("hide");$("nav").classList.remove("hide");show("tab-tablero");
+}
+async function load(){
+  D.equipos=await readJSON("equipos.json",[]);D.inspecciones=await readJSON("inspecciones.json",[]);D.config={...DEF_CFG,...await readJSON("config.json",{})};
+  fillSelects();renderAll();
+}
+async function pick(){
+  try{const h=await window.showDirectoryPicker({id:"inspflota",mode:"readwrite"});await kvSet("root",h);await connect(h)}
+  catch(e){if(e.name!=="AbortError")msg("No se pudo abrir la carpeta: "+e.message,"err")}
+}
+async function reconnect(){
+  const h=await kvGet("root");if(!h)return pick();
+  const p=await h.requestPermission({mode:"readwrite"});if(p==="granted")await connect(h);else msg("Permiso denegado para la carpeta.","err");
+}
+
+// ---------- cálculo de estados ----------
+function controls(){
+  const last={};for(const i of D.inspecciones){const k=i.codigo+"|"+i.tipo;if(!last[k]||i.fecha>last[k].fecha)last[k]=i}
+  const rows=[],t=today();
+  for(const e of D.equipos){ if(e.activo===false)continue;
+    const tipos=["GENERAL"].concat(e.afex?["AFEX_INSP","AFEX_MANT","AFEX_CERT"]:[]);
+    for(const tp of tipos){
+      const cfg=D.config[tp]||DEF_CFG[tp],l=last[e.codigo+"|"+tp];let prox=null,dias=null,est="SIN REGISTRO";
+      if(l){const p=pd(l.fecha);p.setDate(p.getDate()+Number(cfg.f));prox=iso(p);dias=Math.round((p-t)/864e5);est=dias<0?"VENCIDA":dias<=Number(cfg.a)?"PROGRAMAR":"AL DÍA"}
+      rows.push({e,tp,last:l?l.fecha:"",prox,dias,est,prov:tp==="GENERAL"?e.proveedor:"Jhon May"})
+    }}
+  return rows
+}
+function renderKpis(rows){
+  const groups=[...Object.entries(FLOTAS).map(([k,v])=>[v,r=>r.tp==="GENERAL"&&r.e.flota===k]),["AFEX – Jhon May",r=>r.tp!=="GENERAL"]];
+  $("kpis").innerHTML=groups.map(([name,f])=>{const g=rows.filter(f),n=g.length,c={};for(const s in ST)c[s]=g.filter(r=>r.est===s).length;
+    const pct=n?Math.round((c["AL DÍA"]+c["PROGRAMAR"])/n*100):0;
+    return `<div class="card kc"><h3>${name}</h3><div class="big">${pct}%</div><div class="mut">al día · ${n} controles</div>
+    <div class="bar">${Object.keys(ST).map(s=>`<span style="width:${n?c[s]/n*100:0}%;background:${STC[s]}" title="${s}: ${c[s]}"></span>`).join("")}</div>
+    <div class="leg">${Object.keys(ST).map(s=>`<span><i style="background:${STC[s]}"></i>${s} ${c[s]}</span>`).join("")}</div></div>`}).join("")
+}
+const ORD={"VENCIDA":0,"PROGRAMAR":1,"SIN REGISTRO":2,"AL DÍA":3};
+function renderEstado(){
+  const rows=controls();renderKpis(rows);
+  const q=$("fBus").value.toLowerCase(),fl=$("fFlota").value,tp=$("fTipo").value,es=$("fEst").value,ub=$("fUb").value;
+  const f=rows.filter(r=>(!q||(r.e.codigo+" "+r.e.modelo+" "+r.e.descripcion).toLowerCase().includes(q))&&(!fl||(fl==="AFEX"?r.tp!=="GENERAL":r.e.flota===fl&&r.tp==="GENERAL"))&&(!tp||r.tp===tp)&&(!es||r.est===es)&&(!ub||r.e.ubicacion===ub))
+    .sort((a,b)=>ORD[a.est]-ORD[b.est]||(a.dias??9e9)-(b.dias??9e9)||a.e.codigo.localeCompare(b.e.codigo));
+  $("tbEst").innerHTML=f.map(r=>`<tr><td><b>${esc(r.e.codigo)}</b></td><td>${esc(r.e.descripcion)}</td><td>${esc(r.e.modelo)}</td><td>${esc(r.e.ubicacion)}</td><td>${CTRL[r.tp]}</td><td>${esc(r.prov)}</td><td>${fmt(r.last)}</td><td>${fmt(r.prox)}</td><td class="right">${r.dias??""}</td><td><span class="st ${ST[r.est]}">${r.est}</span></td>
+   <td style="white-space:nowrap"><button class="btn sm" onclick="goReg('${esc(r.e.codigo)}','${r.tp}')">Registrar</button> <button class="lnk" onclick="goHis('${esc(r.e.codigo)}')">Historial</button></td></tr>`).join("");
+  $("cntEst").textContent=f.length+" controles mostrados";
+  window._estado=f;
+}
+function renderHist(){
+  const q=$("hBus").value.trim().toLowerCase(),tp=$("hTipo").value,de=$("hDesde").value,ha=$("hHasta").value;
+  const f=D.inspecciones.filter(i=>(!q||i.codigo.toLowerCase()===q||i.codigo.toLowerCase().includes(q))&&(!tp||i.tipo===tp)&&(!de||i.fecha>=de)&&(!ha||i.fecha<=ha)).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  $("tbHis").innerHTML=f.slice(0,800).map(i=>`<tr><td>${fmt(i.fecha)}</td><td><b>${esc(i.codigo)}</b></td><td>${CTRL[i.tipo]||i.tipo}</td><td>${esc(i.proveedor)}</td><td>${esc(i.inspector)}</td><td class="right">${esc(i.horometro)}</td><td>${esc(i.resultado)}</td><td class="right">${esc(i.hallazgos)}</td><td>${esc(i.obs)}</td>
+   <td>${(i.archivos||[]).map((a,k)=>`<button class="lnk" onclick="openFile('${esc(a)}')">📎${k+1}</button>`).join(" ")}</td><td class="mut">${esc(i.usuario)}</td><td><button class="lnk" onclick="delIns('${i.id}')" title="Eliminar registro">✕</button></td></tr>`).join("");
+  $("cntHis").textContent=f.length+" inspecciones"+(f.length>800?" (se muestran las 800 más recientes)":"");
+  window._hist=f;
+}
+function renderEq(){
+  const q=$("eBus").value.toLowerCase();
+  $("tbEq").innerHTML=D.equipos.filter(e=>!q||JSON.stringify(e).toLowerCase().includes(q)).map((e,i)=>`<tr><td><b>${esc(e.codigo)}</b></td><td>${esc(e.descripcion)}</td><td>${esc(e.modelo)}</td><td>${esc(e.ubicacion)}</td><td>${FLOTAS[e.flota]||e.flota}</td><td>${esc(e.proveedor)}</td><td>${e.afex?"Sí":""}</td><td>${e.activo===false?"No":"Sí"}</td><td><button class="lnk" onclick="editEq('${esc(e.codigo)}')">Editar</button></td></tr>`).join("")
+}
+function renderCfg(){
+  $("tbCfg").innerHTML=Object.keys(CTRL).map(k=>`<tr><td>${CTRL[k]}</td><td>${k==="GENERAL"?"Toda la flota":"Equipos con AFEX"}</td><td><input type="number" min="1" id="cf_${k}" value="${D.config[k].f}" style="width:90px"></td><td><input type="number" min="0" id="ca_${k}" value="${D.config[k].a}" style="width:90px"></td></tr>`).join("");
+  $("cUser").value=user();
+}
+function renderAll(){renderEstado();renderHist();renderEq();renderCfg();$("pUser").textContent=user()?"👤 "+user():"👤 sin usuario"}
+function fillSelects(){
+  const fl=$("fFlota");fl.innerHTML='<option value="">Todas las flotas</option>'+Object.entries(FLOTAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")+'<option value="AFEX">AFEX – Jhon May</option>';
+  const opts='<option value="">Todos los controles</option>'+Object.entries(CTRL).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+  $("fTipo").innerHTML=opts;$("hTipo").innerHTML=opts;
+  const ubs=[...new Set(D.equipos.map(e=>e.ubicacion).filter(Boolean))].sort();
+  $("fUb").innerHTML='<option value="">Todas las ubicaciones</option>'+ubs.map(u=>`<option>${esc(u)}</option>`).join("");
+  $("dlEq").innerHTML=D.equipos.filter(e=>e.activo!==false).map(e=>`<option value="${esc(e.codigo)}">${esc(e.descripcion)} ${esc(e.modelo)}</option>`).join("");
+}
+
+// ---------- registrar ----------
+function eqBy(c){return D.equipos.find(e=>e.codigo.toLowerCase()===String(c).trim().toLowerCase())}
+function updReg(){
+  const e=eqBy($("rEq").value);
+  $("rEqInfo").textContent=e?`${e.descripcion} ${e.modelo} · ${FLOTAS[e.flota]||""}${e.ubicacion?" · "+e.ubicacion:""}`:"";
+  const prev=$("rTipo").value;
+  const tipos=["GENERAL"].concat(e&&e.afex?["AFEX_INSP","AFEX_MANT","AFEX_CERT"]:[]);
+  $("rTipo").innerHTML=tipos.map(t=>`<option value="${t}">${CTRL[t]}</option>`).join("");if(tipos.includes(prev))$("rTipo").value=prev;
+  updProv();
+}
+function updProv(){const e=eqBy($("rEq").value);if(!e)return;$("rProv").value=$("rTipo").value==="GENERAL"?e.proveedor:"Jhon May";
+  $("rDest").textContent="Se guardará en: INSPECCIONES/"+safe(CARP[e.flota]||e.flota)+"/"+safe(e.codigo)+"/"}
+function goReg(c,t){show("tab-registrar");$("rEq").value=c;updReg();$("rTipo").value=t;updProv();$("rFecha").value=iso(today());$("rInsp").focus()}
+function goHis(c){show("tab-historial");$("hBus").value=c;renderHist()}
+async function guardar(){
+  const e=eqBy($("rEq").value),tp=$("rTipo").value,fe=$("rFecha").value;
+  if(!e)return msg("Elija un equipo válido de la lista.","err");if(!fe)return msg("Indique la fecha de la inspección.","err");
+  if(fe>iso(today()))return msg("La fecha no puede ser futura.","err");
+  if(!user()){const n=prompt("Escriba su nombre (queda registrado en cada inspección):");if(!n)return;localStorage.setItem("insp_user",n.trim())}
+  $("bGuardar").disabled=true;
+  try{
+    const folder="INSPECCIONES/"+safe(CARP[e.flota]||e.flota)+"/"+safe(e.codigo);
+    const files=[...$("rFiles").files],paths=[];
+    if(files.length){const d=await dirAt(folder);
+      for(let k=0;k<files.length;k++){const f=files[k],ext=(f.name.includes(".")?f.name.split(".").pop():"bin").toLowerCase();
+        let name=`${fe}_${tp}_${k+1}.${ext}`,n=1;while(await d.getFileHandle(name).then(()=>true,()=>false)){name=`${fe}_${tp}_${k+1}_${++n}.${ext}`}
+        const h=await d.getFileHandle(name,{create:true}),w=await h.createWritable();await w.write(f);await w.close();paths.push(folder+"/"+name)}}
+    const rec={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),codigo:e.codigo,tipo:tp,fecha:fe,proveedor:$("rProv").value.trim(),inspector:$("rInsp").value.trim(),
+      horometro:$("rHor").value,resultado:$("rRes").value,hallazgos:$("rHall").value,obs:$("rObs").value.trim(),archivos:paths,creado:new Date().toISOString(),usuario:user()};
+    const cur=await readJSON("inspecciones.json",[]);cur.push(rec);await writeJSON("inspecciones.json",cur);D.inspecciones=cur;
+    ["rHor","rObs","rInsp"].forEach(i=>$(i).value="");$("rHall").value=0;$("rFiles").value="";
+    renderAll();msg(`Inspección de ${e.codigo} guardada${paths.length?" con "+paths.length+" archivo(s)":""}.`);
+  }catch(err){msg("No se pudo guardar: "+err.message,"err")}
+  $("bGuardar").disabled=false;
+}
+async function openFile(p){
+  try{const parts=p.split("/"),name=parts.pop();const d=await dirAt(parts.join("/"),false);const f=await(await d.getFileHandle(name)).getFile();window.open(URL.createObjectURL(f),"_blank")}
+  catch(e){msg("No se encontró el archivo: "+p,"err")}
+}
+async function delIns(id){
+  const i=D.inspecciones.find(x=>x.id===id);if(!i)return;
+  if(!confirm(`¿Eliminar el registro de ${i.codigo} del ${fmt(i.fecha)}? Los archivos adjuntos se quedan en la carpeta.`))return;
+  const cur=(await readJSON("inspecciones.json",[])).filter(x=>x.id!==id);await writeJSON("inspecciones.json",cur);D.inspecciones=cur;renderAll();msg("Registro eliminado.")
+}
+
+// ---------- equipos ----------
+function editEq(c){
+  const e=c?eqBy(c):{codigo:"",descripcion:"",modelo:"",ubicacion:"",flota:"CAT",proveedor:"NIMAC",afex:false,activo:true};
+  $("modalBody").innerHTML=`<h3 style="margin-top:0;color:var(--az)">${c?"Editar equipo "+esc(c):"Agregar equipo"}</h3><div class="form">
+  <div><label>Código *</label><input id="mC" value="${esc(e.codigo)}" ${c?"disabled":""}></div><div><label>Descripción</label><input id="mD" value="${esc(e.descripcion)}"></div>
+  <div><label>Modelo</label><input id="mM" value="${esc(e.modelo)}"></div><div><label>Ubicación</label><input id="mU" value="${esc(e.ubicacion)}" list="dlUb"><datalist id="dlUb"><option>Volcán</option><option>Mojón</option><option>Acarreo</option><option>Troja</option><option>Taller</option></datalist></div>
+  <div><label>Flota</label><select id="mF">${Object.entries(FLOTAS).map(([k,v])=>`<option value="${k}" ${e.flota===k?"selected":""}>${v}</option>`).join("")}</select></div>
+  <div><label>Proveedor inspección general</label><input id="mP" value="${esc(e.proveedor)}"></div>
+  <div><label>Tiene AFEX</label><select id="mA"><option value="0">No</option><option value="1" ${e.afex?"selected":""}>Sí</option></select></div>
+  <div><label>Activo</label><select id="mV"><option value="1">Sí</option><option value="0" ${e.activo===false?"selected":""}>No (dado de baja)</option></select></div></div>
+  <p><button class="btn" onclick="saveEq(${c?"true":"false"})">Guardar</button> <button class="btn sec" onclick="$('modal').classList.add('hide')">Cancelar</button></p>`;
+  $("modal").classList.remove("hide");
+}
+async function saveEq(isEdit){
+  const c=$("mC").value.trim();if(!c)return alert("Indique el código.");
+  const cur=await readJSON("equipos.json",[]);const ex=cur.find(x=>x.codigo.toLowerCase()===c.toLowerCase());
+  if(!isEdit&&ex)return alert("Ya existe un equipo con ese código.");
+  const e={codigo:c,descripcion:$("mD").value.trim(),modelo:$("mM").value.trim(),ubicacion:$("mU").value.trim(),flota:$("mF").value,proveedor:$("mP").value.trim(),afex:$("mA").value==="1",activo:$("mV").value==="1"};
+  if(ex)Object.assign(ex,e);else cur.push(e);
+  await writeJSON("equipos.json",cur);D.equipos=cur;$("modal").classList.add("hide");fillSelects();renderAll();msg("Equipo "+c+" guardado.")
+}
+
+// ---------- exportar ----------
+function csv(name,head,rows){
+  const s="\ufeff"+[head,...rows].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([s],{type:"text/csv"}));a.download=name;a.click()
+}
+$("bCsvEst").onclick=()=>csv(`estado_inspecciones_${iso(today())}.csv`,["Código","Descripción","Modelo","Ubicación","Flota","Control","Proveedor","Última","Próxima","Días","Estado"],
+  (window._estado||[]).map(r=>[r.e.codigo,r.e.descripcion,r.e.modelo,r.e.ubicacion,FLOTAS[r.e.flota],CTRL[r.tp],r.prov,fmt(r.last),fmt(r.prox),r.dias??"",r.est]));
+$("bCsvHis").onclick=()=>csv(`historial_inspecciones_${iso(today())}.csv`,["Fecha","Código","Control","Proveedor","Inspector","Horómetro","Resultado","Hallazgos","Observaciones","Archivos","Registró"],
+  (window._hist||[]).map(i=>[fmt(i.fecha),i.codigo,CTRL[i.tipo],i.proveedor,i.inspector,i.horometro,i.resultado,i.hallazgos,i.obs,(i.archivos||[]).join(" | "),i.usuario]));
+
+// ---------- navegación y eventos ----------
+function show(id){document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("hide",t.id!==id));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===id))}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{show(b.dataset.t);if(b.dataset.t==="tab-registrar"&&!$("rFecha").value)$("rFecha").value=iso(today())});
+["fBus","fFlota","fTipo","fEst","fUb"].forEach(i=>$(i).oninput=renderEstado);
+["hBus","hTipo","hDesde","hHasta"].forEach(i=>$(i).oninput=renderHist);
+$("eBus").oninput=renderEq;$("rEq").oninput=updReg;$("rTipo").onchange=updProv;$("bGuardar").onclick=guardar;$("bNuevoEq").onclick=()=>editEq("");
+$("bPick").onclick=pick;$("bRe").onclick=reconnect;$("bCambiar").onclick=pick;$("bRecargar").onclick=async()=>{await load();msg("Datos recargados.")};
+$("bUser").onclick=()=>{localStorage.setItem("insp_user",$("cUser").value.trim());renderAll();msg("Nombre guardado.")};
+$("bCfg").onclick=async()=>{const c={};for(const k of Object.keys(CTRL))c[k]={f:Number($("cf_"+k).value)||DEF_CFG[k].f,a:Number($("ca_"+k).value)||0};await writeJSON("config.json",c);D.config=c;renderAll();msg("Configuración guardada.")};
+$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.add("hide")};
+(async()=>{
+  if(!window.showDirectoryPicker){$("noApi").classList.remove("hide");$("bPick").disabled=true;return}
+  const h=await kvGet("root").catch(()=>null);
+  if(h){$("bRe").classList.remove("hide");$("bRe").textContent="Reconectar a «"+h.name+"»";
+    if((await h.queryPermission({mode:"readwrite"}))==="granted")await connect(h)}
+  setInterval(async()=>{if(root&&document.visibilityState==="visible"){const n=await readJSON("inspecciones.json",null);if(n&&n.length!==D.inspecciones.length){D.inspecciones=n;renderAll()}}},60000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+ "GENERAL": {
+  "frecuencia_dias": 30,
+  "anticipacion_dias": 10
+ },
+ "AFEX_INSP": {
+  "frecuencia_dias": 30,
+  "anticipacion_dias": 10
+ },
+ "AFEX_MANT": {
+  "frecuencia_dias": 90,
+  "anticipacion_dias": 15
+ },
+ "AFEX_CERT": {
+  "frecuencia_dias": 365,
+  "anticipacion_dias": 30
+ }
+}

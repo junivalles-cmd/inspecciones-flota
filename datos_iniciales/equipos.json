@@ -1,0 +1,1122 @@
+[
+ {
+  "codigo": "518",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D9R",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "05-0763",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D8",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "549",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D6T XL",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "550",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D6T XL",
+  "ubicacion": "Mojón",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "568",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D8T",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "1033",
+  "descripcion": "Cargador frontal",
+  "modelo": "950H",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "1044",
+  "descripcion": "Cargador frontal",
+  "modelo": "966L",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "15-31",
+  "descripcion": "Back hoe",
+  "modelo": "416E",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "15-59",
+  "descripcion": "Back hoe",
+  "modelo": "416F2",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "20-0016",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "350",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-0021",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "374",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-102",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "336D2L",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-107",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "336D2LXE",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-135",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "320",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "20-136",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "320D",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "20-75",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "320D",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "20-85",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "349D",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-91",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "336D2LME",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-96",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "336D",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "25-20",
+  "descripcion": "Motoniveladora",
+  "modelo": "120M",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "25-46",
+  "descripcion": "Motoniveladora",
+  "modelo": "140K",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "25-51",
+  "descripcion": "Motoniveladora",
+  "modelo": "140K",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "35-30",
+  "descripcion": "Vibrocompactadora",
+  "modelo": "CS54B",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "35-48",
+  "descripcion": "Vibrocompactadora",
+  "modelo": "CS54B",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "35-63",
+  "descripcion": "Vibrocompactadora",
+  "modelo": "CS54B",
+  "ubicacion": "",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "45-69",
+  "descripcion": "Camión articulado",
+  "modelo": "740B",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-71",
+  "descripcion": "Camión articulado",
+  "modelo": "740B",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-75",
+  "descripcion": "Camión articulado",
+  "modelo": "740B",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-77",
+  "descripcion": "Camión articulado",
+  "modelo": "740B",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-79",
+  "descripcion": "Camión articulado",
+  "modelo": "740B",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-80",
+  "descripcion": "Camión articulado",
+  "modelo": "740B",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-86",
+  "descripcion": "Camión articulado",
+  "modelo": "745C",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-87",
+  "descripcion": "Camión articulado",
+  "modelo": "745C",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-89",
+  "descripcion": "Camión articulado",
+  "modelo": "745C",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-91",
+  "descripcion": "Camión articulado",
+  "modelo": "745C",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "05-0761",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D8",
+  "ubicacion": "Mojón",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "05-0783",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D8",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "05-0870",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D8",
+  "ubicacion": "Mojón",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "25-0726",
+  "descripcion": "Motoniveladora",
+  "modelo": "140G",
+  "ubicacion": "Mojón",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-0022",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "374",
+  "ubicacion": "Mojón",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "15539",
+  "descripcion": "Generador",
+  "modelo": "C3.3",
+  "ubicacion": "Volcán",
+  "flota": "CAT",
+  "proveedor": "NIMAC",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "E2",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "PC210LC-10M0",
+  "ubicacion": "Volcán",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "T2",
+  "descripcion": "Tractor de oruga",
+  "modelo": "D65EX-16",
+  "ubicacion": "Volcán",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-1083",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "PC1250",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "20-5530",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "PC500",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6035",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6037",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6043",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Volcán",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6055",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6056",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6063",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6064",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6065",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6067",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6068",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6020",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Volcán",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6036",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6047",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6057",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Volcán",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6058",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "45-6059",
+  "descripcion": "Camión articulado",
+  "modelo": "HM 400",
+  "ubicacion": "Mojón",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "T9",
+  "descripcion": "Tractor de orugas",
+  "modelo": "D65EX-16",
+  "ubicacion": "Troja",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "E8",
+  "descripcion": "Excavadora de orugas",
+  "modelo": "PC800",
+  "ubicacion": "Volcán",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "455938",
+  "descripcion": "Camión articulado",
+  "modelo": "HM400-3M0",
+  "ubicacion": "Volcán",
+  "flota": "KOMATSU",
+  "proveedor": "Construmarket",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-4772",
+  "descripcion": "Camion volquete",
+  "modelo": "GR64BX",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-4773",
+  "descripcion": "Camion volquete",
+  "modelo": "GR64BX",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-194",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-199",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-200",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-204",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-217",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-226",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-4770",
+  "descripcion": "Camion volquete",
+  "modelo": "GR64BX",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-4771",
+  "descripcion": "Camion volquete",
+  "modelo": "GR64BX",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-253",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-255",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-256",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-259",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-267",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-310",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-311",
+  "descripcion": "Camion volquete",
+  "modelo": "GU813E",
+  "ubicacion": "",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-244",
+  "descripcion": "Camión volquete",
+  "modelo": "GU813",
+  "ubicacion": "Acarreo",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "50-304",
+  "descripcion": "Camión volquete",
+  "modelo": "7600 6X4",
+  "ubicacion": "Acarreo",
+  "flota": "VOLQUETES",
+  "proveedor": "",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "7608",
+  "descripcion": "Camion lubrico",
+  "modelo": "Ford F550",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "7614",
+  "descripcion": "Camion lubrico",
+  "modelo": "Foton BJ1226VPHG-1",
+  "ubicacion": "Mojón",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "80121",
+  "descripcion": "Camioneta",
+  "modelo": "Toyota Land Cruiser",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "80154",
+  "descripcion": "Camioneta",
+  "modelo": "Toyota HILUX",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "80168",
+  "descripcion": "Camioneta",
+  "modelo": "Toyota Land Cruiser",
+  "ubicacion": "Taller",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "80173",
+  "descripcion": "Camioneta",
+  "modelo": "Toyota HILUX",
+  "ubicacion": "Taller",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "80177",
+  "descripcion": "Camioneta",
+  "modelo": "Toyota Land Cruiser",
+  "ubicacion": "Taller",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "P174",
+  "descripcion": "Camioneta",
+  "modelo": "Toyota HILUX",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "P210",
+  "descripcion": "Camioneta",
+  "modelo": "Toyota HILUX",
+  "ubicacion": "Taller",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "5121",
+  "descripcion": "Cisterna de agua",
+  "modelo": "International 7600",
+  "ubicacion": "Acarreo",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "5137",
+  "descripcion": "Cisterna de agua",
+  "modelo": "International 7600",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "5139",
+  "descripcion": "Cisterna de agua",
+  "modelo": "Mack CV713",
+  "ubicacion": "Mojón",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "7630",
+  "descripcion": "Cisterna de combustible",
+  "modelo": "FOTON Auman",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "7631",
+  "descripcion": "Cisterna de combustible",
+  "modelo": "FOTON Auman",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "CD-03",
+  "descripcion": "Cisterna de combustible",
+  "modelo": "FOTON Auman",
+  "ubicacion": "Mojón",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": true,
+  "activo": true
+ },
+ {
+  "codigo": "GEN1",
+  "descripcion": "Generador",
+  "modelo": "GENMAC INFINITY",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "19005",
+  "descripcion": "Motosoldador generador",
+  "modelo": "LINCOLN Vantage 500",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "1900522",
+  "descripcion": "Motosoldador generador",
+  "modelo": "ABACUS 320KB",
+  "ubicacion": "Volcán",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "2000036",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "SIMAQ TLK6000",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "2000496",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "SIMAQ TLK6000",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "2000506",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "SIMAQ TLK6000",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "2000651",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "Chicago Pneumatic CPLT V.15 LED",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "2000776",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "SIMAQ TLK6000",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "2000846",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "SIMAQ TLK6000",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "200105",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "WakerNeuson LTV6L",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "200107",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "WakerNeuson LTV6L",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "200110",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "Chicago Pneumatic CPLT V.15 LED",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "200111",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "Chicago Pneumatic CPLT V.15 LED",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ },
+ {
+  "codigo": "2005146",
+  "descripcion": "Torre de iluminacion",
+  "modelo": "WakerNeuson LTV6L",
+  "ubicacion": "",
+  "flota": "AUXILIAR",
+  "proveedor": "Taller CONEQUISA",
+  "afex": false,
+  "activo": true
+ }
+]

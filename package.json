@@ -1,0 +1,21 @@
+{
+  "name": "inspecciones-flota-coneqisa",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Sistema de Inspecciones de Flota - CONEQUISA, Mina La Libertad",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0",
+    "vite-plugin-singlefile": "^2.0.3",
+    "vitest": "^2.1.0"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}
