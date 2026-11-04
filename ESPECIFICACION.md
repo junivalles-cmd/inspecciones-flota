@@ -2,7 +2,7 @@
 
 **Cliente:** CONEQUISA – Departamento de Maquinaria Open Pit, Mina La Libertad (Volcán / Mojón), Equinox Gold
 **Dueño del producto:** Junior Valles, Ingeniero de Confiabilidad
-**Versión de la especificación:** 2.1 – 04/11/2026
+**Versión de la especificación:** 2.2 – 04/11/2026
 **Repositorio:** https://github.com/junivalles-cmd/inspecciones-flota
 **Referencia funcional:** `referencia/Sistema_Inspecciones_Flota_v1.html`. Es la v1 ya funcionando, un HTML de un solo archivo; usarla como base de comportamiento.
 
@@ -11,6 +11,7 @@
 - **1.0 (04/11/2026):** especificación inicial, a partir de la v1 ya en uso.
 - **2.0 (04/11/2026):** reescritura modular de la app (`core`/`store`/`ui` separados, con pruebas unitarias de la regla de estado); estructura de carpetas de `INSPECCIONES/` cambiada de "por flota" a "por tipo de inspección + mes" (sección 4); botón de exportar a Excel el programa semanal/mensual de inspecciones (sección 3.4.2); corrección del combo "Control" del formulario de registrar, que podía quedar sin opciones; eliminación de los campos Horómetro y N.º de hallazgos del formulario de registrar (sección 3.4.3 y 5); publicación en GitHub Pages.
 - **2.1 (04/11/2026):** cada equipo tiene ahora un `id` interno oculto e inmutable, y dos códigos visibles y editables, `codigo` y `codigo2` (sección 3.4.5); las inspecciones se enlazan al equipo por ese `id` (no por el código), para que renombrar un código no pierda el historial calculado en el Tablero (sección 5).
+- **2.2 (04/11/2026):** corregido el botón [Editar] de Equipos, que abría el formulario como si fuera "Agregar equipo" cuando la carpeta ya tenía `equipos.json`/`inspecciones.json` guardados con una versión anterior a la 2.1 (sin `id` ni `equipoId`). Ahora, al conectar una carpeta así, la app completa esos campos automáticamente la primera vez que carga (sección 4.1).
 
 ---
 
@@ -152,6 +153,7 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 - `dist/index.html`: build empacado (`npm run build`), para abrir con doble clic.
 - `docs/index.html`: copia de `dist/index.html` (`npm run build:pages`), publicada con GitHub Pages en `https://junivalles-cmd.github.io/inspecciones-flota/`. El repositorio es público para que Pages funcione gratis; eso expone el código y los datos de `datos_iniciales/` (no hay contraseñas ni datos financieros, solo la lista de equipos y proveedores).
 - Abrir la app desde el link de Pages o desde el archivo local tiene el mismo comportamiento: `showDirectoryPicker` sigue pidiendo elegir la carpeta de Drive en la máquina de quien la usa; no hay backend ni datos compartidos por internet.
+- **Migración automática al conectar:** si `equipos.json` o `inspecciones.json` de la carpeta vienen de una versión anterior a la 2.1 (sin `id` ni `equipoId`), la app los completa sola la primera vez que carga esa carpeta y guarda el resultado — no hace falta tocar nada a mano. Se avisa con un mensaje en pantalla cuando esto pasa.
 
 ## 5. Modelo de datos
 

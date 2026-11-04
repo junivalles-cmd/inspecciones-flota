@@ -9,6 +9,7 @@ import { initHistorial, renderHistorial, irAHistorial as mostrarHistorialDe } fr
 import { initEquipos, renderEquipos } from './ui/equipos.js';
 import { initConfig, renderConfig } from './ui/config.js';
 import { generarProgramaInspecciones } from './ui/excel.js';
+import { migrarEquiposFaltantes, migrarInspeccionesFaltantes } from './core/equipos.js';
 import {
   soportado,
   elegirCarpeta,
@@ -16,6 +17,7 @@ import {
   permisoConcedido,
   reconectar,
   leerJSON,
+  actualizarJSON,
   carpetaActual,
 } from './store/fs.js';
 
@@ -27,10 +29,28 @@ function renderTodo() {
   $('pUser').textContent = nombreUsuario() ? '👤 ' + nombreUsuario() : '👤 sin usuario';
 }
 
+// Si la carpeta tiene equipos.json/inspecciones.json guardados con una versión
+// anterior (sin el id oculto ni equipoId), se completan solos al cargar, para que
+// "Editar" en Equipos y el cálculo de estado sigan funcionando con esos datos.
+async function migrarSiHaceFalta() {
+  const equiposMigrados = migrarEquiposFaltantes(D.equipos);
+  if (equiposMigrados.cambiaron) {
+    D.equipos = await actualizarJSON('equipos.json', [], (actuales) => migrarEquiposFaltantes(actuales).equipos);
+  }
+  const inspeccionesMigradas = migrarInspeccionesFaltantes(D.inspecciones, D.equipos);
+  if (inspeccionesMigradas.cambiaron) {
+    D.inspecciones = await actualizarJSON('inspecciones.json', [], (actuales) => migrarInspeccionesFaltantes(actuales, D.equipos).inspecciones);
+  }
+  if (equiposMigrados.cambiaron || inspeccionesMigradas.cambiaron) {
+    mostrarMensaje('Se actualizaron algunos equipos/inspecciones guardados con una versión anterior (se les asignó un identificador interno).');
+  }
+}
+
 async function cargarDatos() {
   D.equipos = await leerJSON('equipos.json', []);
   D.inspecciones = await leerJSON('inspecciones.json', []);
   D.config = await leerJSON('config.json', {});
+  await migrarSiHaceFalta();
   llenarSelectoresDinamicos();
   renderTodo();
 }
