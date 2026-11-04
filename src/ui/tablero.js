@@ -44,7 +44,7 @@ export function renderTablero() {
 
   const filtradas = rows.filter(
     (r) =>
-      (!q || (r.equipo.codigo + ' ' + r.equipo.modelo + ' ' + r.equipo.descripcion).toLowerCase().includes(q)) &&
+      (!q || (r.equipo.codigo + ' ' + r.equipo.codigo2 + ' ' + r.equipo.modelo + ' ' + r.equipo.descripcion).toLowerCase().includes(q)) &&
       (!fl || (fl === 'AFEX' ? r.tipo !== 'GENERAL' : r.equipo.flota === fl && r.tipo === 'GENERAL')) &&
       (!tp || r.tipo === tp) &&
       (!es || r.estado === es) &&
@@ -53,7 +53,7 @@ export function renderTablero() {
 
   $('tbEst').innerHTML = filtradas
     .map(
-      (r) => `<tr><td><b>${esc(r.equipo.codigo)}</b></td><td>${esc(r.equipo.descripcion)}</td><td>${esc(r.equipo.modelo)}</td><td>${esc(r.equipo.ubicacion)}</td><td>${CONTROLES_NOMBRE[r.tipo]}</td><td>${esc(r.proveedor)}</td><td>${formatearFecha(r.ultima)}</td><td>${formatearFecha(r.proxima)}</td><td class="right">${r.dias ?? ''}</td><td><span class="st ${CLASE_ESTADO[r.estado]}">${r.estado}</span></td>
+      (r) => `<tr><td><b>${esc(r.equipo.codigo)}</b></td><td>${esc(r.equipo.codigo2)}</td><td>${esc(r.equipo.descripcion)}</td><td>${esc(r.equipo.modelo)}</td><td>${esc(r.equipo.ubicacion)}</td><td>${CONTROLES_NOMBRE[r.tipo]}</td><td>${esc(r.proveedor)}</td><td>${formatearFecha(r.ultima)}</td><td>${formatearFecha(r.proxima)}</td><td class="right">${r.dias ?? ''}</td><td><span class="st ${CLASE_ESTADO[r.estado]}">${r.estado}</span></td>
      <td style="white-space:nowrap"><button class="btn sm" data-accion="registrar" data-codigo="${esc(r.equipo.codigo)}" data-tipo="${r.tipo}">Registrar</button> <button class="lnk" data-accion="historial" data-codigo="${esc(r.equipo.codigo)}">Historial</button></td></tr>`
     )
     .join('');
@@ -68,9 +68,10 @@ export function initTablero(cbs) {
     const hoy = formatearISO(inicioDelDia());
     exportarCSV(
       `estado_inspecciones_${hoy}.csv`,
-      ['Código', 'Descripción', 'Modelo', 'Ubicación', 'Flota', 'Control', 'Proveedor', 'Última', 'Próxima', 'Días', 'Estado'],
+      ['Código', 'Código 2', 'Descripción', 'Modelo', 'Ubicación', 'Flota', 'Control', 'Proveedor', 'Última', 'Próxima', 'Días', 'Estado'],
       filasVisibles.map((r) => [
         r.equipo.codigo,
+        r.equipo.codigo2,
         r.equipo.descripcion,
         r.equipo.modelo,
         r.equipo.ubicacion,

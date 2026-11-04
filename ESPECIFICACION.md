@@ -2,7 +2,7 @@
 
 **Cliente:** CONEQUISA – Departamento de Maquinaria Open Pit, Mina La Libertad (Volcán / Mojón), Equinox Gold
 **Dueño del producto:** Junior Valles, Ingeniero de Confiabilidad
-**Versión de la especificación:** 2.0 – 04/11/2026
+**Versión de la especificación:** 2.1 – 04/11/2026
 **Repositorio:** https://github.com/junivalles-cmd/inspecciones-flota
 **Referencia funcional:** `referencia/Sistema_Inspecciones_Flota_v1.html`. Es la v1 ya funcionando, un HTML de un solo archivo; usarla como base de comportamiento.
 
@@ -10,6 +10,7 @@
 
 - **1.0 (04/11/2026):** especificación inicial, a partir de la v1 ya en uso.
 - **2.0 (04/11/2026):** reescritura modular de la app (`core`/`store`/`ui` separados, con pruebas unitarias de la regla de estado); estructura de carpetas de `INSPECCIONES/` cambiada de "por flota" a "por tipo de inspección + mes" (sección 4); botón de exportar a Excel el programa semanal/mensual de inspecciones (sección 3.4.2); corrección del combo "Control" del formulario de registrar, que podía quedar sin opciones; eliminación de los campos Horómetro y N.º de hallazgos del formulario de registrar (sección 3.4.3 y 5); publicación en GitHub Pages.
+- **2.1 (04/11/2026):** cada equipo tiene ahora un `id` interno oculto e inmutable, y dos códigos visibles y editables, `codigo` y `codigo2` (sección 3.4.5); las inspecciones se enlazan al equipo por ese `id` (no por el código), para que renombrar un código no pierda el historial calculado en el Tablero (sección 5).
 
 ---
 
@@ -89,12 +90,12 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
    - Si la carpeta está vacía (no existe `_SISTEMA/equipos.json`), la inicializa con los archivos de `datos_iniciales/`.
 2. **Tablero**
    - 5 tarjetas: una por flota (solo control GENERAL) y una de AFEX (los 3 controles AFEX). Cada tarjeta muestra % al día, total de controles, barra apilada por estado y leyenda con los conteos.
-   - Tabla de controles con: Código, Descripción, Modelo, Ubicación, Control, Proveedor, Última, Próxima, Días, Estado (pastilla de color) y las acciones [Registrar] e [Historial].
-   - Filtros: texto (código, modelo, descripción), flota (incluye la opción "AFEX"), control, estado y ubicación.
+   - Tabla de controles con: Código, Código 2, Descripción, Modelo, Ubicación, Control, Proveedor, Última, Próxima, Días, Estado (pastilla de color) y las acciones [Registrar] e [Historial].
+   - Filtros: texto (busca en código, código 2, modelo y descripción), flota (incluye la opción "AFEX"), control, estado y ubicación.
    - Exportar a CSV lo que esté filtrado (separador `;`, UTF-8 con BOM para que Excel lo abra bien).
    - Botón **"Programa semanal/mensual (Excel)"**: genera un `.xlsx` con diseño (encabezado institucional, pastillas de color por estado) con dos hojas, *Semana* y *Mes*, con los equipos a inspeccionar en los próximos 7 y 30 días respectivamente (ventana móvil desde hoy, no semana/mes calendario). Siempre incluye VENCIDA y SIN REGISTRO en ambas hojas, sin importar el horizonte.
 3. **Registrar inspección**
-   - Equipo (autocompletar por código; debajo muestra descripción, modelo, flota y ubicación).
+   - Equipo (autocompletar por código o por código 2; debajo muestra descripción, modelo, flota, ubicación y el código 2 si tiene).
    - Control (solo los que aplican al equipo; **siempre tiene al menos la opción "Inspección general" cargada desde que se abre la pantalla**, aunque todavía no se haya escrito ningún código de equipo — en la v1 este combo podía quedar vacío si se entraba a la pestaña sin pasar por el botón [Registrar] del tablero).
    - Fecha (por defecto hoy; no se permiten fechas futuras).
    - Proveedor (se autocompleta: el del equipo, o Jhon May si es AFEX).
@@ -111,7 +112,9 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
    - Exportar a CSV.
 5. **Equipos**
    - Lista con búsqueda; agregar y editar.
-   - Campos: código (único, no editable después de crear), descripción, modelo, ubicación (Volcán, Mojón, Acarreo, Troja, Taller), flota, proveedor, tiene AFEX, activo.
+   - Cada equipo tiene un **id interno** (p. ej. `E001`), autogenerado al crearlo, **oculto** (no aparece en ninguna pantalla ni se puede editar) y que nunca cambia — es el que usa el sistema para enlazar el equipo con su historial de inspecciones.
+   - Campos visibles y editables: **código** y **código 2** (dos identificadores, p. ej. `45-69` y `A02`; ninguno de los dos es obligatorio salvo el código principal, y ambos deben ser únicos entre todos los equipos), descripción, modelo, ubicación (Volcán, Mojón, Acarreo, Troja, Taller), flota, proveedor, tiene AFEX, activo.
+   - A diferencia de la v1, el código **ya no es inmutable**: se puede renombrar en cualquier momento sin perder el historial ni el estado calculado, porque el enlace real es por el id oculto (ver sección 5).
 6. **Configuración**
    - Frecuencia y anticipación de cada control.
    - Nombre del usuario de ese PC.
@@ -155,7 +158,9 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 ### equipos.json (arreglo)
 ```json
 {
-  "codigo": "518",            // texto, único (ej. "05-0763", "20-0016", "T2", "E2")
+  "id": "E001",               // interno, oculto, autogenerado, inmutable — NO se muestra en la interfaz
+  "codigo": "518",            // visible, editable, único (ej. "05-0763", "20-0016", "T2", "E2")
+  "codigo2": "",              // visible, editable, único si no está vacío (segundo identificador, ej. "A02")
   "descripcion": "Tractor de orugas",
   "modelo": "D9R",
   "ubicacion": "Volcán",      // Volcán | Mojón | Acarreo | Troja | Taller | ""
@@ -165,12 +170,15 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
   "activo": true
 }
 ```
+- El `id` se genera como `E` + número secuencial de 3 dígitos (`E001`, `E002`, …, `E112`, `E113`…), calculado a partir del id más alto que ya exista. Nunca se reutiliza ni se recicla, y no tiene ninguna relación con el orden o el valor de `codigo`/`codigo2`.
+- `codigo` y `codigo2` se pueden editar libremente desde la pantalla Equipos (sección 3.4.5); el enlace con el historial de inspecciones es por `id`, no por estos campos, así que renombrarlos no afecta el estado calculado en el Tablero.
 
 ### inspecciones.json (arreglo)
 ```json
 {
   "id": "lq3k9x2a",           // único
-  "codigo": "518",
+  "equipoId": "E001",         // enlace real con equipos.json (por id, no por código)
+  "codigo": "518",            // código del equipo al momento de registrar (para mostrar en Historial aunque después se renombre)
   "tipo": "GENERAL",          // GENERAL | AFEX_INSP | AFEX_MANT | AFEX_CERT
   "fecha": "2026-11-04",      // ISO, fecha de la inspección (no del registro)
   "proveedor": "NIMAC",
@@ -183,6 +191,7 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 }
 ```
 - `horometro` y `hallazgos`: campos de la v1, ya no se piden en el formulario de registrar (sección 3.4.3). Los registros antiguos que los tengan se siguen mostrando igual en Historial; los nuevos registros simplemente no los incluyen.
+- `equipoId` es obligatorio para que el cálculo de estado (sección 3.3) funcione; si un registro no tiene `equipoId` (por ejemplo, viniera de una versión anterior), ese registro no cuenta para el estado del equipo hasta que se corrija.
 
 ### config.json
 ```json
@@ -201,12 +210,13 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 - **inspecciones.json:** 150 registros de carga inicial: 9 GENERAL y 47 de cada control AFEX. Fechas de junio y julio de 2026, por eso casi todo aparece VENCIDO o SIN REGISTRO; es correcto.
 - **config.json:** frecuencias por defecto.
 - **Códigos normalizados:** 2091→20-91, 2096→20-96, 20102→20-102, 20107→20-107.
+- **id / codigo2:** los 112 equipos trajeron su `id` asignado en orden de aparición en el archivo (`E001`…`E112`) y `codigo2` vacío (`""`); cada inspección de carga inicial trae el `equipoId` correspondiente. El `codigo2` real de cada equipo se llena después desde la pantalla Equipos — no se inventó ningún valor.
 
 ## 7. Validaciones
 
 - Equipo existente y activo, control válido para el equipo, fecha obligatoria y no futura.
 - Si no hay nombre de usuario guardado, pedirlo antes del primer registro.
-- Código de equipo único al crear (sin distinguir mayúsculas).
+- `codigo` y `codigo2` deben ser únicos entre todos los equipos (sin distinguir mayúsculas), tanto al crear como al editar; no se permite que el `codigo2` de uno choque con el `codigo` de otro.
 - Mensajes de éxito y error visibles; los errores no se ocultan solos.
 
 ## 8. Casos de prueba (aceptación)

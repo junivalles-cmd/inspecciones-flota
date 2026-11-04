@@ -1,6 +1,7 @@
 // Selectores y listas que usan varias pantallas (filtros de flota/control, autocompletar de equipos).
 import { $, esc } from './dom.js';
 import { CONTROLES_NOMBRE, FLOTAS } from '../core/dominio.js';
+import { buscarEquipoPorCodigo } from '../core/equipos.js';
 import { D } from '../state.js';
 
 export function llenarSelectoresEstaticos() {
@@ -19,12 +20,18 @@ export function llenarSelectoresDinamicos() {
   const ubicaciones = [...new Set(D.equipos.map((e) => e.ubicacion).filter(Boolean))].sort();
   $('fUb').innerHTML =
     '<option value="">Todas las ubicaciones</option>' + ubicaciones.map((u) => `<option>${esc(u)}</option>`).join('');
-  $('dlEq').innerHTML = D.equipos
-    .filter((e) => e.activo !== false)
-    .map((e) => `<option value="${esc(e.codigo)}">${esc(e.descripcion)} ${esc(e.modelo)}</option>`)
-    .join('');
+  // Una opción por cada código (principal y, si tiene, secundario) para que el
+  // autocompletar de equipo funcione escribiendo cualquiera de los dos.
+  const opciones = [];
+  for (const e of D.equipos) {
+    if (e.activo === false) continue;
+    const etiqueta = `${esc(e.descripcion)} ${esc(e.modelo)}`;
+    opciones.push(`<option value="${esc(e.codigo)}">${etiqueta}</option>`);
+    if (e.codigo2) opciones.push(`<option value="${esc(e.codigo2)}">${etiqueta}</option>`);
+  }
+  $('dlEq').innerHTML = opciones.join('');
 }
 
 export function buscarEquipo(codigo) {
-  return D.equipos.find((e) => e.codigo.toLowerCase() === String(codigo).trim().toLowerCase());
+  return buscarEquipoPorCodigo(D.equipos, codigo);
 }

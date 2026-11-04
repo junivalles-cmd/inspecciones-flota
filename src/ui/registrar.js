@@ -10,7 +10,9 @@ let onGuardado = () => {};
 
 function actualizarInfoYTipos() {
   const e = buscarEquipo($('rEq').value);
-  $('rEqInfo').textContent = e ? `${e.descripcion} ${e.modelo} · ${FLOTAS[e.flota] || ''}${e.ubicacion ? ' · ' + e.ubicacion : ''}` : '';
+  $('rEqInfo').textContent = e
+    ? `${e.descripcion} ${e.modelo} · ${FLOTAS[e.flota] || ''}${e.ubicacion ? ' · ' + e.ubicacion : ''}${e.codigo2 ? ' · Código 2: ' + e.codigo2 : ''}`
+    : '';
   const anterior = $('rTipo').value;
   const tipos = e ? tiposAplicables(e) : ['GENERAL'];
   $('rTipo').innerHTML = tipos.map((t) => `<option value="${t}">${CONTROLES_NOMBRE[t]}</option>`).join('');
@@ -59,6 +61,7 @@ async function guardar() {
     const rutas = await guardarArchivos(e, fecha, tipo, archivos);
     const registro = {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      equipoId: e.id,
       codigo: e.codigo,
       tipo,
       fecha,

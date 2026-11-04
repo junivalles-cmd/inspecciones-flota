@@ -1,6 +1,8 @@
 [
  {
+  "id": "E001",
   "codigo": "518",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D9R",
   "ubicacion": "Volcán",
@@ -10,7 +12,9 @@
   "activo": true
  },
  {
+  "id": "E002",
   "codigo": "05-0763",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D8",
   "ubicacion": "",
@@ -20,7 +24,9 @@
   "activo": true
  },
  {
+  "id": "E003",
   "codigo": "549",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D6T XL",
   "ubicacion": "Volcán",
@@ -30,7 +36,9 @@
   "activo": true
  },
  {
+  "id": "E004",
   "codigo": "550",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D6T XL",
   "ubicacion": "Mojón",
@@ -40,7 +48,9 @@
   "activo": true
  },
  {
+  "id": "E005",
   "codigo": "568",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D8T",
   "ubicacion": "Volcán",
@@ -50,7 +60,9 @@
   "activo": true
  },
  {
+  "id": "E006",
   "codigo": "1033",
+  "codigo2": "",
   "descripcion": "Cargador frontal",
   "modelo": "950H",
   "ubicacion": "Volcán",
@@ -60,7 +72,9 @@
   "activo": true
  },
  {
+  "id": "E007",
   "codigo": "1044",
+  "codigo2": "",
   "descripcion": "Cargador frontal",
   "modelo": "966L",
   "ubicacion": "Volcán",
@@ -70,7 +84,9 @@
   "activo": true
  },
  {
+  "id": "E008",
   "codigo": "15-31",
+  "codigo2": "",
   "descripcion": "Back hoe",
   "modelo": "416E",
   "ubicacion": "",
@@ -80,7 +96,9 @@
   "activo": true
  },
  {
+  "id": "E009",
   "codigo": "15-59",
+  "codigo2": "",
   "descripcion": "Back hoe",
   "modelo": "416F2",
   "ubicacion": "",
@@ -90,7 +108,9 @@
   "activo": true
  },
  {
+  "id": "E010",
   "codigo": "20-0016",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "350",
   "ubicacion": "Volcán",
@@ -100,7 +120,9 @@
   "activo": true
  },
  {
+  "id": "E011",
   "codigo": "20-0021",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "374",
   "ubicacion": "Volcán",
@@ -110,7 +132,9 @@
   "activo": true
  },
  {
+  "id": "E012",
   "codigo": "20-102",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "336D2L",
   "ubicacion": "Volcán",
@@ -120,7 +144,9 @@
   "activo": true
  },
  {
+  "id": "E013",
   "codigo": "20-107",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "336D2LXE",
   "ubicacion": "Volcán",
@@ -130,7 +156,9 @@
   "activo": true
  },
  {
+  "id": "E014",
   "codigo": "20-135",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "320",
   "ubicacion": "",
@@ -140,7 +168,9 @@
   "activo": true
  },
  {
+  "id": "E015",
   "codigo": "20-136",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "320D",
   "ubicacion": "",
@@ -150,7 +180,9 @@
   "activo": true
  },
  {
+  "id": "E016",
   "codigo": "20-75",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "320D",
   "ubicacion": "",
@@ -160,7 +192,9 @@
   "activo": true
  },
  {
+  "id": "E017",
   "codigo": "20-85",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "349D",
   "ubicacion": "Volcán",
@@ -170,7 +204,9 @@
   "activo": true
  },
  {
+  "id": "E018",
   "codigo": "20-91",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "336D2LME",
   "ubicacion": "Volcán",
@@ -180,7 +216,9 @@
   "activo": true
  },
  {
+  "id": "E019",
   "codigo": "20-96",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "336D",
   "ubicacion": "Volcán",
@@ -190,7 +228,9 @@
   "activo": true
  },
  {
+  "id": "E020",
   "codigo": "25-20",
+  "codigo2": "",
   "descripcion": "Motoniveladora",
   "modelo": "120M",
   "ubicacion": "Volcán",
@@ -200,7 +240,9 @@
   "activo": true
  },
  {
+  "id": "E021",
   "codigo": "25-46",
+  "codigo2": "",
   "descripcion": "Motoniveladora",
   "modelo": "140K",
   "ubicacion": "Volcán",
@@ -210,7 +252,9 @@
   "activo": true
  },
  {
+  "id": "E022",
   "codigo": "25-51",
+  "codigo2": "",
   "descripcion": "Motoniveladora",
   "modelo": "140K",
   "ubicacion": "Volcán",
@@ -220,7 +264,9 @@
   "activo": true
  },
  {
+  "id": "E023",
   "codigo": "35-30",
+  "codigo2": "",
   "descripcion": "Vibrocompactadora",
   "modelo": "CS54B",
   "ubicacion": "",
@@ -230,7 +276,9 @@
   "activo": true
  },
  {
+  "id": "E024",
   "codigo": "35-48",
+  "codigo2": "",
   "descripcion": "Vibrocompactadora",
   "modelo": "CS54B",
   "ubicacion": "",
@@ -240,7 +288,9 @@
   "activo": true
  },
  {
+  "id": "E025",
   "codigo": "35-63",
+  "codigo2": "",
   "descripcion": "Vibrocompactadora",
   "modelo": "CS54B",
   "ubicacion": "",
@@ -250,7 +300,9 @@
   "activo": true
  },
  {
+  "id": "E026",
   "codigo": "45-69",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -260,7 +312,9 @@
   "activo": true
  },
  {
+  "id": "E027",
   "codigo": "45-71",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -270,7 +324,9 @@
   "activo": true
  },
  {
+  "id": "E028",
   "codigo": "45-75",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -280,7 +336,9 @@
   "activo": true
  },
  {
+  "id": "E029",
   "codigo": "45-77",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -290,7 +348,9 @@
   "activo": true
  },
  {
+  "id": "E030",
   "codigo": "45-79",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -300,7 +360,9 @@
   "activo": true
  },
  {
+  "id": "E031",
   "codigo": "45-80",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "740B",
   "ubicacion": "Volcán",
@@ -310,7 +372,9 @@
   "activo": true
  },
  {
+  "id": "E032",
   "codigo": "45-86",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "745C",
   "ubicacion": "Volcán",
@@ -320,7 +384,9 @@
   "activo": true
  },
  {
+  "id": "E033",
   "codigo": "45-87",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "745C",
   "ubicacion": "Volcán",
@@ -330,7 +396,9 @@
   "activo": true
  },
  {
+  "id": "E034",
   "codigo": "45-89",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "745C",
   "ubicacion": "Volcán",
@@ -340,7 +408,9 @@
   "activo": true
  },
  {
+  "id": "E035",
   "codigo": "45-91",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "745C",
   "ubicacion": "Volcán",
@@ -350,7 +420,9 @@
   "activo": true
  },
  {
+  "id": "E036",
   "codigo": "05-0761",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D8",
   "ubicacion": "Mojón",
@@ -360,7 +432,9 @@
   "activo": true
  },
  {
+  "id": "E037",
   "codigo": "05-0783",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D8",
   "ubicacion": "Volcán",
@@ -370,7 +444,9 @@
   "activo": true
  },
  {
+  "id": "E038",
   "codigo": "05-0870",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D8",
   "ubicacion": "Mojón",
@@ -380,7 +456,9 @@
   "activo": true
  },
  {
+  "id": "E039",
   "codigo": "25-0726",
+  "codigo2": "",
   "descripcion": "Motoniveladora",
   "modelo": "140G",
   "ubicacion": "Mojón",
@@ -390,7 +468,9 @@
   "activo": true
  },
  {
+  "id": "E040",
   "codigo": "20-0022",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "374",
   "ubicacion": "Mojón",
@@ -400,7 +480,9 @@
   "activo": true
  },
  {
+  "id": "E041",
   "codigo": "15539",
+  "codigo2": "",
   "descripcion": "Generador",
   "modelo": "C3.3",
   "ubicacion": "Volcán",
@@ -410,7 +492,9 @@
   "activo": true
  },
  {
+  "id": "E042",
   "codigo": "E2",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "PC210LC-10M0",
   "ubicacion": "Volcán",
@@ -420,7 +504,9 @@
   "activo": true
  },
  {
+  "id": "E043",
   "codigo": "T2",
+  "codigo2": "",
   "descripcion": "Tractor de oruga",
   "modelo": "D65EX-16",
   "ubicacion": "Volcán",
@@ -430,7 +516,9 @@
   "activo": true
  },
  {
+  "id": "E044",
   "codigo": "20-1083",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "PC1250",
   "ubicacion": "Mojón",
@@ -440,7 +528,9 @@
   "activo": true
  },
  {
+  "id": "E045",
   "codigo": "20-5530",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "PC500",
   "ubicacion": "Mojón",
@@ -450,7 +540,9 @@
   "activo": true
  },
  {
+  "id": "E046",
   "codigo": "45-6035",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -460,7 +552,9 @@
   "activo": true
  },
  {
+  "id": "E047",
   "codigo": "45-6037",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -470,7 +564,9 @@
   "activo": true
  },
  {
+  "id": "E048",
   "codigo": "45-6043",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Volcán",
@@ -480,7 +576,9 @@
   "activo": true
  },
  {
+  "id": "E049",
   "codigo": "45-6055",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -490,7 +588,9 @@
   "activo": true
  },
  {
+  "id": "E050",
   "codigo": "45-6056",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -500,7 +600,9 @@
   "activo": true
  },
  {
+  "id": "E051",
   "codigo": "45-6063",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -510,7 +612,9 @@
   "activo": true
  },
  {
+  "id": "E052",
   "codigo": "45-6064",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -520,7 +624,9 @@
   "activo": true
  },
  {
+  "id": "E053",
   "codigo": "45-6065",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -530,7 +636,9 @@
   "activo": true
  },
  {
+  "id": "E054",
   "codigo": "45-6067",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -540,7 +648,9 @@
   "activo": true
  },
  {
+  "id": "E055",
   "codigo": "45-6068",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -550,7 +660,9 @@
   "activo": true
  },
  {
+  "id": "E056",
   "codigo": "45-6020",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Volcán",
@@ -560,7 +672,9 @@
   "activo": true
  },
  {
+  "id": "E057",
   "codigo": "45-6036",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -570,7 +684,9 @@
   "activo": true
  },
  {
+  "id": "E058",
   "codigo": "45-6047",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -580,7 +696,9 @@
   "activo": true
  },
  {
+  "id": "E059",
   "codigo": "45-6057",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Volcán",
@@ -590,7 +708,9 @@
   "activo": true
  },
  {
+  "id": "E060",
   "codigo": "45-6058",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -600,7 +720,9 @@
   "activo": true
  },
  {
+  "id": "E061",
   "codigo": "45-6059",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM 400",
   "ubicacion": "Mojón",
@@ -610,7 +732,9 @@
   "activo": true
  },
  {
+  "id": "E062",
   "codigo": "T9",
+  "codigo2": "",
   "descripcion": "Tractor de orugas",
   "modelo": "D65EX-16",
   "ubicacion": "Troja",
@@ -620,7 +744,9 @@
   "activo": true
  },
  {
+  "id": "E063",
   "codigo": "E8",
+  "codigo2": "",
   "descripcion": "Excavadora de orugas",
   "modelo": "PC800",
   "ubicacion": "Volcán",
@@ -630,7 +756,9 @@
   "activo": true
  },
  {
+  "id": "E064",
   "codigo": "455938",
+  "codigo2": "",
   "descripcion": "Camión articulado",
   "modelo": "HM400-3M0",
   "ubicacion": "Volcán",
@@ -640,7 +768,9 @@
   "activo": true
  },
  {
+  "id": "E065",
   "codigo": "50-4772",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GR64BX",
   "ubicacion": "",
@@ -650,7 +780,9 @@
   "activo": true
  },
  {
+  "id": "E066",
   "codigo": "50-4773",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GR64BX",
   "ubicacion": "",
@@ -660,7 +792,9 @@
   "activo": true
  },
  {
+  "id": "E067",
   "codigo": "50-194",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -670,7 +804,9 @@
   "activo": true
  },
  {
+  "id": "E068",
   "codigo": "50-199",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -680,7 +816,9 @@
   "activo": true
  },
  {
+  "id": "E069",
   "codigo": "50-200",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -690,7 +828,9 @@
   "activo": true
  },
  {
+  "id": "E070",
   "codigo": "50-204",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -700,7 +840,9 @@
   "activo": true
  },
  {
+  "id": "E071",
   "codigo": "50-217",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -710,7 +852,9 @@
   "activo": true
  },
  {
+  "id": "E072",
   "codigo": "50-226",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -720,7 +864,9 @@
   "activo": true
  },
  {
+  "id": "E073",
   "codigo": "50-4770",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GR64BX",
   "ubicacion": "",
@@ -730,7 +876,9 @@
   "activo": true
  },
  {
+  "id": "E074",
   "codigo": "50-4771",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GR64BX",
   "ubicacion": "",
@@ -740,7 +888,9 @@
   "activo": true
  },
  {
+  "id": "E075",
   "codigo": "50-253",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -750,7 +900,9 @@
   "activo": true
  },
  {
+  "id": "E076",
   "codigo": "50-255",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -760,7 +912,9 @@
   "activo": true
  },
  {
+  "id": "E077",
   "codigo": "50-256",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -770,7 +924,9 @@
   "activo": true
  },
  {
+  "id": "E078",
   "codigo": "50-259",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -780,7 +936,9 @@
   "activo": true
  },
  {
+  "id": "E079",
   "codigo": "50-267",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -790,7 +948,9 @@
   "activo": true
  },
  {
+  "id": "E080",
   "codigo": "50-310",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -800,7 +960,9 @@
   "activo": true
  },
  {
+  "id": "E081",
   "codigo": "50-311",
+  "codigo2": "",
   "descripcion": "Camion volquete",
   "modelo": "GU813E",
   "ubicacion": "",
@@ -810,7 +972,9 @@
   "activo": true
  },
  {
+  "id": "E082",
   "codigo": "50-244",
+  "codigo2": "",
   "descripcion": "Camión volquete",
   "modelo": "GU813",
   "ubicacion": "Acarreo",
@@ -820,7 +984,9 @@
   "activo": true
  },
  {
+  "id": "E083",
   "codigo": "50-304",
+  "codigo2": "",
   "descripcion": "Camión volquete",
   "modelo": "7600 6X4",
   "ubicacion": "Acarreo",
@@ -830,7 +996,9 @@
   "activo": true
  },
  {
+  "id": "E084",
   "codigo": "7608",
+  "codigo2": "",
   "descripcion": "Camion lubrico",
   "modelo": "Ford F550",
   "ubicacion": "Volcán",
@@ -840,7 +1008,9 @@
   "activo": true
  },
  {
+  "id": "E085",
   "codigo": "7614",
+  "codigo2": "",
   "descripcion": "Camion lubrico",
   "modelo": "Foton BJ1226VPHG-1",
   "ubicacion": "Mojón",
@@ -850,7 +1020,9 @@
   "activo": true
  },
  {
+  "id": "E086",
   "codigo": "80121",
+  "codigo2": "",
   "descripcion": "Camioneta",
   "modelo": "Toyota Land Cruiser",
   "ubicacion": "Volcán",
@@ -860,7 +1032,9 @@
   "activo": true
  },
  {
+  "id": "E087",
   "codigo": "80154",
+  "codigo2": "",
   "descripcion": "Camioneta",
   "modelo": "Toyota HILUX",
   "ubicacion": "Volcán",
@@ -870,7 +1044,9 @@
   "activo": true
  },
  {
+  "id": "E088",
   "codigo": "80168",
+  "codigo2": "",
   "descripcion": "Camioneta",
   "modelo": "Toyota Land Cruiser",
   "ubicacion": "Taller",
@@ -880,7 +1056,9 @@
   "activo": true
  },
  {
+  "id": "E089",
   "codigo": "80173",
+  "codigo2": "",
   "descripcion": "Camioneta",
   "modelo": "Toyota HILUX",
   "ubicacion": "Taller",
@@ -890,7 +1068,9 @@
   "activo": true
  },
  {
+  "id": "E090",
   "codigo": "80177",
+  "codigo2": "",
   "descripcion": "Camioneta",
   "modelo": "Toyota Land Cruiser",
   "ubicacion": "Taller",
@@ -900,7 +1080,9 @@
   "activo": true
  },
  {
+  "id": "E091",
   "codigo": "P174",
+  "codigo2": "",
   "descripcion": "Camioneta",
   "modelo": "Toyota HILUX",
   "ubicacion": "",
@@ -910,7 +1092,9 @@
   "activo": true
  },
  {
+  "id": "E092",
   "codigo": "P210",
+  "codigo2": "",
   "descripcion": "Camioneta",
   "modelo": "Toyota HILUX",
   "ubicacion": "Taller",
@@ -920,7 +1104,9 @@
   "activo": true
  },
  {
+  "id": "E093",
   "codigo": "5121",
+  "codigo2": "",
   "descripcion": "Cisterna de agua",
   "modelo": "International 7600",
   "ubicacion": "Acarreo",
@@ -930,7 +1116,9 @@
   "activo": true
  },
  {
+  "id": "E094",
   "codigo": "5137",
+  "codigo2": "",
   "descripcion": "Cisterna de agua",
   "modelo": "International 7600",
   "ubicacion": "Volcán",
@@ -940,7 +1128,9 @@
   "activo": true
  },
  {
+  "id": "E095",
   "codigo": "5139",
+  "codigo2": "",
   "descripcion": "Cisterna de agua",
   "modelo": "Mack CV713",
   "ubicacion": "Mojón",
@@ -950,7 +1140,9 @@
   "activo": true
  },
  {
+  "id": "E096",
   "codigo": "7630",
+  "codigo2": "",
   "descripcion": "Cisterna de combustible",
   "modelo": "FOTON Auman",
   "ubicacion": "Volcán",
@@ -960,7 +1152,9 @@
   "activo": true
  },
  {
+  "id": "E097",
   "codigo": "7631",
+  "codigo2": "",
   "descripcion": "Cisterna de combustible",
   "modelo": "FOTON Auman",
   "ubicacion": "Volcán",
@@ -970,7 +1164,9 @@
   "activo": true
  },
  {
+  "id": "E098",
   "codigo": "CD-03",
+  "codigo2": "",
   "descripcion": "Cisterna de combustible",
   "modelo": "FOTON Auman",
   "ubicacion": "Mojón",
@@ -980,7 +1176,9 @@
   "activo": true
  },
  {
+  "id": "E099",
   "codigo": "GEN1",
+  "codigo2": "",
   "descripcion": "Generador",
   "modelo": "GENMAC INFINITY",
   "ubicacion": "Volcán",
@@ -990,7 +1188,9 @@
   "activo": true
  },
  {
+  "id": "E100",
   "codigo": "19005",
+  "codigo2": "",
   "descripcion": "Motosoldador generador",
   "modelo": "LINCOLN Vantage 500",
   "ubicacion": "Volcán",
@@ -1000,7 +1200,9 @@
   "activo": true
  },
  {
+  "id": "E101",
   "codigo": "1900522",
+  "codigo2": "",
   "descripcion": "Motosoldador generador",
   "modelo": "ABACUS 320KB",
   "ubicacion": "Volcán",
@@ -1010,7 +1212,9 @@
   "activo": true
  },
  {
+  "id": "E102",
   "codigo": "2000036",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "SIMAQ TLK6000",
   "ubicacion": "",
@@ -1020,7 +1224,9 @@
   "activo": true
  },
  {
+  "id": "E103",
   "codigo": "2000496",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "SIMAQ TLK6000",
   "ubicacion": "",
@@ -1030,7 +1236,9 @@
   "activo": true
  },
  {
+  "id": "E104",
   "codigo": "2000506",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "SIMAQ TLK6000",
   "ubicacion": "",
@@ -1040,7 +1248,9 @@
   "activo": true
  },
  {
+  "id": "E105",
   "codigo": "2000651",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "Chicago Pneumatic CPLT V.15 LED",
   "ubicacion": "",
@@ -1050,7 +1260,9 @@
   "activo": true
  },
  {
+  "id": "E106",
   "codigo": "2000776",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "SIMAQ TLK6000",
   "ubicacion": "",
@@ -1060,7 +1272,9 @@
   "activo": true
  },
  {
+  "id": "E107",
   "codigo": "2000846",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "SIMAQ TLK6000",
   "ubicacion": "",
@@ -1070,7 +1284,9 @@
   "activo": true
  },
  {
+  "id": "E108",
   "codigo": "200105",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "WakerNeuson LTV6L",
   "ubicacion": "",
@@ -1080,7 +1296,9 @@
   "activo": true
  },
  {
+  "id": "E109",
   "codigo": "200107",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "WakerNeuson LTV6L",
   "ubicacion": "",
@@ -1090,7 +1308,9 @@
   "activo": true
  },
  {
+  "id": "E110",
   "codigo": "200110",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "Chicago Pneumatic CPLT V.15 LED",
   "ubicacion": "",
@@ -1100,7 +1320,9 @@
   "activo": true
  },
  {
+  "id": "E111",
   "codigo": "200111",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "Chicago Pneumatic CPLT V.15 LED",
   "ubicacion": "",
@@ -1110,7 +1332,9 @@
   "activo": true
  },
  {
+  "id": "E112",
   "codigo": "2005146",
+  "codigo2": "",
   "descripcion": "Torre de iluminacion",
   "modelo": "WakerNeuson LTV6L",
   "ubicacion": "",

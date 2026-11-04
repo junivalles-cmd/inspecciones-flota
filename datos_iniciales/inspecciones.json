@@ -1,6 +1,7 @@
 [
  {
   "id": "seed0",
+  "equipoId": "E001",
   "codigo": "518",
   "tipo": "GENERAL",
   "fecha": "2026-06-29",
@@ -16,6 +17,7 @@
  },
  {
   "id": "seed1",
+  "equipoId": "E003",
   "codigo": "549",
   "tipo": "GENERAL",
   "fecha": "2026-06-16",
@@ -31,6 +33,7 @@
  },
  {
   "id": "seed2",
+  "equipoId": "E026",
   "codigo": "45-69",
   "tipo": "GENERAL",
   "fecha": "2026-06-22",
@@ -46,6 +49,7 @@
  },
  {
   "id": "seed3",
+  "equipoId": "E028",
   "codigo": "45-75",
   "tipo": "GENERAL",
   "fecha": "2026-06-22",
@@ -61,6 +65,7 @@
  },
  {
   "id": "seed4",
+  "equipoId": "E030",
   "codigo": "45-79",
   "tipo": "GENERAL",
   "fecha": "2026-06-23",
@@ -76,6 +81,7 @@
  },
  {
   "id": "seed5",
+  "equipoId": "E031",
   "codigo": "45-80",
   "tipo": "GENERAL",
   "fecha": "2025-08-29",
@@ -91,6 +97,7 @@
  },
  {
   "id": "seed6",
+  "equipoId": "E033",
   "codigo": "45-87",
   "tipo": "GENERAL",
   "fecha": "2026-06-24",
@@ -106,6 +113,7 @@
  },
  {
   "id": "seed7",
+  "equipoId": "E034",
   "codigo": "45-89",
   "tipo": "GENERAL",
   "fecha": "2026-06-24",
@@ -121,6 +129,7 @@
  },
  {
   "id": "seed8",
+  "equipoId": "E035",
   "codigo": "45-91",
   "tipo": "GENERAL",
   "fecha": "2026-06-19",
@@ -136,6 +145,7 @@
  },
  {
   "id": "seed9",
+  "equipoId": "E005",
   "codigo": "568",
   "tipo": "AFEX_INSP",
   "fecha": "2026-07-02",
@@ -151,6 +161,7 @@
  },
  {
   "id": "seed10",
+  "equipoId": "E005",
   "codigo": "568",
   "tipo": "AFEX_MANT",
   "fecha": "2026-07-02",
@@ -166,6 +177,7 @@
  },
  {
   "id": "seed11",
+  "equipoId": "E005",
   "codigo": "568",
   "tipo": "AFEX_CERT",
   "fecha": "2026-07-02",
@@ -181,6 +193,7 @@
  },
  {
   "id": "seed12",
+  "equipoId": "E036",
   "codigo": "05-0761",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -196,6 +209,7 @@
  },
  {
   "id": "seed13",
+  "equipoId": "E036",
   "codigo": "05-0761",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-15",
@@ -211,6 +225,7 @@
  },
  {
   "id": "seed14",
+  "equipoId": "E036",
   "codigo": "05-0761",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-07",
@@ -226,6 +241,7 @@
  },
  {
   "id": "seed15",
+  "equipoId": "E037",
   "codigo": "05-0783",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -241,6 +257,7 @@
  },
  {
   "id": "seed16",
+  "equipoId": "E037",
   "codigo": "05-0783",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-16",
@@ -256,6 +273,7 @@
  },
  {
   "id": "seed17",
+  "equipoId": "E037",
   "codigo": "05-0783",
   "tipo": "AFEX_CERT",
   "fecha": "2026-04-16",
@@ -271,6 +289,7 @@
  },
  {
   "id": "seed18",
+  "equipoId": "E038",
   "codigo": "05-0870",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -286,6 +305,7 @@
  },
  {
   "id": "seed19",
+  "equipoId": "E038",
   "codigo": "05-0870",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-16",
@@ -301,6 +321,7 @@
  },
  {
   "id": "seed20",
+  "equipoId": "E038",
   "codigo": "05-0870",
   "tipo": "AFEX_CERT",
   "fecha": "2026-04-16",
@@ -316,6 +337,7 @@
  },
  {
   "id": "seed21",
+  "equipoId": "E043",
   "codigo": "T2",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -331,6 +353,7 @@
  },
  {
   "id": "seed22",
+  "equipoId": "E043",
   "codigo": "T2",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-18",
@@ -346,6 +369,7 @@
  },
  {
   "id": "seed23",
+  "equipoId": "E043",
   "codigo": "T2",
   "tipo": "AFEX_CERT",
   "fecha": "2025-08-18",
@@ -361,6 +385,7 @@
  },
  {
   "id": "seed24",
+  "equipoId": "E039",
   "codigo": "25-0726",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -376,6 +401,7 @@
  },
  {
   "id": "seed25",
+  "equipoId": "E039",
   "codigo": "25-0726",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-10",
@@ -391,6 +417,7 @@
  },
  {
   "id": "seed26",
+  "equipoId": "E039",
   "codigo": "25-0726",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-08",
@@ -406,6 +433,7 @@
  },
  {
   "id": "seed27",
+  "equipoId": "E040",
   "codigo": "20-0022",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -421,6 +449,7 @@
  },
  {
   "id": "seed28",
+  "equipoId": "E040",
   "codigo": "20-0022",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-11",
@@ -436,6 +465,7 @@
  },
  {
   "id": "seed29",
+  "equipoId": "E040",
   "codigo": "20-0022",
   "tipo": "AFEX_CERT",
   "fecha": "2026-04-16",
@@ -451,6 +481,7 @@
  },
  {
   "id": "seed30",
+  "equipoId": "E044",
   "codigo": "20-1083",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -466,6 +497,7 @@
  },
  {
   "id": "seed31",
+  "equipoId": "E044",
   "codigo": "20-1083",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-06",
@@ -481,6 +513,7 @@
  },
  {
   "id": "seed32",
+  "equipoId": "E044",
   "codigo": "20-1083",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-06",
@@ -496,6 +529,7 @@
  },
  {
   "id": "seed33",
+  "equipoId": "E045",
   "codigo": "20-5530",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-08",
@@ -511,6 +545,7 @@
  },
  {
   "id": "seed34",
+  "equipoId": "E045",
   "codigo": "20-5530",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -526,6 +561,7 @@
  },
  {
   "id": "seed35",
+  "equipoId": "E045",
   "codigo": "20-5530",
   "tipo": "AFEX_CERT",
   "fecha": "2026-02-13",
@@ -541,6 +577,7 @@
  },
  {
   "id": "seed36",
+  "equipoId": "E018",
   "codigo": "20-91",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-28",
@@ -556,6 +593,7 @@
  },
  {
   "id": "seed37",
+  "equipoId": "E018",
   "codigo": "20-91",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-28",
@@ -571,6 +609,7 @@
  },
  {
   "id": "seed38",
+  "equipoId": "E018",
   "codigo": "20-91",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-28",
@@ -586,6 +625,7 @@
  },
  {
   "id": "seed39",
+  "equipoId": "E019",
   "codigo": "20-96",
   "tipo": "AFEX_INSP",
   "fecha": "2026-07-01",
@@ -601,6 +641,7 @@
  },
  {
   "id": "seed40",
+  "equipoId": "E019",
   "codigo": "20-96",
   "tipo": "AFEX_MANT",
   "fecha": "2026-07-01",
@@ -616,6 +657,7 @@
  },
  {
   "id": "seed41",
+  "equipoId": "E019",
   "codigo": "20-96",
   "tipo": "AFEX_CERT",
   "fecha": "2026-07-01",
@@ -631,6 +673,7 @@
  },
  {
   "id": "seed42",
+  "equipoId": "E012",
   "codigo": "20-102",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-29",
@@ -646,6 +689,7 @@
  },
  {
   "id": "seed43",
+  "equipoId": "E012",
   "codigo": "20-102",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-29",
@@ -661,6 +705,7 @@
  },
  {
   "id": "seed44",
+  "equipoId": "E012",
   "codigo": "20-102",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-29",
@@ -676,6 +721,7 @@
  },
  {
   "id": "seed45",
+  "equipoId": "E013",
   "codigo": "20-107",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-27",
@@ -691,6 +737,7 @@
  },
  {
   "id": "seed46",
+  "equipoId": "E013",
   "codigo": "20-107",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-27",
@@ -706,6 +753,7 @@
  },
  {
   "id": "seed47",
+  "equipoId": "E013",
   "codigo": "20-107",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-27",
@@ -721,6 +769,7 @@
  },
  {
   "id": "seed48",
+  "equipoId": "E010",
   "codigo": "20-0016",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -736,6 +785,7 @@
  },
  {
   "id": "seed49",
+  "equipoId": "E010",
   "codigo": "20-0016",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-07",
@@ -751,6 +801,7 @@
  },
  {
   "id": "seed50",
+  "equipoId": "E010",
   "codigo": "20-0016",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-07",
@@ -766,6 +817,7 @@
  },
  {
   "id": "seed51",
+  "equipoId": "E011",
   "codigo": "20-0021",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -781,6 +833,7 @@
  },
  {
   "id": "seed52",
+  "equipoId": "E011",
   "codigo": "20-0021",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-07",
@@ -796,6 +849,7 @@
  },
  {
   "id": "seed53",
+  "equipoId": "E011",
   "codigo": "20-0021",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-07",
@@ -811,6 +865,7 @@
  },
  {
   "id": "seed54",
+  "equipoId": "E017",
   "codigo": "20-85",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -826,6 +881,7 @@
  },
  {
   "id": "seed55",
+  "equipoId": "E017",
   "codigo": "20-85",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-18",
@@ -841,6 +897,7 @@
  },
  {
   "id": "seed56",
+  "equipoId": "E017",
   "codigo": "20-85",
   "tipo": "AFEX_CERT",
   "fecha": "2025-10-27",
@@ -856,6 +913,7 @@
  },
  {
   "id": "seed57",
+  "equipoId": "E042",
   "codigo": "E2",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -871,6 +929,7 @@
  },
  {
   "id": "seed58",
+  "equipoId": "E042",
   "codigo": "E2",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-17",
@@ -886,6 +945,7 @@
  },
  {
   "id": "seed59",
+  "equipoId": "E042",
   "codigo": "E2",
   "tipo": "AFEX_CERT",
   "fecha": "2025-08-18",
@@ -901,6 +961,7 @@
  },
  {
   "id": "seed60",
+  "equipoId": "E096",
   "codigo": "7630",
   "tipo": "AFEX_INSP",
   "fecha": "2026-07-03",
@@ -916,6 +977,7 @@
  },
  {
   "id": "seed61",
+  "equipoId": "E096",
   "codigo": "7630",
   "tipo": "AFEX_MANT",
   "fecha": "2026-07-03",
@@ -931,6 +993,7 @@
  },
  {
   "id": "seed62",
+  "equipoId": "E096",
   "codigo": "7630",
   "tipo": "AFEX_CERT",
   "fecha": "2026-07-03",
@@ -946,6 +1009,7 @@
  },
  {
   "id": "seed63",
+  "equipoId": "E097",
   "codigo": "7631",
   "tipo": "AFEX_INSP",
   "fecha": "2026-07-01",
@@ -961,6 +1025,7 @@
  },
  {
   "id": "seed64",
+  "equipoId": "E097",
   "codigo": "7631",
   "tipo": "AFEX_MANT",
   "fecha": "2026-07-01",
@@ -976,6 +1041,7 @@
  },
  {
   "id": "seed65",
+  "equipoId": "E097",
   "codigo": "7631",
   "tipo": "AFEX_CERT",
   "fecha": "2026-07-01",
@@ -991,6 +1057,7 @@
  },
  {
   "id": "seed66",
+  "equipoId": "E006",
   "codigo": "1033",
   "tipo": "AFEX_INSP",
   "fecha": "2026-07-05",
@@ -1006,6 +1073,7 @@
  },
  {
   "id": "seed67",
+  "equipoId": "E006",
   "codigo": "1033",
   "tipo": "AFEX_MANT",
   "fecha": "2026-07-05",
@@ -1021,6 +1089,7 @@
  },
  {
   "id": "seed68",
+  "equipoId": "E006",
   "codigo": "1033",
   "tipo": "AFEX_CERT",
   "fecha": "2026-07-05",
@@ -1036,6 +1105,7 @@
  },
  {
   "id": "seed69",
+  "equipoId": "E007",
   "codigo": "1044",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-08",
@@ -1051,6 +1121,7 @@
  },
  {
   "id": "seed70",
+  "equipoId": "E007",
   "codigo": "1044",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-17",
@@ -1066,6 +1137,7 @@
  },
  {
   "id": "seed71",
+  "equipoId": "E007",
   "codigo": "1044",
   "tipo": "AFEX_CERT",
   "fecha": "2025-08-18",
@@ -1081,6 +1153,7 @@
  },
  {
   "id": "seed72",
+  "equipoId": "E046",
   "codigo": "45-6035",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-03",
@@ -1096,6 +1169,7 @@
  },
  {
   "id": "seed73",
+  "equipoId": "E046",
   "codigo": "45-6035",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1111,6 +1185,7 @@
  },
  {
   "id": "seed74",
+  "equipoId": "E046",
   "codigo": "45-6035",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-09",
@@ -1126,6 +1201,7 @@
  },
  {
   "id": "seed75",
+  "equipoId": "E047",
   "codigo": "45-6037",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -1141,6 +1217,7 @@
  },
  {
   "id": "seed76",
+  "equipoId": "E047",
   "codigo": "45-6037",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1156,6 +1233,7 @@
  },
  {
   "id": "seed77",
+  "equipoId": "E047",
   "codigo": "45-6037",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-09",
@@ -1171,6 +1249,7 @@
  },
  {
   "id": "seed78",
+  "equipoId": "E048",
   "codigo": "45-6043",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -1186,6 +1265,7 @@
  },
  {
   "id": "seed79",
+  "equipoId": "E048",
   "codigo": "45-6043",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-10",
@@ -1201,6 +1281,7 @@
  },
  {
   "id": "seed80",
+  "equipoId": "E048",
   "codigo": "45-6043",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-04",
@@ -1216,6 +1297,7 @@
  },
  {
   "id": "seed81",
+  "equipoId": "E049",
   "codigo": "45-6055",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-03",
@@ -1231,6 +1313,7 @@
  },
  {
   "id": "seed82",
+  "equipoId": "E049",
   "codigo": "45-6055",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1246,6 +1329,7 @@
  },
  {
   "id": "seed83",
+  "equipoId": "E049",
   "codigo": "45-6055",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-01",
@@ -1261,6 +1345,7 @@
  },
  {
   "id": "seed84",
+  "equipoId": "E050",
   "codigo": "45-6056",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -1276,6 +1361,7 @@
  },
  {
   "id": "seed85",
+  "equipoId": "E050",
   "codigo": "45-6056",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1291,6 +1377,7 @@
  },
  {
   "id": "seed86",
+  "equipoId": "E050",
   "codigo": "45-6056",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-04",
@@ -1306,6 +1393,7 @@
  },
  {
   "id": "seed87",
+  "equipoId": "E051",
   "codigo": "45-6063",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-03",
@@ -1321,6 +1409,7 @@
  },
  {
   "id": "seed88",
+  "equipoId": "E051",
   "codigo": "45-6063",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1336,6 +1425,7 @@
  },
  {
   "id": "seed89",
+  "equipoId": "E051",
   "codigo": "45-6063",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-02",
@@ -1351,6 +1441,7 @@
  },
  {
   "id": "seed90",
+  "equipoId": "E052",
   "codigo": "45-6064",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -1366,6 +1457,7 @@
  },
  {
   "id": "seed91",
+  "equipoId": "E052",
   "codigo": "45-6064",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1381,6 +1473,7 @@
  },
  {
   "id": "seed92",
+  "equipoId": "E052",
   "codigo": "45-6064",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-07",
@@ -1396,6 +1489,7 @@
  },
  {
   "id": "seed93",
+  "equipoId": "E053",
   "codigo": "45-6065",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-03",
@@ -1411,6 +1505,7 @@
  },
  {
   "id": "seed94",
+  "equipoId": "E053",
   "codigo": "45-6065",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1426,6 +1521,7 @@
  },
  {
   "id": "seed95",
+  "equipoId": "E053",
   "codigo": "45-6065",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-01",
@@ -1441,6 +1537,7 @@
  },
  {
   "id": "seed96",
+  "equipoId": "E054",
   "codigo": "45-6067",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -1456,6 +1553,7 @@
  },
  {
   "id": "seed97",
+  "equipoId": "E054",
   "codigo": "45-6067",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-11",
@@ -1471,6 +1569,7 @@
  },
  {
   "id": "seed98",
+  "equipoId": "E054",
   "codigo": "45-6067",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-06",
@@ -1486,6 +1585,7 @@
  },
  {
   "id": "seed99",
+  "equipoId": "E055",
   "codigo": "45-6068",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-03",
@@ -1501,6 +1601,7 @@
  },
  {
   "id": "seed100",
+  "equipoId": "E055",
   "codigo": "45-6068",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1516,6 +1617,7 @@
  },
  {
   "id": "seed101",
+  "equipoId": "E055",
   "codigo": "45-6068",
   "tipo": "AFEX_CERT",
   "fecha": "2026-02-12",
@@ -1531,6 +1633,7 @@
  },
  {
   "id": "seed102",
+  "equipoId": "E056",
   "codigo": "45-6020",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -1546,6 +1649,7 @@
  },
  {
   "id": "seed103",
+  "equipoId": "E056",
   "codigo": "45-6020",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-18",
@@ -1561,6 +1665,7 @@
  },
  {
   "id": "seed104",
+  "equipoId": "E056",
   "codigo": "45-6020",
   "tipo": "AFEX_CERT",
   "fecha": "2025-09-24",
@@ -1576,6 +1681,7 @@
  },
  {
   "id": "seed105",
+  "equipoId": "E057",
   "codigo": "45-6036",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -1591,6 +1697,7 @@
  },
  {
   "id": "seed106",
+  "equipoId": "E057",
   "codigo": "45-6036",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-10",
@@ -1606,6 +1713,7 @@
  },
  {
   "id": "seed107",
+  "equipoId": "E057",
   "codigo": "45-6036",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-06",
@@ -1621,6 +1729,7 @@
  },
  {
   "id": "seed108",
+  "equipoId": "E058",
   "codigo": "45-6047",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -1636,6 +1745,7 @@
  },
  {
   "id": "seed109",
+  "equipoId": "E058",
   "codigo": "45-6047",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-11",
@@ -1651,6 +1761,7 @@
  },
  {
   "id": "seed110",
+  "equipoId": "E058",
   "codigo": "45-6047",
   "tipo": "AFEX_CERT",
   "fecha": "2026-02-27",
@@ -1666,6 +1777,7 @@
  },
  {
   "id": "seed111",
+  "equipoId": "E059",
   "codigo": "45-6057",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-07",
@@ -1681,6 +1793,7 @@
  },
  {
   "id": "seed112",
+  "equipoId": "E059",
   "codigo": "45-6057",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-11",
@@ -1696,6 +1809,7 @@
  },
  {
   "id": "seed113",
+  "equipoId": "E059",
   "codigo": "45-6057",
   "tipo": "AFEX_CERT",
   "fecha": "2026-02-28",
@@ -1711,6 +1825,7 @@
  },
  {
   "id": "seed114",
+  "equipoId": "E060",
   "codigo": "45-6058",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -1726,6 +1841,7 @@
  },
  {
   "id": "seed115",
+  "equipoId": "E060",
   "codigo": "45-6058",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-09",
@@ -1741,6 +1857,7 @@
  },
  {
   "id": "seed116",
+  "equipoId": "E060",
   "codigo": "45-6058",
   "tipo": "AFEX_CERT",
   "fecha": "2026-02-28",
@@ -1756,6 +1873,7 @@
  },
  {
   "id": "seed117",
+  "equipoId": "E061",
   "codigo": "45-6059",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-06",
@@ -1771,6 +1889,7 @@
  },
  {
   "id": "seed118",
+  "equipoId": "E061",
   "codigo": "45-6059",
   "tipo": "AFEX_MANT",
   "fecha": "2026-04-10",
@@ -1786,6 +1905,7 @@
  },
  {
   "id": "seed119",
+  "equipoId": "E061",
   "codigo": "45-6059",
   "tipo": "AFEX_CERT",
   "fecha": "2026-03-03",
@@ -1801,6 +1921,7 @@
  },
  {
   "id": "seed120",
+  "equipoId": "E026",
   "codigo": "45-69",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-23",
@@ -1816,6 +1937,7 @@
  },
  {
   "id": "seed121",
+  "equipoId": "E026",
   "codigo": "45-69",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-23",
@@ -1831,6 +1953,7 @@
  },
  {
   "id": "seed122",
+  "equipoId": "E026",
   "codigo": "45-69",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-23",
@@ -1846,6 +1969,7 @@
  },
  {
   "id": "seed123",
+  "equipoId": "E027",
   "codigo": "45-71",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-24",
@@ -1861,6 +1985,7 @@
  },
  {
   "id": "seed124",
+  "equipoId": "E027",
   "codigo": "45-71",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-24",
@@ -1876,6 +2001,7 @@
  },
  {
   "id": "seed125",
+  "equipoId": "E027",
   "codigo": "45-71",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-24",
@@ -1891,6 +2017,7 @@
  },
  {
   "id": "seed126",
+  "equipoId": "E028",
   "codigo": "45-75",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-20",
@@ -1906,6 +2033,7 @@
  },
  {
   "id": "seed127",
+  "equipoId": "E028",
   "codigo": "45-75",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-20",
@@ -1921,6 +2049,7 @@
  },
  {
   "id": "seed128",
+  "equipoId": "E028",
   "codigo": "45-75",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-20",
@@ -1936,6 +2065,7 @@
  },
  {
   "id": "seed129",
+  "equipoId": "E029",
   "codigo": "45-77",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-20",
@@ -1951,6 +2081,7 @@
  },
  {
   "id": "seed130",
+  "equipoId": "E029",
   "codigo": "45-77",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-20",
@@ -1966,6 +2097,7 @@
  },
  {
   "id": "seed131",
+  "equipoId": "E029",
   "codigo": "45-77",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-20",
@@ -1981,6 +2113,7 @@
  },
  {
   "id": "seed132",
+  "equipoId": "E030",
   "codigo": "45-79",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-28",
@@ -1996,6 +2129,7 @@
  },
  {
   "id": "seed133",
+  "equipoId": "E030",
   "codigo": "45-79",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-28",
@@ -2011,6 +2145,7 @@
  },
  {
   "id": "seed134",
+  "equipoId": "E030",
   "codigo": "45-79",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-28",
@@ -2026,6 +2161,7 @@
  },
  {
   "id": "seed135",
+  "equipoId": "E031",
   "codigo": "45-80",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-19",
@@ -2041,6 +2177,7 @@
  },
  {
   "id": "seed136",
+  "equipoId": "E031",
   "codigo": "45-80",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-19",
@@ -2056,6 +2193,7 @@
  },
  {
   "id": "seed137",
+  "equipoId": "E031",
   "codigo": "45-80",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-19",
@@ -2071,6 +2209,7 @@
  },
  {
   "id": "seed138",
+  "equipoId": "E032",
   "codigo": "45-86",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-24",
@@ -2086,6 +2225,7 @@
  },
  {
   "id": "seed139",
+  "equipoId": "E032",
   "codigo": "45-86",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-24",
@@ -2101,6 +2241,7 @@
  },
  {
   "id": "seed140",
+  "equipoId": "E032",
   "codigo": "45-86",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-24",
@@ -2116,6 +2257,7 @@
  },
  {
   "id": "seed141",
+  "equipoId": "E033",
   "codigo": "45-87",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-23",
@@ -2131,6 +2273,7 @@
  },
  {
   "id": "seed142",
+  "equipoId": "E033",
   "codigo": "45-87",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-23",
@@ -2146,6 +2289,7 @@
  },
  {
   "id": "seed143",
+  "equipoId": "E033",
   "codigo": "45-87",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-23",
@@ -2161,6 +2305,7 @@
  },
  {
   "id": "seed144",
+  "equipoId": "E034",
   "codigo": "45-89",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-22",
@@ -2176,6 +2321,7 @@
  },
  {
   "id": "seed145",
+  "equipoId": "E034",
   "codigo": "45-89",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-22",
@@ -2191,6 +2337,7 @@
  },
  {
   "id": "seed146",
+  "equipoId": "E034",
   "codigo": "45-89",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-22",
@@ -2206,6 +2353,7 @@
  },
  {
   "id": "seed147",
+  "equipoId": "E035",
   "codigo": "45-91",
   "tipo": "AFEX_INSP",
   "fecha": "2026-06-22",
@@ -2221,6 +2369,7 @@
  },
  {
   "id": "seed148",
+  "equipoId": "E035",
   "codigo": "45-91",
   "tipo": "AFEX_MANT",
   "fecha": "2026-06-22",
@@ -2236,6 +2385,7 @@
  },
  {
   "id": "seed149",
+  "equipoId": "E035",
   "codigo": "45-91",
   "tipo": "AFEX_CERT",
   "fecha": "2026-06-22",

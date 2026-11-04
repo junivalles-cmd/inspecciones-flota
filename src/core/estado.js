@@ -47,10 +47,12 @@ export function tiposAplicables(equipo) {
   return equipo.afex ? [...CONTROLES] : ['GENERAL'];
 }
 
+// Se agrupa por equipoId (el id oculto del equipo), no por código: el código es
+// editable (ESPECIFICACION.md 3.4.5) y no puede ser la llave de enlace con el historial.
 export function ultimasInspecciones(inspecciones) {
   const last = {};
   for (const i of inspecciones) {
-    const k = i.codigo + '|' + i.tipo;
+    const k = i.equipoId + '|' + i.tipo;
     if (!last[k] || i.fecha > last[k].fecha) last[k] = i;
   }
   return last;
@@ -78,7 +80,7 @@ export function calcularControles(equipos, inspecciones, configRaw, hoy = inicio
     if (e.activo === false) continue;
     for (const tipo of tiposAplicables(e)) {
       const cfg = config[tipo];
-      const l = last[e.codigo + '|' + tipo];
+      const l = last[e.id + '|' + tipo];
       const { proxima, dias, estado } = calcularControl(l ? l.fecha : null, cfg.frecuencia_dias, cfg.anticipacion_dias, hoy);
       rows.push({
         equipo: e,

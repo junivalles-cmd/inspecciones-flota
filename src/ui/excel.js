@@ -18,8 +18,10 @@ const BLANCO = 'FFFFFFFF';
 const GRIS_TEXTO = 'FF5B6472';
 const BORDE_SUAVE = 'FFE3E7ED';
 
-const ENCABEZADOS = ['Código', 'Descripción', 'Modelo', 'Flota', 'Ubicación', 'Control', 'Proveedor', 'Última', 'Próxima', 'Días', 'Estado'];
-const ANCHOS = [12, 30, 16, 14, 12, 22, 20, 12, 12, 8, 14];
+const ENCABEZADOS = ['Código', 'Código 2', 'Descripción', 'Modelo', 'Flota', 'Ubicación', 'Control', 'Proveedor', 'Última', 'Próxima', 'Días', 'Estado'];
+const ANCHOS = [12, 12, 30, 16, 14, 12, 22, 20, 12, 12, 8, 14];
+const COL_DIAS = ENCABEZADOS.indexOf('Días') + 1;
+const COL_ESTADO = ENCABEZADOS.indexOf('Estado') + 1;
 
 function colorARGB(hex) {
   return 'FF' + hex.replace('#', '').toUpperCase();
@@ -28,6 +30,7 @@ function colorARGB(hex) {
 function filaDatos(r) {
   return [
     r.equipo.codigo,
+    r.equipo.codigo2,
     r.equipo.descripcion,
     r.equipo.modelo,
     FLOTAS[r.equipo.flota] || r.equipo.flota,
@@ -80,9 +83,9 @@ function construirHoja(libro, nombreHoja, subtitulo, filas) {
     const fila = hoja.addRow(filaDatos(r));
     const color = COLOR_ESTADO[r.estado];
     fila.eachCell((celda, col) => {
-      celda.alignment = { vertical: 'middle', horizontal: col === 10 ? 'right' : col === 11 ? 'center' : 'left' };
+      celda.alignment = { vertical: 'middle', horizontal: col === COL_DIAS ? 'right' : col === COL_ESTADO ? 'center' : 'left' };
       celda.border = { bottom: { style: 'thin', color: { argb: BORDE_SUAVE } } };
-      if (col === 11) {
+      if (col === COL_ESTADO) {
         celda.font = { bold: true, color: { argb: colorARGB(color.texto) } };
         celda.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: colorARGB(color.fondo) } };
       }
