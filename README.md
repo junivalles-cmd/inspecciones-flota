@@ -50,6 +50,10 @@ referencia/           → v1 (HTML de un solo archivo), se usó como base de com
 
 `config.json` acepta las claves nuevas (`frecuencia_dias` / `anticipacion_dias`) y también las de la v1 (`f` / `a`); `normalizarConfig()` en `src/core/estado.js` hace la conversión.
 
+## Página publicada
+
+`docs/index.html` es una copia de `dist/index.html` para que GitHub Pages pueda publicarla (Pages solo sirve desde la raíz del repo o desde `/docs`). Después de cada `npm run build`, corre `npm run build:pages` para regenerar esa copia y luego sube el cambio.
+
 ## Siguiente etapa (no implementada aún)
 
 Las mejoras de la sección 9 de `ESPECIFICACION.md`, empezando por la versión móvil con backend, quedan pendientes para una próxima etapa. El código ya está modularizado (cálculo / almacenamiento / interfaz separados) para facilitar ese cambio: el módulo `core/` no depende de `store/` ni de `ui/`, así que una futura versión con backend puede reemplazar `store/fs.js` sin tocar la lógica de negocio.
