@@ -1,14 +1,29 @@
 // Núcleo de cálculo de estado de inspecciones (ESPECIFICACION.md, sección 3.3).
 // Módulo puro: no toca DOM, localStorage ni el sistema de archivos.
+import { PROVEEDOR_AFEX, esControlAfex } from './dominio.js';
 
-export const CONTROLES = ['GENERAL', 'AFEX_INSP', 'AFEX_MANT', 'AFEX_CERT'];
+export const CONTROLES = ['GENERAL', 'AFEX_INSP', 'AFEX_MANT', 'AFEX_CERT', 'RODAJES', 'BALDES', 'IMPLEMENTOS'];
 
 export const CONFIG_DEFAULT = {
   GENERAL: { frecuencia_dias: 30, anticipacion_dias: 10 },
   AFEX_INSP: { frecuencia_dias: 30, anticipacion_dias: 10 },
   AFEX_MANT: { frecuencia_dias: 90, anticipacion_dias: 15 },
   AFEX_CERT: { frecuencia_dias: 365, anticipacion_dias: 30 },
+  RODAJES: { frecuencia_dias: 30, anticipacion_dias: 10 },
+  BALDES: { frecuencia_dias: 30, anticipacion_dias: 10 },
+  IMPLEMENTOS: { frecuencia_dias: 30, anticipacion_dias: 10 },
 };
+
+// Qué bandera del equipo habilita cada grupo de controles (además de GENERAL,
+// que aplica siempre a todo equipo activo). Para agregar un control nuevo que
+// dependa de una característica del equipo, basta un renglón aquí — el resto
+// (tablero, filtros, CSV, Excel) ya es genérico por tipo.
+const CONTROLES_POR_BANDERA = [
+  { bandera: 'afex', tipos: ['AFEX_INSP', 'AFEX_MANT', 'AFEX_CERT'] },
+  { bandera: 'rodajes', tipos: ['RODAJES'] },
+  { bandera: 'baldes', tipos: ['BALDES'] },
+  { bandera: 'implementos', tipos: ['IMPLEMENTOS'] },
+];
 
 export const ESTADOS = ['VENCIDA', 'PROGRAMAR', 'SIN REGISTRO', 'AL DÍA'];
 export const ORDEN_ESTADO = { VENCIDA: 0, PROGRAMAR: 1, 'SIN REGISTRO': 2, 'AL DÍA': 3 };
@@ -44,7 +59,11 @@ export function normalizarConfig(raw) {
 }
 
 export function tiposAplicables(equipo) {
-  return equipo.afex ? [...CONTROLES] : ['GENERAL'];
+  const tipos = ['GENERAL'];
+  for (const { bandera, tipos: extra } of CONTROLES_POR_BANDERA) {
+    if (equipo[bandera]) tipos.push(...extra);
+  }
+  return tipos;
 }
 
 // Se agrupa por equipoId (el id oculto del equipo), no por código: el código es
@@ -89,7 +108,7 @@ export function calcularControles(equipos, inspecciones, configRaw, hoy = inicio
         proxima,
         dias,
         estado,
-        proveedor: tipo === 'GENERAL' ? e.proveedor : 'Jhon May',
+        proveedor: esControlAfex(tipo) ? PROVEEDOR_AFEX : e.proveedor,
       });
     }
   }

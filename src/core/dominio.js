@@ -7,12 +7,18 @@ export const FLOTAS = {
   AUXILIAR: 'Flota auxiliar',
 };
 
+export function esControlAfex(tipo) {
+  return tipo.startsWith('AFEX_');
+}
+
 // Carpeta destino dentro de INSPECCIONES/, agrupada por tipo de inspección (quién inspecciona),
 // no por flota: "INSPECCIONES NIMAC", "INSPECCIONES CONSTRUMARKET", "INSPECCIONES AFEX"…
 // Los controles AFEX siempre van a su propia carpeta, sin importar la flota del equipo.
+// Los demás controles (GENERAL, RODAJES, BALDES, IMPLEMENTOS) los hace el taller/proveedor
+// de siempre, así que comparten carpeta con la inspección general del equipo.
 // Sin guion largo "–" en los nombres de carpeta (algunos sincronizadores de Drive no los listan bien).
 export function carpetaTipoInspeccion(equipo, tipo) {
-  if (tipo !== 'GENERAL') return 'INSPECCIONES AFEX';
+  if (esControlAfex(tipo)) return 'INSPECCIONES AFEX';
   const proveedor = (equipo.proveedor || '').trim() || equipo.flota;
   return 'INSPECCIONES ' + proveedor.toUpperCase();
 }
@@ -22,9 +28,34 @@ export const CONTROLES_NOMBRE = {
   AFEX_INSP: 'AFEX – Inspección',
   AFEX_MANT: 'AFEX – Mantenimiento',
   AFEX_CERT: 'AFEX – Recertificación',
+  RODAJES: 'Inspección de rodajes',
+  BALDES: 'Inspección de baldes',
+  IMPLEMENTOS: 'Inspección de implementos',
 };
 
 export const PROVEEDOR_AFEX = 'Jhon May';
+
+// Banderas del equipo que habilitan controles adicionales (además de GENERAL), con su
+// etiqueta para el formulario/tabla de Equipos. Deben coincidir con CONTROLES_POR_BANDERA
+// en core/estado.js — agregar un control nuevo basado en una característica del equipo
+// implica un renglón aquí y otro ahí, nada más.
+export const BANDERAS_EQUIPO = [
+  { clave: 'afex', etiqueta: 'AFEX' },
+  { clave: 'rodajes', etiqueta: 'Rodajes' },
+  { clave: 'baldes', etiqueta: 'Baldes' },
+  { clave: 'implementos', etiqueta: 'Implementos' },
+];
+
+// A qué equipos aplica cada control (para la pantalla de Configuración).
+export const APLICA_A_POR_CONTROL = {
+  GENERAL: 'Toda la flota',
+  AFEX_INSP: 'Equipos con AFEX',
+  AFEX_MANT: 'Equipos con AFEX',
+  AFEX_CERT: 'Equipos con AFEX',
+  RODAJES: 'Equipos con Rodajes',
+  BALDES: 'Equipos con Baldes',
+  IMPLEMENTOS: 'Equipos con Implementos',
+};
 
 export const UBICACIONES = ['Volcán', 'Mojón', 'Acarreo', 'Troja', 'Taller'];
 

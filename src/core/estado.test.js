@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calcularControl, formatearISO, inicioDelDia, equiposParaProgramar } from './estado.js';
+import { calcularControl, formatearISO, inicioDelDia, equiposParaProgramar, tiposAplicables, calcularControles } from './estado.js';
 
 // "hoy" fijo para que las pruebas no dependan de la fecha real de ejecución.
 const HOY = inicioDelDia(new Date(2026, 10, 4)); // 04/11/2026
@@ -63,5 +63,43 @@ describe('equiposParaProgramar — filtro del Excel de programación semanal/men
   it('horizonte de 30 días: también incluye lo que vence dentro del mes', () => {
     const r = equiposParaProgramar(filas, 30);
     expect(r).toHaveLength(5);
+  });
+});
+
+describe('tiposAplicables — controles por bandera del equipo (AFEX, Rodajes, Baldes, Implementos)', () => {
+  it('un equipo sin ninguna bandera solo tiene GENERAL', () => {
+    expect(tiposAplicables({})).toEqual(['GENERAL']);
+  });
+
+  it('afex agrega los 3 controles AFEX', () => {
+    expect(tiposAplicables({ afex: true })).toEqual(['GENERAL', 'AFEX_INSP', 'AFEX_MANT', 'AFEX_CERT']);
+  });
+
+  it('un tractor con rodajes e implementos, sin AFEX ni baldes', () => {
+    expect(tiposAplicables({ rodajes: true, implementos: true })).toEqual(['GENERAL', 'RODAJES', 'IMPLEMENTOS']);
+  });
+
+  it('una excavadora con AFEX, rodajes y baldes', () => {
+    expect(tiposAplicables({ afex: true, rodajes: true, baldes: true })).toEqual([
+      'GENERAL',
+      'AFEX_INSP',
+      'AFEX_MANT',
+      'AFEX_CERT',
+      'RODAJES',
+      'BALDES',
+    ]);
+  });
+});
+
+describe('calcularControles — proveedor correcto para controles nuevos (no deben salir como AFEX/Jhon May)', () => {
+  const hoy = inicioDelDia(new Date(2026, 10, 4));
+  const equipos = [{ id: 'E001', codigo: '568', proveedor: 'NIMAC', activo: true, rodajes: true, baldes: true }];
+
+  it('RODAJES y BALDES usan el proveedor del equipo, no Jhon May', () => {
+    const rows = calcularControles(equipos, [], {}, hoy);
+    const rodajes = rows.find((r) => r.tipo === 'RODAJES');
+    const baldes = rows.find((r) => r.tipo === 'BALDES');
+    expect(rodajes.proveedor).toBe('NIMAC');
+    expect(baldes.proveedor).toBe('NIMAC');
   });
 });

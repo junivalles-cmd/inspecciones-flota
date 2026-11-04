@@ -3,7 +3,7 @@ import { $, esc, formatearFecha } from './dom.js';
 import { exportarCSV } from './csv.js';
 import { D } from '../state.js';
 import { calcularControles, ordenarControles, conteoPorEstado, porcentajeAlDia, ESTADOS, inicioDelDia, formatearISO } from '../core/estado.js';
-import { CONTROLES_NOMBRE, FLOTAS, COLOR_ESTADO } from '../core/dominio.js';
+import { CONTROLES_NOMBRE, FLOTAS, COLOR_ESTADO, esControlAfex } from '../core/dominio.js';
 
 const CLASE_ESTADO = { 'AL DÍA': 'AL', PROGRAMAR: 'PR', VENCIDA: 'VE', 'SIN REGISTRO': 'SR' };
 
@@ -17,7 +17,7 @@ function filasTablero() {
 function tarjetasKpi(rows) {
   const grupos = [
     ...Object.entries(FLOTAS).map(([k, v]) => [v, (r) => r.tipo === 'GENERAL' && r.equipo.flota === k]),
-    ['AFEX – Jhon May', (r) => r.tipo !== 'GENERAL'],
+    ['AFEX – Jhon May', (r) => esControlAfex(r.tipo)],
   ];
   return grupos
     .map(([nombre, filtro]) => {
@@ -45,7 +45,7 @@ export function renderTablero() {
   const filtradas = rows.filter(
     (r) =>
       (!q || (r.equipo.codigo + ' ' + r.equipo.codigo2 + ' ' + r.equipo.modelo + ' ' + r.equipo.descripcion).toLowerCase().includes(q)) &&
-      (!fl || (fl === 'AFEX' ? r.tipo !== 'GENERAL' : r.equipo.flota === fl && r.tipo === 'GENERAL')) &&
+      (!fl || (fl === 'AFEX' ? esControlAfex(r.tipo) : r.equipo.flota === fl && !esControlAfex(r.tipo))) &&
       (!tp || r.tipo === tp) &&
       (!es || r.estado === es) &&
       (!ub || r.equipo.ubicacion === ub)

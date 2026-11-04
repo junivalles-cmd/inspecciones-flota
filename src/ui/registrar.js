@@ -3,7 +3,7 @@ import { $, hoyISO, mostrarMensaje, nombreUsuario, guardarNombreUsuario } from '
 import { D } from '../state.js';
 import { buscarEquipo } from './compartido.js';
 import { tiposAplicables } from '../core/estado.js';
-import { CONTROLES_NOMBRE, FLOTAS, PROVEEDOR_AFEX } from '../core/dominio.js';
+import { CONTROLES_NOMBRE, FLOTAS, PROVEEDOR_AFEX, esControlAfex } from '../core/dominio.js';
 import { rutaDestino, guardarArchivos, actualizarJSON } from '../store/fs.js';
 
 let onGuardado = () => {};
@@ -23,7 +23,7 @@ function actualizarInfoYTipos() {
 function actualizarProveedorYDestino() {
   const e = buscarEquipo($('rEq').value);
   if (!e) return;
-  $('rProv').value = $('rTipo').value === 'GENERAL' ? e.proveedor : PROVEEDOR_AFEX;
+  $('rProv').value = esControlAfex($('rTipo').value) ? PROVEEDOR_AFEX : e.proveedor;
   actualizarDestino();
 }
 

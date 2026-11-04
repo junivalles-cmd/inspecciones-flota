@@ -2,7 +2,7 @@
 
 **Cliente:** CONEQUISA – Departamento de Maquinaria Open Pit, Mina La Libertad (Volcán / Mojón), Equinox Gold
 **Dueño del producto:** Junior Valles, Ingeniero de Confiabilidad
-**Versión de la especificación:** 2.3 – 04/11/2026
+**Versión de la especificación:** 2.4 – 04/11/2026
 **Repositorio:** https://github.com/junivalles-cmd/inspecciones-flota
 **Referencia funcional:** `referencia/Sistema_Inspecciones_Flota_v1.html`. Es la v1 ya funcionando, un HTML de un solo archivo; usarla como base de comportamiento.
 
@@ -13,6 +13,7 @@
 - **2.1 (04/11/2026):** cada equipo tiene ahora un `id` interno oculto e inmutable, y dos códigos visibles y editables, `codigo` y `codigo2` (sección 3.4.5); las inspecciones se enlazan al equipo por ese `id` (no por el código), para que renombrar un código no pierda el historial calculado en el Tablero (sección 5).
 - **2.2 (04/11/2026):** corregido el botón [Editar] de Equipos, que abría el formulario como si fuera "Agregar equipo" cuando la carpeta ya tenía `equipos.json`/`inspecciones.json` guardados con una versión anterior a la 2.1 (sin `id` ni `equipoId`). Ahora, al conectar una carpeta así, la app completa esos campos automáticamente la primera vez que carga (sección 4.1).
 - **2.3 (04/11/2026):** se llenó `codigo2` en `datos_iniciales/equipos.json` para 47 de los 112 equipos, usando la columna "Ahorrativo" de `EQUIPOS MINA LL 2026.xlsx` (sección 6).
+- **2.4 (04/11/2026):** tres controles nuevos — Rodajes, Baldes e Implementos (sección 3.2) — a partir del mecanismo de "banderas del equipo" (adelanto de la mejora sugerida en la sección 9.8). Se corrigieron de paso dos bugs que asumían que "todo lo que no es GENERAL es AFEX": el proveedor autocompletado y la carpeta de adjuntos de estos controles nuevos usaban "Jhon May"/`INSPECCIONES AFEX` por error; ahora usan el proveedor y la carpeta de la inspección general del equipo.
 
 ---
 
@@ -52,8 +53,13 @@ El MVP no tiene login: el nombre de quien registra se guarda en el navegador y s
 | `AFEX_INSP` | AFEX – Inspección | Equipos con `afex = true` | 30 días | 10 días antes | Jhon May |
 | `AFEX_MANT` | AFEX – Mantenimiento | Equipos con `afex = true` | 90 días | 15 días antes | Jhon May |
 | `AFEX_CERT` | AFEX – Recertificación | Equipos con `afex = true` | 365 días | 30 días antes | Jhon May |
+| `RODAJES` | Inspección de rodajes | Equipos con `rodajes = true` (tractores y excavadoras de orugas) | 30 días | 10 días antes | el de la flota o equipo |
+| `BALDES` | Inspección de baldes | Equipos con `baldes = true` (excavadoras) | 30 días | 10 días antes | el de la flota o equipo |
+| `IMPLEMENTOS` | Inspección de implementos | Equipos con `implementos = true` (tractores) | 30 días | 10 días antes | el de la flota o equipo |
 
-Frecuencia y aviso son **configurables** (ver `config.json`). Cada equipo genera 1 control (GENERAL), o 4 si tiene AFEX.
+Frecuencia y aviso son **configurables** (ver `config.json`). Cada equipo genera 1 control (GENERAL) más uno por cada bandera que tenga activada (AFEX son 3 controles; Rodajes, Baldes e Implementos son 1 cada uno). A diferencia de AFEX, estos tres los hace el mismo proveedor/taller de la inspección general del equipo, no Jhon May, y sus adjuntos se guardan en la misma carpeta que la inspección general (sección 4), no en "INSPECCIONES AFEX".
+
+Estos controles son los primeros en usar el mecanismo de "banderas del equipo" pensado en la sección 9.8: agregar uno nuevo así (ligado a una característica del equipo, no a la flota) implica un renglón en `BANDERAS_EQUIPO` (`core/dominio.js`) y otro en `CONTROLES_POR_BANDERA` (`core/estado.js`), más su nombre en `CONTROLES_NOMBRE` y su frecuencia por defecto en `CONFIG_DEFAULT` — el resto de las pantallas (tablero, filtros, CSV, Excel) ya es genérico por tipo de control.
 
 ### 3.3 Regla de estado (núcleo del sistema)
 
@@ -115,7 +121,7 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
 5. **Equipos**
    - Lista con búsqueda; agregar y editar.
    - Cada equipo tiene un **id interno** (p. ej. `E001`), autogenerado al crearlo, **oculto** (no aparece en ninguna pantalla ni se puede editar) y que nunca cambia — es el que usa el sistema para enlazar el equipo con su historial de inspecciones.
-   - Campos visibles y editables: **código** y **código 2** (dos identificadores, p. ej. `45-69` y `A02`; ninguno de los dos es obligatorio salvo el código principal, y ambos deben ser únicos entre todos los equipos), descripción, modelo, ubicación (Volcán, Mojón, Acarreo, Troja, Taller), flota, proveedor, tiene AFEX, activo.
+   - Campos visibles y editables: **código** y **código 2** (dos identificadores, p. ej. `45-69` y `A02`; ninguno de los dos es obligatorio salvo el código principal, y ambos deben ser únicos entre todos los equipos), descripción, modelo, ubicación (Volcán, Mojón, Acarreo, Troja, Taller), flota, proveedor, activo, y una bandera Sí/No por cada control adicional: **AFEX**, **Rodajes**, **Baldes**, **Implementos** (sección 3.2).
    - A diferencia de la v1, el código **ya no es inmutable**: se puede renombrar en cualquier momento sin perder el historial ni el estado calculado, porque el enlace real es por el id oculto (ver sección 5).
 6. **Configuración**
    - Frecuencia y anticipación de cada control.
@@ -168,11 +174,15 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
   "modelo": "D9R",
   "ubicacion": "Volcán",      // Volcán | Mojón | Acarreo | Troja | Taller | ""
   "flota": "CAT",             // CAT | KOMATSU | VOLQUETES | AUXILIAR
-  "proveedor": "NIMAC",       // proveedor de la inspección general
-  "afex": true,               // tiene sistema de supresión AFEX
+  "proveedor": "NIMAC",       // proveedor de la inspección general (y de Rodajes/Baldes/Implementos)
+  "afex": true,               // tiene sistema de supresión AFEX → agrega AFEX_INSP/AFEX_MANT/AFEX_CERT
+  "rodajes": true,            // tractor o excavadora de orugas → agrega el control RODAJES
+  "implementos": true,        // tractor de orugas → agrega el control IMPLEMENTOS
+  "baldes": false,            // excavadora → agrega el control BALDES
   "activo": true
 }
 ```
+- `afex`, `rodajes`, `baldes` e `implementos` son independientes entre sí; un equipo puede tener cualquier combinación (p. ej. una excavadora con AFEX, Rodajes y Baldes, pero no Implementos). Si un equipo no tiene ninguna, solo genera el control GENERAL.
 - El `id` se genera como `E` + número secuencial de 3 dígitos (`E001`, `E002`, …, `E112`, `E113`…), calculado a partir del id más alto que ya exista. Nunca se reutiliza ni se recicla, y no tiene ninguna relación con el orden o el valor de `codigo`/`codigo2`.
 - `codigo` y `codigo2` se pueden editar libremente desde la pantalla Equipos (sección 3.4.5); el enlace con el historial de inspecciones es por `id`, no por estos campos, así que renombrarlos no afecta el estado calculado en el Tablero.
 
@@ -215,6 +225,7 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 - **Códigos normalizados:** 2091→20-91, 2096→20-96, 20102→20-102, 20107→20-107.
 - **id:** los 112 equipos trajeron su `id` asignado en orden de aparición en el archivo (`E001`…`E112`); cada inspección de carga inicial trae el `equipoId` correspondiente.
 - **codigo2:** se llenó para 47 de los 112 equipos con la columna "Ahorrativo" de `EQUIPOS MINA LL 2026.xlsx` (hoja "Datos"), cruzando por código normalizado. Los 65 restantes quedaron con `codigo2` vacío porque el maestro no tenía valor en esa columna para ellos, o porque esa columna traía un nombre de ubicación en vez de un código (4 camionetas: 80168, 80173, P174, P210) — eso se descartó. El equipo 05-0763 no aparece en ese maestro (según la sección 6, se incluyó aparte), así que tampoco tiene `codigo2` de ahí.
+- **rodajes / baldes / implementos:** se marcaron por descripción: `rodajes = true` e `implementos = true` en los 10 equipos con descripción "Tractor de orugas"; `rodajes = true` y `baldes = true` en los 15 con "Excavadora de orugas". El resto de la flota (camiones, volquetes, motoniveladoras, auxiliares, etc.) queda sin estas banderas hasta que alguien las active desde Equipos.
 
 ## 7. Validaciones
 
@@ -246,7 +257,7 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 5. Calendario mensual de inspecciones programadas por proveedor.
 6. Registro de hallazgos individuales con estado (abierto / cerrado) y su enlace al backlog.
 7. Importar y exportar equipos desde Excel.
-8. Más controles configurables (ej. inspección de baldes, GET de tractores) sin tocar código: tabla `tipos_control` con nombre, frecuencia, aviso, a qué flotas aplica y proveedor por defecto.
+8. ~~Más controles configurables (ej. inspección de baldes, GET de tractores)~~ — **hecho parcialmente en la v2.4** con Rodajes/Baldes/Implementos (sección 3.2), pero vía código (un renglón en `BANDERAS_EQUIPO`/`CONTROLES_POR_BANDERA`), no desde una pantalla. Queda pendiente la tabla `tipos_control` editable sin tocar código, si hace falta agregar controles con más frecuencia que lo que toma un cambio chico de código.
 
 ## 10. Restricciones y notas
 

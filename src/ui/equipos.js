@@ -8,7 +8,7 @@
 import { $, esc, mostrarMensaje } from './dom.js';
 import { D } from '../state.js';
 import { llenarSelectoresDinamicos } from './compartido.js';
-import { FLOTAS, UBICACIONES } from '../core/dominio.js';
+import { FLOTAS, UBICACIONES, BANDERAS_EQUIPO } from '../core/dominio.js';
 import { siguienteIdEquipo, buscarEquipoPorId, codigosEnUso } from '../core/equipos.js';
 import { actualizarJSON } from '../store/fs.js';
 import { abrirModal, cerrarModal } from './modal.js';
@@ -21,7 +21,7 @@ export function renderEquipos() {
     .filter((e) => !q || JSON.stringify(e).toLowerCase().includes(q))
     .map(
       (e) =>
-        `<tr><td><b>${esc(e.codigo)}</b></td><td>${esc(e.codigo2)}</td><td>${esc(e.descripcion)}</td><td>${esc(e.modelo)}</td><td>${esc(e.ubicacion)}</td><td>${FLOTAS[e.flota] || esc(e.flota)}</td><td>${esc(e.proveedor)}</td><td>${e.afex ? 'Sí' : ''}</td><td>${e.activo === false ? 'No' : 'Sí'}</td><td><button class="lnk" data-id="${esc(e.id)}">Editar</button></td></tr>`
+        `<tr><td><b>${esc(e.codigo)}</b></td><td>${esc(e.codigo2)}</td><td>${esc(e.descripcion)}</td><td>${esc(e.modelo)}</td><td>${esc(e.ubicacion)}</td><td>${FLOTAS[e.flota] || esc(e.flota)}</td><td>${esc(e.proveedor)}</td>${BANDERAS_EQUIPO.map((b) => `<td>${e[b.clave] ? 'Sí' : ''}</td>`).join('')}<td>${e.activo === false ? 'No' : 'Sí'}</td><td><button class="lnk" data-id="${esc(e.id)}">Editar</button></td></tr>`
     )
     .join('');
 }
@@ -29,7 +29,17 @@ export function renderEquipos() {
 function formularioEquipo(id) {
   const e = id
     ? buscarEquipoPorId(D.equipos, id)
-    : { codigo: '', codigo2: '', descripcion: '', modelo: '', ubicacion: '', flota: 'CAT', proveedor: 'NIMAC', afex: false, activo: true };
+    : {
+        codigo: '',
+        codigo2: '',
+        descripcion: '',
+        modelo: '',
+        ubicacion: '',
+        flota: 'CAT',
+        proveedor: 'NIMAC',
+        activo: true,
+        ...Object.fromEntries(BANDERAS_EQUIPO.map((b) => [b.clave, false])),
+      };
   return `<h3 style="margin-top:0;color:var(--az)">${id ? 'Editar equipo ' + esc(e.codigo) : 'Agregar equipo'}</h3><div class="form">
   <div><label>Código *</label><input id="mC" value="${esc(e.codigo)}"></div>
   <div><label>Código 2</label><input id="mC2" value="${esc(e.codigo2)}"></div>
@@ -40,7 +50,10 @@ function formularioEquipo(id) {
     .map(([k, v]) => `<option value="${k}" ${e.flota === k ? 'selected' : ''}>${v}</option>`)
     .join('')}</select></div>
   <div><label>Proveedor inspección general</label><input id="mP" value="${esc(e.proveedor)}"></div>
-  <div><label>Tiene AFEX</label><select id="mA"><option value="0">No</option><option value="1" ${e.afex ? 'selected' : ''}>Sí</option></select></div>
+  ${BANDERAS_EQUIPO.map(
+    (b) =>
+      `<div><label>Control: ${b.etiqueta}</label><select id="mB_${b.clave}"><option value="0">No</option><option value="1" ${e[b.clave] ? 'selected' : ''}>Sí</option></select></div>`
+  ).join('')}
   <div><label>Activo</label><select id="mV"><option value="1">Sí</option><option value="0" ${e.activo === false ? 'selected' : ''}>No (dado de baja)</option></select></div></div>
   <p><button class="btn" id="mGuardar">Guardar</button> <button class="btn sec" id="mCancelar">Cancelar</button></p>`;
 }
@@ -63,8 +76,8 @@ async function guardar(idEditado) {
     ubicacion: $('mU').value.trim(),
     flota: $('mF').value,
     proveedor: $('mP').value.trim(),
-    afex: $('mA').value === '1',
     activo: $('mV').value === '1',
+    ...Object.fromEntries(BANDERAS_EQUIPO.map((b) => [b.clave, $('mB_' + b.clave).value === '1'])),
   };
   try {
     D.equipos = await actualizarJSON('equipos.json', [], (actuales) => {

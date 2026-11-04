@@ -9,7 +9,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E002",
@@ -21,7 +23,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": false,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E003",
@@ -33,7 +37,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": false,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E004",
@@ -45,7 +51,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": false,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E005",
@@ -57,7 +65,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E006",
@@ -117,7 +127,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E011",
@@ -129,7 +141,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E012",
@@ -141,7 +155,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E013",
@@ -153,7 +169,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E014",
@@ -165,7 +183,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": false,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E015",
@@ -177,7 +197,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": false,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E016",
@@ -189,7 +211,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": false,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E017",
@@ -201,7 +225,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E018",
@@ -213,7 +239,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E019",
@@ -225,7 +253,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E020",
@@ -429,7 +459,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E037",
@@ -441,7 +473,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E038",
@@ -453,7 +487,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E039",
@@ -477,7 +513,9 @@
   "flota": "CAT",
   "proveedor": "NIMAC",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E041",
@@ -501,7 +539,9 @@
   "flota": "KOMATSU",
   "proveedor": "Construmarket",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E043",
@@ -513,7 +553,9 @@
   "flota": "KOMATSU",
   "proveedor": "Construmarket",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E044",
@@ -525,7 +567,9 @@
   "flota": "KOMATSU",
   "proveedor": "Construmarket",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E045",
@@ -537,7 +581,9 @@
   "flota": "KOMATSU",
   "proveedor": "Construmarket",
   "afex": true,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E046",
@@ -741,7 +787,9 @@
   "flota": "KOMATSU",
   "proveedor": "Construmarket",
   "afex": false,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "implementos": true
  },
  {
   "id": "E063",
@@ -753,7 +801,9 @@
   "flota": "KOMATSU",
   "proveedor": "Construmarket",
   "afex": false,
-  "activo": true
+  "activo": true,
+  "rodajes": true,
+  "baldes": true
  },
  {
   "id": "E064",
