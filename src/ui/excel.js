@@ -18,7 +18,7 @@ const BLANCO = 'FFFFFFFF';
 const GRIS_TEXTO = 'FF5B6472';
 const BORDE_SUAVE = 'FFE3E7ED';
 
-const ENCABEZADOS = ['Código', 'Código 2', 'Descripción', 'Modelo', 'Flota', 'Ubicación', 'Control', 'Proveedor', 'Última', 'Próxima', 'Días', 'Estado'];
+const ENCABEZADOS = ['Código', 'Ahorrativo', 'Descripción', 'Modelo', 'Flota', 'Ubicación', 'Control', 'Proveedor', 'Última', 'Próxima', 'Días', 'Estado'];
 const ANCHOS = [12, 12, 30, 16, 14, 12, 22, 20, 12, 12, 8, 14];
 const COL_DIAS = ENCABEZADOS.indexOf('Días') + 1;
 const COL_ESTADO = ENCABEZADOS.indexOf('Estado') + 1;

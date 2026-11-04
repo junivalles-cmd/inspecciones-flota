@@ -20,15 +20,17 @@ export function llenarSelectoresDinamicos() {
   const ubicaciones = [...new Set(D.equipos.map((e) => e.ubicacion).filter(Boolean))].sort();
   $('fUb').innerHTML =
     '<option value="">Todas las ubicaciones</option>' + ubicaciones.map((u) => `<option>${esc(u)}</option>`).join('');
-  // Una opción por cada código (principal y, si tiene, secundario) para que el
-  // autocompletar de equipo funcione escribiendo cualquiera de los dos.
-  const opciones = [];
-  for (const e of D.equipos) {
-    if (e.activo === false) continue;
-    const etiqueta = `${esc(e.descripcion)} ${esc(e.modelo)}`;
-    opciones.push(`<option value="${esc(e.codigo)}">${etiqueta}</option>`);
-    if (e.codigo2) opciones.push(`<option value="${esc(e.codigo2)}">${etiqueta}</option>`);
-  }
+  // Una sola opción por equipo (no una por código): si tiene Ahorrativo se agrega
+  // al texto para poder encontrarlo escribiendo cualquiera de los dos códigos, pero
+  // sin que el mismo equipo aparezca dos veces en la lista. buscarEquipo() ya resuelve
+  // por cualquiera de los dos códigos aunque no se elija de esta lista.
+  const opciones = D.equipos
+    .filter((e) => e.activo !== false)
+    .map((e) => {
+      const etiqueta = `${esc(e.descripcion)} ${esc(e.modelo)}`;
+      const ahorrativo = e.codigo2 ? ` · Ahorrativo ${esc(e.codigo2)}` : '';
+      return `<option value="${esc(e.codigo)}">${etiqueta}${ahorrativo}</option>`;
+    });
   $('dlEq').innerHTML = opciones.join('');
 }
 

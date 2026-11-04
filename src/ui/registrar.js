@@ -11,7 +11,7 @@ let onGuardado = () => {};
 function actualizarInfoYTipos() {
   const e = buscarEquipo($('rEq').value);
   $('rEqInfo').textContent = e
-    ? `${e.descripcion} ${e.modelo} · ${FLOTAS[e.flota] || ''}${e.ubicacion ? ' · ' + e.ubicacion : ''}${e.codigo2 ? ' · Código 2: ' + e.codigo2 : ''}`
+    ? `${e.descripcion} ${e.modelo} · ${FLOTAS[e.flota] || ''}${e.ubicacion ? ' · ' + e.ubicacion : ''}${e.codigo2 ? ' · Ahorrativo: ' + e.codigo2 : ''}`
     : '';
   const anterior = $('rTipo').value;
   const tipos = e ? tiposAplicables(e) : ['GENERAL'];

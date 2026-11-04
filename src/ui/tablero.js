@@ -68,7 +68,7 @@ export function initTablero(cbs) {
     const hoy = formatearISO(inicioDelDia());
     exportarCSV(
       `estado_inspecciones_${hoy}.csv`,
-      ['Código', 'Código 2', 'Descripción', 'Modelo', 'Ubicación', 'Flota', 'Control', 'Proveedor', 'Última', 'Próxima', 'Días', 'Estado'],
+      ['Código', 'Ahorrativo', 'Descripción', 'Modelo', 'Ubicación', 'Flota', 'Control', 'Proveedor', 'Última', 'Próxima', 'Días', 'Estado'],
       filasVisibles.map((r) => [
         r.equipo.codigo,
         r.equipo.codigo2,

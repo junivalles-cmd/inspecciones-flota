@@ -42,7 +42,7 @@ function formularioEquipo(id) {
       };
   return `<h3 style="margin-top:0;color:var(--az)">${id ? 'Editar equipo ' + esc(e.codigo) : 'Agregar equipo'}</h3><div class="form">
   <div><label>Código *</label><input id="mC" value="${esc(e.codigo)}"></div>
-  <div><label>Código 2</label><input id="mC2" value="${esc(e.codigo2)}"></div>
+  <div><label>Ahorrativo</label><input id="mC2" value="${esc(e.codigo2)}"></div>
   <div><label>Descripción</label><input id="mD" value="${esc(e.descripcion)}"></div>
   <div><label>Modelo</label><input id="mM" value="${esc(e.modelo)}"></div>
   <div><label>Ubicación</label><input id="mU" value="${esc(e.ubicacion)}" list="dlUb"><datalist id="dlUb">${UBICACIONES.map((u) => `<option>${u}</option>`).join('')}</datalist></div>

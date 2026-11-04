@@ -98,12 +98,12 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
    - Si la carpeta está vacía (no existe `_SISTEMA/equipos.json`), la inicializa con los archivos de `datos_iniciales/`.
 2. **Tablero**
    - 5 tarjetas: una por flota (solo control GENERAL) y una de AFEX (los 3 controles AFEX). Cada tarjeta muestra % al día, total de controles, barra apilada por estado y leyenda con los conteos.
-   - Tabla de controles con: Código, Código 2, Descripción, Modelo, Ubicación, Control, Proveedor, Última, Próxima, Días, Estado (pastilla de color) y las acciones [Registrar] e [Historial].
-   - Filtros: texto (busca en código, código 2, modelo y descripción), flota (incluye la opción "AFEX"), control, estado y ubicación.
+   - Tabla de controles con: Código, Ahorrativo, Descripción, Modelo, Ubicación, Control, Proveedor, Última, Próxima, Días, Estado (pastilla de color) y las acciones [Registrar] e [Historial].
+   - Filtros: texto (busca en código, Ahorrativo, modelo y descripción), flota (incluye la opción "AFEX"), control, estado y ubicación.
    - Exportar a CSV lo que esté filtrado (separador `;`, UTF-8 con BOM para que Excel lo abra bien).
    - Botón **"Programa semanal/mensual (Excel)"**: genera un `.xlsx` con diseño (encabezado institucional, pastillas de color por estado) con dos hojas, *Semana* y *Mes*, con los equipos a inspeccionar en los próximos 7 y 30 días respectivamente (ventana móvil desde hoy, no semana/mes calendario). Siempre incluye VENCIDA y SIN REGISTRO en ambas hojas, sin importar el horizonte.
 3. **Registrar inspección**
-   - Equipo (autocompletar por código o por código 2; debajo muestra descripción, modelo, flota, ubicación y el código 2 si tiene).
+   - Equipo (autocompletar por código o por Ahorrativo; debajo muestra descripción, modelo, flota, ubicación y el Ahorrativo si tiene). En el buscador cada equipo aparece una sola vez, aunque tenga los dos códigos.
    - Control (solo los que aplican al equipo; **siempre tiene al menos la opción "Inspección general" cargada desde que se abre la pantalla**, aunque todavía no se haya escrito ningún código de equipo — en la v1 este combo podía quedar vacío si se entraba a la pestaña sin pasar por el botón [Registrar] del tablero).
    - Fecha (por defecto hoy; no se permiten fechas futuras).
    - Proveedor (se autocompleta: el del equipo, o Jhon May si es AFEX).
@@ -121,7 +121,7 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
 5. **Equipos**
    - Lista con búsqueda; agregar y editar.
    - Cada equipo tiene un **id interno** (p. ej. `E001`), autogenerado al crearlo, **oculto** (no aparece en ninguna pantalla ni se puede editar) y que nunca cambia — es el que usa el sistema para enlazar el equipo con su historial de inspecciones.
-   - Campos visibles y editables: **código** y **código 2** (dos identificadores, p. ej. `45-69` y `A02`; ninguno de los dos es obligatorio salvo el código principal, y ambos deben ser únicos entre todos los equipos), descripción, modelo, ubicación (Volcán, Mojón, Acarreo, Troja, Taller), flota, proveedor, activo, y una bandera Sí/No por cada control adicional: **AFEX**, **Rodajes**, **Baldes**, **Implementos** (sección 3.2).
+   - Campos visibles y editables: **código** y **Ahorrativo** (campo `codigo2` — dos identificadores, p. ej. `45-69` y `T-01`; ninguno de los dos es obligatorio salvo el código principal, y ambos deben ser únicos entre todos los equipos), descripción, modelo, ubicación (Volcán, Mojón, Acarreo, Troja, Taller), flota, proveedor, activo, y una bandera Sí/No por cada control adicional: **AFEX**, **Rodajes**, **Baldes**, **Implementos** (sección 3.2).
    - A diferencia de la v1, el código **ya no es inmutable**: se puede renombrar en cualquier momento sin perder el historial ni el estado calculado, porque el enlace real es por el id oculto (ver sección 5).
 6. **Configuración**
    - Frecuencia y anticipación de cada control.
