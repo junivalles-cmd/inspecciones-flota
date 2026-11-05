@@ -2,7 +2,7 @@
 
 **Cliente:** CONEQUISA – Departamento de Maquinaria Open Pit, Mina La Libertad (Volcán / Mojón), Equinox Gold
 **Dueño del producto:** Junior Valles, Ingeniero de Confiabilidad
-**Versión de la especificación:** 2.6 – 05/11/2026
+**Versión de la especificación:** 3.0 (Etapa 1) – 05/11/2026
 **Repositorio:** https://github.com/junivalles-cmd/inspecciones-flota
 **Referencia funcional:** `referencia/Sistema_Inspecciones_Flota_v1.html`. Es la v1 ya funcionando, un HTML de un solo archivo; usarla como base de comportamiento.
 
@@ -16,6 +16,13 @@
 - **2.4 (04/11/2026):** tres controles nuevos — Rodajes, Baldes e Implementos (sección 3.2) — a partir del mecanismo de "banderas del equipo" (adelanto de la mejora sugerida en la sección 9.8). Se corrigieron de paso dos bugs que asumían que "todo lo que no es GENERAL es AFEX": el proveedor autocompletado y la carpeta de adjuntos de estos controles nuevos usaban "Jhon May"/`INSPECCIONES AFEX` por error; ahora usan el proveedor y la carpeta de la inspección general del equipo.
 - **2.5 (04/11/2026):** el buscador de equipo (Registrar/Historial) mostraba cada equipo dos veces, una por código y otra por Ahorrativo — ahora es una sola entrada por equipo. Se renombró "Código 2" a **Ahorrativo** en toda la interfaz. Repaso visual con la skill `ui-ux-pro-max` (sin su generador de paletas, que requiere Python no disponible en esta máquina): se reemplazaron los emojis estructurales (📁 👤 📅 📎) por iconos SVG en línea (`src/ui/iconos.js`), se le dio sombra sutil a tarjetas/modales, estados de foco visibles, y una pastilla de color con punto indicador en cada estado (no depende solo del color). Los colores de la sección 3.3 no se tocaron: ya cumplían contraste WCAG AA (4.5:1 o más en todos los pares texto/fondo, verificado).
 - **2.6 (05/11/2026):** con Python instalado, se corrió el generador de la skill `ui-ux-pro-max` (`--design-system`, dominios `ux`/`chart`/`typography`/`icons`) buscando específicamente "internal operations dashboard" (la primera búsqueda genérica devolvió un patrón de landing page de marketing, descartado por no aplicar). Confirmó que el rumbo tomado en la 2.5 ya encajaba con "Data-Dense Dashboard" + "Soft UI Evolution" (tarjetas redondeadas 10-12px con sombra suave, iconos de trazo/outline, color + texto en los estados) — no se cambió el estilo. Se agregaron las dos recomendaciones concretas que faltaban: pila de fuente del sistema completa (`-apple-system, ... Segoe UI, Roboto, ...`, sin Google Fonts, por el requisito de funcionar sin internet de la sección 10) y soporte para `prefers-reduced-motion`. El color institucional `#1E3A5F` de la sección 3.3 se mantuvo tal cual (es el color del cliente, no algo que la skill deba redefinir).
+- **3.0 — Etapa 1 (05/11/2026): migración a backend.** Motivo: la v2 (File System Access API + carpeta de Drive) no podía resolver dos problemas de fondo — Chrome/Edge piden reconectar la carpeta en cada sesión del navegador (límite de seguridad, no un bug), y no había control del volumen de adjuntos. Se migró a Supabase (Postgres + Auth) para datos y autenticación, manteniendo el mismo stack vanilla JS + Vite; los adjuntos se quedan en Google Drive (vía su API, pendiente de implementar — ver sección 9). Cambios:
+  - **Autenticación real** con usuario/contraseña (Supabase Auth), reemplaza "escribir el nombre" de la v1/v2. Dos roles: `admin` (Equipos y Configuración) e `inspector` (registrar y consultar). Patrón tomado de Control de Engrase: usuario corto convertido a email sintético (`usuario@inspecciones.internal`) para no pedir un correo real.
+  - **equipos, inspecciones y config** ya no son archivos JSON en una carpeta — son tablas Postgres (`supabase/schema.sql`) con RLS: cualquier autenticado lee todo; solo `admin` escribe equipos/config; cualquier autenticado registra/edita inspecciones.
+  - Los 113 equipos y 133 inspecciones de la carpeta de Drive que ya estaba en uso se migraron a Supabase (sección 6).
+  - **Los adjuntos quedan pendientes** (campo "Informe y fotos" deshabilitado en Registrar) hasta integrar la API de Google Drive (Etapa 2).
+  - La sección 10 ("sin dependencias de internet") ya **no aplica**: la app ahora necesita conexión para entrar y para leer/escribir datos. El modo sin conexión en campo es la Etapa 3, todavía no implementada.
+  - Se retiraron `src/store/fs.js`, `src/store/idb.js` y `src/store/seed.js` (File System Access API) y las funciones de migración de la v2.1/2.2, ya innecesarias porque el esquema de Supabase siempre trae `id`/`equipo_id`.
 
 ---
 
@@ -34,7 +41,7 @@ Programar y controlar las inspecciones periódicas de toda la flota y guardar ca
 | Ingeniero de Confiabilidad (Junior Valles) | Administra equipos y frecuencias, revisa el tablero |
 | Planners / Jefes de Taller / Superintendente | Consultan el tablero y el historial |
 
-El MVP no tiene login: el nombre de quien registra se guarda en el navegador y se graba en cada inspección.
+**v1/v2:** sin login — el nombre de quien registra se guardaba en el navegador. **Desde la v3:** login real por usuario/contraseña (Supabase Auth); el nombre que se graba en cada inspección es el del perfil de la cuenta con la que se entró, no algo que se pueda escribir a mano.
 
 ## 3. Alcance funcional
 
@@ -95,9 +102,9 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
 
 ### 3.4 Pantallas
 
-1. **Conexión de carpeta** (primera vez y cada sesión)
-   - Botón "Elegir carpeta" y botón "Reconectar a «nombre»", que recuerda la última carpeta.
-   - Si la carpeta está vacía (no existe `_SISTEMA/equipos.json`), la inicializa con los archivos de `datos_iniciales/`.
+1. **Entrar al sistema (v3)** — reemplaza la pantalla "Conectar carpeta" de la v1/v2.
+   - Usuario y contraseña (Supabase Auth); botón "Salir" en el encabezado para cerrar sesión.
+   - La sesión se guarda en el navegador (`localStorage`) y se renueva sola mientras el refresh token siga vigente — no hay que volver a escribir la contraseña cada vez que se abre la pestaña, a diferencia de la carpeta de la v1/v2.
 2. **Tablero**
    - 5 tarjetas: una por flota (solo control GENERAL) y una de AFEX (los 3 controles AFEX). Cada tarjeta muestra % al día, total de controles, barra apilada por estado y leyenda con los conteos.
    - Tabla de controles con: Código, Ahorrativo, Descripción, Modelo, Ubicación, Control, Proveedor, Última, Próxima, Días, Estado (pastilla de color) y las acciones [Registrar] e [Historial].
@@ -110,36 +117,46 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
    - Fecha (por defecto hoy; no se permiten fechas futuras).
    - Proveedor (se autocompleta: el del equipo, o Jhon May si es AFEX).
    - Inspector / técnico, Resultado (Sin hallazgos / Con hallazgos / Equipo fuera de servicio) y Observaciones.
-   - Adjuntos múltiples (PDF, imágenes, Excel, Word).
-   - Muestra la ruta destino antes de guardar.
+   - Adjuntos múltiples (PDF, imágenes, Excel, Word) — **deshabilitado en la v3 Etapa 1**, pendiente de la integración con la API de Drive (sección 9).
    - El botón [Registrar] del tablero abre esta pantalla con equipo, control y fecha ya llenos.
    - **Quitados en la v2:** los campos Horómetro y N.º de hallazgos (no se piden al registrar; ver sección 5 sobre el historial de registros antiguos que sí los tienen).
 4. **Historial**
    - Lista de inspecciones, la más reciente primero.
    - Filtros: equipo, control, rango de fechas.
-   - Cada adjunto se abre en una pestaña nueva.
-   - Permite eliminar un registro, con confirmación; los archivos adjuntos NO se borran.
+   - Columna de adjuntos: muestra cuántos tiene cada registro — **abrirlos queda pendiente** hasta la Etapa 2 (Drive API); mientras tanto los archivos de inspecciones antiguas siguen donde estaban (sección 4.2).
+   - Permite eliminar un registro, con confirmación.
    - Exportar a CSV.
 5. **Equipos**
-   - Lista con búsqueda; agregar y editar.
+   - Lista con búsqueda; agregar y editar (**solo admin** — a `inspector` no le aparecen esos botones).
    - Cada equipo tiene un **id interno** (p. ej. `E001`), autogenerado al crearlo, **oculto** (no aparece en ninguna pantalla ni se puede editar) y que nunca cambia — es el que usa el sistema para enlazar el equipo con su historial de inspecciones.
    - Campos visibles y editables: **código** y **Ahorrativo** (campo `codigo2` — dos identificadores, p. ej. `45-69` y `T-01`; ninguno de los dos es obligatorio salvo el código principal, y ambos deben ser únicos entre todos los equipos), descripción, modelo, ubicación (Volcán, Mojón, Acarreo, Troja, Taller), flota, proveedor, activo, y una bandera Sí/No por cada control adicional: **AFEX**, **Rodajes**, **Baldes**, **Implementos** (sección 3.2).
    - A diferencia de la v1, el código **ya no es inmutable**: se puede renombrar en cualquier momento sin perder el historial ni el estado calculado, porque el enlace real es por el id oculto (ver sección 5).
 6. **Configuración**
-   - Frecuencia y anticipación de cada control.
-   - Nombre del usuario de ese PC.
-   - Cambiar carpeta y recargar datos.
+   - Frecuencia y anticipación de cada control (**solo admin** edita; `inspector` la ve deshabilitada).
+   - Botón "Recargar datos" (vuelve a leer equipos/inspecciones/config de Supabase).
 
-## 4. Almacenamiento (decisión v1)
+## 4. Almacenamiento (v3 — Supabase)
 
-Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:\Mi unidad\INSPECCIONES FLOTA`. Todos los usuarios abren la app sobre la misma carpeta compartida.
+**Backend propio en Supabase** (proyecto `inspecciones-flota`, Postgres + Auth), esquema completo en `supabase/schema.sql`. Reemplaza la carpeta de Drive + File System Access API de la v1/v2 (sección 4.2) para `equipos`, `inspecciones` y `config` — ver el motivo en el historial de versiones (3.0).
+
+- **Tablas:** `perfiles`, `equipos`, `config`, `inspecciones` (detalle de columnas en la sección 5). `equipos.id` sigue siendo el formato `E001`, `E002`… (sección 3.4.5) para que la migración de datos fuera directa.
+- **RLS (seguridad por fila):** cualquier usuario autenticado puede leer las 4 tablas. Solo `rol = 'admin'` puede escribir en `equipos`/`config`. Cualquier autenticado puede crear/editar/borrar en `inspecciones`. Función auxiliar `es_admin()` en el esquema.
+- **Credenciales en el cliente:** la Project URL y la **anon/publishable key** están embebidas en `src/store/supabase.js` — son públicas por diseño (la seguridad real es la RLS de arriba), igual que en Control de Engrase. La **secret/service_role key** nunca va en el código; solo se usó, puntual y manualmente, para crear las cuentas iniciales y migrar los datos (sección 6).
+- **Adjuntos (fotos/informes):** **pendientes** — hasta la Etapa 2 (sección 9), el campo "Informe y fotos" de Registrar queda deshabilitado. Van a vivir en Google Drive (vía su API), no en Supabase Storage, para no generar costo de almacenamiento nuevo.
+- **Concurrencia:** ya no aplica el patrón "releer antes de escribir" de la v1/v2 — Postgres lo resuelve solo (cada escritura es una transacción).
+
+### 4.1 Distribución de la app (v3)
+
+- `dist/index.html` / `docs/index.html`: igual que la v2 — build de un solo archivo (`npm run build:pages`), publicado en GitHub Pages (`https://junivalles-cmd.github.io/inspecciones-flota/`). Sigue siendo un solo HTML, pero **ya no funciona sin internet** (sección 10): necesita llegar a Supabase para entrar y para leer/escribir datos.
+- El repositorio es público (igual que antes) — ahora eso expone el código, no datos (los datos reales viven en Supabase, protegidos por RLS, no en el repositorio).
+
+### 4.2 Almacenamiento v1/v2 (histórico — ya no es el mecanismo activo)
+
+Carpeta local sincronizada con Google Drive para escritorio + File System Access API (`showDirectoryPicker`). Se mantiene esta sección porque los adjuntos de inspecciones registradas antes de la Etapa 2 siguen físicamente en esas rutas (los `archivos` migrados a Supabase son los nombres/rutas tal como quedaron, sin mover ningún archivo):
 
 ```
 <CARPETA RAÍZ>/
-  _SISTEMA/
-    equipos.json
-    inspecciones.json
-    config.json
+  _SISTEMA/ (ya no se usa en v3 — los datos están en Supabase)
   INSPECCIONES/
     INSPECCIONES NIMAC/<AAAA-MM>/<codigo>/AAAA-MM-DD_<TIPO>_<n>.<ext>
     INSPECCIONES CONSTRUMARKET/<AAAA-MM>/<codigo>/...
@@ -148,25 +165,15 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
     INSPECCIONES VOLQUETES/<AAAA-MM>/<codigo>/...        (solo si el equipo no tiene proveedor asignado)
 ```
 
-- La carpeta de primer nivel dentro de `INSPECCIONES/` se elige por **tipo de inspección** (quién inspecciona), no por flota: `INSPECCIONES <PROVEEDOR>` para el control GENERAL (usando el proveedor del equipo; si está vacío, se usa el nombre de la flota), y siempre `INSPECCIONES AFEX` para los tres controles AFEX, sin importar la flota del equipo.
-- Dentro de esa carpeta, un nivel por mes (`AAAA-MM`, por ejemplo `2026-11`) y luego la carpeta del equipo.
-- **Nombre de los adjuntos:** `AAAA-MM-DD_TIPO_n.ext`, por ejemplo `2026-11-04_GENERAL_1.pdf`. Si el nombre ya existe, se agrega el sufijo `_2`, `_3`, etc.
-- Limpiar en nombres de carpeta y archivo los caracteres `\ / : * ? " < > |`.
-- **No usar en nombres de carpeta caracteres especiales como "–" (guion largo):** en algunas pruebas no se listaban.
-- Los adjuntos de inspecciones registradas antes de este cambio quedan donde estaban (por flota, sin mes); la app no migra archivos antiguos, solo usa la nueva estructura para lo que se registre de ahora en adelante.
-- **Concurrencia:** antes de escribir `inspecciones.json` o `equipos.json`, volver a leer el archivo y agregar o modificar sobre lo leído. Así se evita pisar lo que otro usuario guardó. La app relee `inspecciones.json` cada 60 s cuando la pestaña está visible.
-- **v1 técnica:** File System Access API (`showDirectoryPicker`, modo readwrite), y el handle se guarda en IndexedDB para reconectar. Solo funciona en Chrome o Edge de escritorio.
-
-### 4.1 Distribución de la app (v2)
-
-- `dist/index.html`: build empacado (`npm run build`), para abrir con doble clic.
-- `docs/index.html`: copia de `dist/index.html` (`npm run build:pages`), publicada con GitHub Pages en `https://junivalles-cmd.github.io/inspecciones-flota/`. El repositorio es público para que Pages funcione gratis; eso expone el código y los datos de `datos_iniciales/` (no hay contraseñas ni datos financieros, solo la lista de equipos y proveedores).
-- Abrir la app desde el link de Pages o desde el archivo local tiene el mismo comportamiento: `showDirectoryPicker` sigue pidiendo elegir la carpeta de Drive en la máquina de quien la usa; no hay backend ni datos compartidos por internet.
-- **Migración automática al conectar:** si `equipos.json` o `inspecciones.json` de la carpeta vienen de una versión anterior a la 2.1 (sin `id` ni `equipoId`), la app los completa sola la primera vez que carga esa carpeta y guarda el resultado — no hace falta tocar nada a mano. Se avisa con un mensaje en pantalla cuando esto pasa.
+- La carpeta de primer nivel dentro de `INSPECCIONES/` se elegía por **tipo de inspección** (quién inspecciona), no por flota: `INSPECCIONES <PROVEEDOR>` para el control GENERAL, y siempre `INSPECCIONES AFEX` para los tres controles AFEX.
+- **Nombre de los adjuntos:** `AAAA-MM-DD_TIPO_n.ext`, por ejemplo `2026-11-04_GENERAL_1.pdf`.
+- Esta carpeta sigue siendo donde vive físicamente todo lo adjuntado hasta ahora; cuando la Etapa 2 integre la API de Drive, los adjuntos nuevos seguirán yendo ahí (o a la misma estructura), ya sin pasar por `showDirectoryPicker`.
 
 ## 5. Modelo de datos
 
-### equipos.json (arreglo)
+Desde la v3 (Etapa 1) estas son tablas Postgres en Supabase (`supabase/schema.sql`), no archivos JSON — se muestran aquí en formato JSON porque es como viaja cada fila por la API (PostgREST) y es como las usa el resto de esta especificación.
+
+### tabla `equipos`
 ```json
 {
   "id": "E001",               // interno, oculto, autogenerado, inmutable — NO se muestra en la interfaz
@@ -188,11 +195,11 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 - El `id` se genera como `E` + número secuencial de 3 dígitos (`E001`, `E002`, …, `E112`, `E113`…), calculado a partir del id más alto que ya exista. Nunca se reutiliza ni se recicla, y no tiene ninguna relación con el orden o el valor de `codigo`/`codigo2`.
 - `codigo` y `codigo2` se pueden editar libremente desde la pantalla Equipos (sección 3.4.5); el enlace con el historial de inspecciones es por `id`, no por estos campos, así que renombrarlos no afecta el estado calculado en el Tablero.
 
-### inspecciones.json (arreglo)
+### tabla `inspecciones`
 ```json
 {
   "id": "lq3k9x2a",           // único
-  "equipoId": "E001",         // enlace real con equipos.json (por id, no por código)
+  "equipoId": "E001",         // columna equipo_id en Postgres; enlace real con equipos (por id, no por código)
   "codigo": "518",            // código del equipo al momento de registrar (para mostrar en Historial aunque después se renombre)
   "tipo": "GENERAL",          // GENERAL | AFEX_INSP | AFEX_MANT | AFEX_CERT
   "fecha": "2026-11-04",      // ISO, fecha de la inspección (no del registro)
@@ -208,16 +215,23 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 - `horometro` y `hallazgos`: campos de la v1, ya no se piden en el formulario de registrar (sección 3.4.3). Los registros antiguos que los tengan se siguen mostrando igual en Historial; los nuevos registros simplemente no los incluyen.
 - `equipoId` es obligatorio para que el cálculo de estado (sección 3.3) funcione; si un registro no tiene `equipoId` (por ejemplo, viniera de una versión anterior), ese registro no cuenta para el estado del equipo hasta que se corrija.
 
-### config.json
-```json
-{ "GENERAL":   {"frecuencia_dias": 30,  "anticipacion_dias": 10},
-  "AFEX_INSP": {"frecuencia_dias": 30,  "anticipacion_dias": 10},
-  "AFEX_MANT": {"frecuencia_dias": 90,  "anticipacion_dias": 15},
-  "AFEX_CERT": {"frecuencia_dias": 365, "anticipacion_dias": 30} }
-```
-(En la v1 de referencia las claves son `f` y `a`. En la nueva versión usar los nombres largos, y aceptar ambos al leer.)
+### tabla `config`
+Una fila por tipo de control: `{ "tipo": "GENERAL", "frecuencia_dias": 30, "anticipacion_dias": 10 }`, una por cada clave de la sección 3.2. El cliente (`src/store/datos.js`) la arma como objeto `{GENERAL: {...}, ...}` para que `core/estado.js` no tenga que cambiar.
+(En la v1 de referencia las claves eran `f` y `a`; `core/estado.js` sigue aceptando ambas al leer, por si algún día se vuelve a importar algo con ese formato.)
 
-## 6. Datos iniciales (`datos_iniciales/`)
+### tabla `perfiles` (nueva en v3)
+```json
+{
+  "id": "uuid de auth.users",
+  "usuario": "junior",        // lo que la persona escribe para entrar
+  "nombre": "Junior Valles",  // para mostrar y para el campo "usuario" de cada inspección
+  "rol": "admin"              // admin | inspector
+}
+```
+
+## 6. Datos iniciales (`datos_iniciales/`) y migración a Supabase
+
+Esta sección describe los datos de la v1/v2. En la v3 (Etapa 1), los 113 equipos y 133 inspecciones que ya estaban en la carpeta de Drive conectada del usuario (no los 112/150 originales de `datos_iniciales/` — ya habían crecido con uso real) se migraron a Supabase con un script puntual (leyó los JSON, insertó por API con la `service_role key`). `datos_iniciales/` queda como referencia histórica — ya no lo usa el código (no hay "carpeta vacía" que inicializar).
 
 - **equipos.json:** 112 equipos. CAT 41, KOMATSU 23, VOLQUETES 19, AUXILIAR 29. 52 tienen AFEX.
   - Fuentes: *FORMATO DE INSPECCIONES.xlsx* (hojas Inspecciones e Inspeccion AFEX) y el maestro *EQUIPOS MINA LL 2026.xlsx*.
@@ -232,29 +246,32 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 ## 7. Validaciones
 
 - Equipo existente y activo, control válido para el equipo, fecha obligatoria y no futura.
-- Si no hay nombre de usuario guardado, pedirlo antes del primer registro.
-- `codigo` y `codigo2` deben ser únicos entre todos los equipos (sin distinguir mayúsculas), tanto al crear como al editar; no se permite que el `codigo2` de uno choque con el `codigo` de otro.
+- Usuario y contraseña obligatorios para entrar (v3); sin sesión válida, la RLS de Supabase rechaza cualquier lectura/escritura.
+- `codigo` y `codigo2` deben ser únicos entre todos los equipos (sin distinguir mayúsculas), tanto al crear como al editar; no se permite que el `codigo2` de uno choque con el `codigo` de otro. Se valida en el cliente contra lo que ya está cargado; la tabla también tiene restricciones `unique` como respaldo.
+- Solo `rol = 'admin'` puede crear/editar equipos y guardar configuración — la pantalla ya oculta esos botones a quien no sea admin, y la RLS lo bloquea aunque alguien intente saltarse la interfaz.
 - Mensajes de éxito y error visibles; los errores no se ocultan solos.
 
 ## 8. Casos de prueba (aceptación)
 
-1. Carpeta vacía → al conectar se crean `_SISTEMA/*.json` con 112 equipos y 150 inspecciones.
+1. ~~Carpeta vacía → al conectar se crean `_SISTEMA/*.json`~~ — ya no aplica (v3): la migración a Supabase fue un paso único, no algo que la app repita al conectar.
 2. Equipo 518 sin inspección general previa. Registrar GENERAL con fecha de hoy → estado AL DÍA, próxima = hoy + 30, días = 30.
 3. Inspección con fecha de hace 25 días (frecuencia 30, aviso 10) → días = 5 → PROGRAMAR.
 4. Inspección con fecha de hace 31 días → días = −1 → VENCIDA.
 5. 45-80, con última inspección general el 29/08/2025 → VENCIDA, con más de 400 días de atraso.
-6. Registrar con 2 adjuntos → quedan `INSPECCIONES/CAT - NIMAC/518/AAAA-MM-DD_GENERAL_1.pdf` y `_2.jpg`, y el registro guarda las 2 rutas.
-7. Registrar 2 veces el mismo día y tipo con adjuntos → no se sobrescriben (sufijo `_2`).
-8. Dos navegadores registran casi a la vez → `inspecciones.json` conserva ambos registros.
-9. Cambiar AFEX_MANT a 60 días → los estados se recalculan al guardar.
+6. ~~Registrar con 2 adjuntos~~ — pendiente hasta la Etapa 2 (Drive API); por ahora el campo de adjuntos está deshabilitado.
+7. ~~Registrar 2 veces el mismo día con adjuntos, sin sobrescribir~~ — mismo caso, pendiente de la Etapa 2.
+8. Dos personas registran casi a la vez → Postgres ya resuelve esto (cada INSERT es independiente), no hace falta el patrón de releer-antes-de-escribir de la v1/v2.
+9. Cambiar AFEX_MANT a 60 días → los estados se recalculan al guardar (solo admin puede hacerlo).
 10. Dar de baja un equipo → desaparece del tablero y su historial sigue visible.
 11. Exportar CSV → abre en Excel con tildes correctas y columnas separadas.
+12. **(v3)** Entrar con usuario/contraseña correctos → ve el Tablero con datos reales. Cerrar sesión (botón "Salir") y volver a entrar sin recargar la página → pide usuario/contraseña otra vez, no la carpeta.
+13. **(v3)** Entrar con la cuenta `emilio` (rol inspector) → puede registrar/ver, pero no ve el botón "+ Agregar equipo" ni "Guardar configuración".
 
-## 9. Mejoras sugeridas para la versión nueva (priorizar con Junior)
+## 9. Mejoras sugeridas / siguientes etapas (priorizar con Junior)
 
-1. **Uso desde el celular en campo:** pasar a PWA con backend (ej. Supabase, como la app Control de Engrase) y guardar archivos en Google Drive con la API de Drive, o hacerlo en AppSheet. La v1 no funciona en móvil.
-2. Captura de fotos directa con la cámara del teléfono y compresión de imágenes.
-3. Login simple por usuario y rol (inspector / consulta / administrador).
+1. ~~**Uso desde el celular en campo:** pasar a PWA con backend~~ — **en marcha (v3).** Etapa 1 (esta versión): backend Supabase + login real, ya hecho. **Etapa 2 (siguiente):** integrar la API de Google Drive para que los adjuntos vuelvan a funcionar, y PWA instalable (`manifest.json` + Service Worker). **Etapa 3:** modo sin conexión real en campo (IndexedDB + motor de sincronización con manejo de conflictos, como `sync.js`/`db.js` de Control de Engrase) — es la pieza más compleja, se deja para el final a propósito.
+2. Captura de fotos directa con la cámara del teléfono y compresión de imágenes — depende de la Etapa 2 (Drive).
+3. ~~Login simple por usuario y rol~~ — **hecho en la v3** (Etapa 1): Supabase Auth, roles `admin`/`inspector`.
 4. Correo o notificación semanal con las inspecciones VENCIDAS y por PROGRAMAR.
 5. Calendario mensual de inspecciones programadas por proveedor.
 6. Registro de hallazgos individuales con estado (abierto / cerrado) y su enlace al backlog.
@@ -265,5 +282,5 @@ Carpeta local sincronizada con **Google Drive para escritorio**, por ejemplo `G:
 
 - Idioma de la interfaz: español (Nicaragua). Fechas en `dd/mm/aaaa`; en los datos, ISO `aaaa-mm-dd`.
 - Zona horaria: America/Managua (UTC−6).
-- Sin dependencias de internet para la v1 (todo en el archivo).
+- ~~Sin dependencias de internet~~ — **ya no aplica desde la v3.** La app necesita conexión para entrar (Supabase Auth) y para leer/escribir datos. El modo sin conexión en campo es la Etapa 3 de la sección 9, todavía no implementada.
 - No borrar archivos adjuntos desde la app; solo registros.

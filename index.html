@@ -10,8 +10,8 @@
 <header>
   <div><h1>Inspecciones de Flota</h1><div class="sub">CONEQUISA · Maquinaria Open Pit · Mina La Libertad</div></div>
   <div class="sp"></div>
-  <span class="pill" id="pFolder"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a1 1 0 0 1 1-1h4.5l1.5 2H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z"/></svg>Sin carpeta</span>
   <span class="pill" id="pUser"></span>
+  <button class="btn sec sm hide" id="bSalir">Salir</button>
 </header>
 <nav id="nav" class="hide">
   <button data-t="tab-tablero" class="on">Tablero</button>
@@ -22,14 +22,15 @@
 </nav>
 <main>
   <div id="msg"></div>
-  <section id="welcome" class="welcome card">
-    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a1 1 0 0 1 1-1h4.5l1.5 2H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z"/></svg>
-    <h2 style="color:var(--az);margin-top:8px">Conectar carpeta compartida</h2>
-    <p>Elija la carpeta de Google Drive donde se guardarán las inspecciones (por ejemplo <b>G:\Mi unidad\INSPECCIONES FLOTA</b> o una carpeta compartida sincronizada con Drive para escritorio).<br>
-    La app guarda ahí los informes ordenados por flota y equipo, y el registro de inspecciones en <b>_SISTEMA</b>. Todos los que abran la app sobre la misma carpeta ven la misma información.</p>
-    <p class="mut">Funciona en Google Chrome o Microsoft Edge. La primera vez carga los equipos y las fechas del archivo de control.</p>
-    <p><button class="btn" id="bPick">Elegir carpeta</button> <button class="btn sec hide" id="bRe">Reconectar a la última carpeta</button></p>
-    <p id="noApi" class="msg err hide">Este navegador no permite trabajar con carpetas. Abra el archivo con Google Chrome o Microsoft Edge.</p>
+  <section id="login" class="welcome card">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.3"/><path d="M5 20c0-3.5 3.1-6 7-6s7 2.5 7 6"/></svg>
+    <h2 style="color:var(--az);margin-top:8px">Entrar al sistema</h2>
+    <p class="mut">Usuario y contraseña que te haya dado el administrador.</p>
+    <div class="form" style="max-width:320px;margin:0 auto">
+      <div class="full"><label>Usuario</label><input id="lUsuario" autocomplete="username"></div>
+      <div class="full"><label>Contraseña</label><input id="lPassword" type="password" autocomplete="current-password"></div>
+    </div>
+    <p><button class="btn" id="bEntrar">Entrar</button></p>
   </section>
 
   <section id="tab-tablero" class="tab hide">
@@ -61,9 +62,9 @@
         <div><label>Inspector / técnico</label><input id="rInsp"></div>
         <div><label>Resultado</label><select id="rRes"><option>Sin hallazgos</option><option>Con hallazgos</option><option>Equipo fuera de servicio</option></select></div>
         <div class="full"><label>Observaciones / hallazgos principales</label><textarea id="rObs"></textarea></div>
-        <div class="full"><label>Informe y fotos (PDF, imágenes, Excel, Word) – se guardan en la carpeta del equipo</label><input id="rFiles" type="file" multiple></div>
+        <div class="full"><label>Informe y fotos</label><input id="rFiles" type="file" multiple disabled><div class="mut">Próximamente: subida directa a Google Drive. Por ahora, suba los adjuntos a la carpeta de Drive del equipo por separado.</div></div>
       </div>
-      <p><button class="btn" id="bGuardar">Guardar inspección</button> <span class="mut" id="rDest"></span></p>
+      <p><button class="btn" id="bGuardar">Guardar inspección</button></p>
     </div>
   </section>
 
@@ -75,7 +76,7 @@
         <input id="hDesde" type="date" title="Desde"><input id="hHasta" type="date" title="Hasta">
         <span style="flex:1"></span><button class="btn sec sm" id="bCsvHis">Exportar historial (CSV)</button>
       </div>
-      <div class="tw"><table><thead><tr><th>Fecha</th><th>Código</th><th>Control</th><th>Proveedor</th><th>Inspector</th><th class="right">Horóm.</th><th>Resultado</th><th class="right">Hall.</th><th>Observaciones</th><th>Archivos</th><th>Registró</th><th></th></tr></thead><tbody id="tbHis"></tbody></table></div>
+      <div class="tw"><table><thead><tr><th>Fecha</th><th>Código</th><th>Control</th><th>Proveedor</th><th>Inspector</th><th>Resultado</th><th>Observaciones</th><th>Archivos</th><th>Registró</th><th></th></tr></thead><tbody id="tbHis"></tbody></table></div>
       <div class="mut" id="cntHis" style="margin-top:6px"></div>
     </div>
   </section>
@@ -92,11 +93,8 @@
       <h3 style="margin-top:0;color:var(--az)">Frecuencias y avisos</h3>
       <div class="tw" style="max-height:none"><table><thead><tr><th>Control</th><th>Aplica a</th><th>Frecuencia (días)</th><th>Avisar PROGRAMAR con (días de anticipación)</th></tr></thead><tbody id="tbCfg"></tbody></table></div>
       <p><button class="btn" id="bCfg">Guardar configuración</button></p>
-      <h3 style="color:var(--az)">Usuario de este equipo</h3>
-      <p><input id="cUser" placeholder="Nombre de quien registra"> <button class="btn sec" id="bUser">Guardar nombre</button></p>
-      <h3 style="color:var(--az)">Carpeta</h3>
-      <p class="mut" id="cFolder"></p>
-      <p><button class="btn sec" id="bCambiar">Cambiar carpeta</button> <button class="btn sec" id="bRecargar">Recargar datos</button></p>
+      <h3 style="color:var(--az)">Datos</h3>
+      <p><button class="btn sec" id="bRecargar">Recargar datos</button></p>
     </div>
   </section>
 </main>

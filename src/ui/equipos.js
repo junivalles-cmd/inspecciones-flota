@@ -10,18 +10,20 @@ import { D } from '../state.js';
 import { llenarSelectoresDinamicos } from './compartido.js';
 import { FLOTAS, UBICACIONES, BANDERAS_EQUIPO } from '../core/dominio.js';
 import { siguienteIdEquipo, buscarEquipoPorId, codigosEnUso } from '../core/equipos.js';
-import { actualizarJSON } from '../store/fs.js';
+import { crearEquipo, actualizarEquipo } from '../store/datos.js';
+import { esAdmin } from '../store/supabase.js';
 import { abrirModal, cerrarModal } from './modal.js';
 
 let onCambio = () => {};
 
 export function renderEquipos() {
+  $('bNuevoEq').classList.toggle('hide', !esAdmin());
   const q = $('eBus').value.toLowerCase();
   $('tbEq').innerHTML = D.equipos
     .filter((e) => !q || JSON.stringify(e).toLowerCase().includes(q))
     .map(
       (e) =>
-        `<tr><td><b>${esc(e.codigo)}</b></td><td>${esc(e.codigo2)}</td><td>${esc(e.descripcion)}</td><td>${esc(e.modelo)}</td><td>${esc(e.ubicacion)}</td><td>${FLOTAS[e.flota] || esc(e.flota)}</td><td>${esc(e.proveedor)}</td>${BANDERAS_EQUIPO.map((b) => `<td>${e[b.clave] ? 'Sí' : ''}</td>`).join('')}<td>${e.activo === false ? 'No' : 'Sí'}</td><td><button class="lnk" data-id="${esc(e.id)}">Editar</button></td></tr>`
+        `<tr><td><b>${esc(e.codigo)}</b></td><td>${esc(e.codigo2)}</td><td>${esc(e.descripcion)}</td><td>${esc(e.modelo)}</td><td>${esc(e.ubicacion)}</td><td>${FLOTAS[e.flota] || esc(e.flota)}</td><td>${esc(e.proveedor)}</td>${BANDERAS_EQUIPO.map((b) => `<td>${e[b.clave] ? 'Sí' : ''}</td>`).join('')}<td>${e.activo === false ? 'No' : 'Sí'}</td><td>${esAdmin() ? `<button class="lnk" data-id="${esc(e.id)}">Editar</button>` : ''}</td></tr>`
     )
     .join('');
 }
@@ -79,18 +81,18 @@ async function guardar(idEditado) {
     activo: $('mV').value === '1',
     ...Object.fromEntries(BANDERAS_EQUIPO.map((b) => [b.clave, $('mB_' + b.clave).value === '1'])),
   };
+  if (codigosEnUso(D.equipos, { codigo, codigo2, idExcluido: idEditado })) {
+    return alert('Ese código (o Ahorrativo) ya lo usa otro equipo.');
+  }
   try {
-    D.equipos = await actualizarJSON('equipos.json', [], (actuales) => {
-      if (codigosEnUso(actuales, { codigo, codigo2, idExcluido: idEditado })) {
-        throw new Error('Ese código (o código 2) ya lo usa otro equipo.');
-      }
-      if (idEditado) {
-        Object.assign(buscarEquipoPorId(actuales, idEditado), datos);
-      } else {
-        actuales.push({ id: siguienteIdEquipo(actuales), ...datos });
-      }
-      return actuales;
-    });
+    let fila;
+    if (idEditado) {
+      fila = await actualizarEquipo(idEditado, datos);
+      Object.assign(buscarEquipoPorId(D.equipos, idEditado), fila);
+    } else {
+      fila = await crearEquipo({ id: siguienteIdEquipo(D.equipos), ...datos });
+      D.equipos = [...D.equipos, fila];
+    }
     cerrarModal();
     llenarSelectoresDinamicos();
     renderEquipos();

@@ -1,5 +1,5 @@
 import './styles.css';
-import { $, esc, mostrarMensaje, nombreUsuario } from './ui/dom.js';
+import { $, esc, mostrarMensaje } from './ui/dom.js';
 import { D } from './state.js';
 import { llenarSelectoresEstaticos, llenarSelectoresDinamicos } from './ui/compartido.js';
 import { mostrarTab, initNavegacion } from './ui/navegacion.js';
@@ -9,81 +9,66 @@ import { initHistorial, renderHistorial, irAHistorial as mostrarHistorialDe } fr
 import { initEquipos, renderEquipos } from './ui/equipos.js';
 import { initConfig, renderConfig } from './ui/config.js';
 import { generarProgramaInspecciones } from './ui/excel.js';
-import { migrarEquiposFaltantes, migrarInspeccionesFaltantes } from './core/equipos.js';
-import { iconoCarpeta, iconoUsuario } from './ui/iconos.js';
-import {
-  soportado,
-  elegirCarpeta,
-  carpetaGuardada,
-  permisoConcedido,
-  reconectar,
-  leerJSON,
-  actualizarJSON,
-  carpetaActual,
-} from './store/fs.js';
+import { iconoUsuario } from './ui/iconos.js';
+import { iniciarSesion, cerrarSesion, sesion } from './store/supabase.js';
+import { leerEquipos, leerInspecciones, leerConfig } from './store/datos.js';
 
 function renderTodo() {
   renderTablero();
   renderHistorial();
   renderEquipos();
   renderConfig();
-  $('pUser').innerHTML = iconoUsuario() + esc(nombreUsuario() || 'sin usuario');
-}
-
-// Si la carpeta tiene equipos.json/inspecciones.json guardados con una versión
-// anterior (sin el id oculto ni equipoId), se completan solos al cargar, para que
-// "Editar" en Equipos y el cálculo de estado sigan funcionando con esos datos.
-async function migrarSiHaceFalta() {
-  const equiposMigrados = migrarEquiposFaltantes(D.equipos);
-  if (equiposMigrados.cambiaron) {
-    D.equipos = await actualizarJSON('equipos.json', [], (actuales) => migrarEquiposFaltantes(actuales).equipos);
-  }
-  const inspeccionesMigradas = migrarInspeccionesFaltantes(D.inspecciones, D.equipos);
-  if (inspeccionesMigradas.cambiaron) {
-    D.inspecciones = await actualizarJSON('inspecciones.json', [], (actuales) => migrarInspeccionesFaltantes(actuales, D.equipos).inspecciones);
-  }
-  if (equiposMigrados.cambiaron || inspeccionesMigradas.cambiaron) {
-    mostrarMensaje('Se actualizaron algunos equipos/inspecciones guardados con una versión anterior (se les asignó un identificador interno).');
-  }
+  $('pUser').innerHTML = iconoUsuario() + esc(sesion().nombre);
 }
 
 async function cargarDatos() {
-  D.equipos = await leerJSON('equipos.json', []);
-  D.inspecciones = await leerJSON('inspecciones.json', []);
-  D.config = await leerJSON('config.json', {});
-  await migrarSiHaceFalta();
+  const [equipos, inspecciones, config] = await Promise.all([leerEquipos(), leerInspecciones(), leerConfig()]);
+  D.equipos = equipos;
+  D.inspecciones = inspecciones;
+  D.config = config;
   llenarSelectoresDinamicos();
   renderTodo();
 }
 
-async function entrarAlTablero(handle, inicializado) {
-  $('pFolder').innerHTML = iconoCarpeta() + esc(handle.name);
-  $('cFolder').textContent = 'Carpeta conectada: ' + handle.name;
-  if (inicializado) mostrarMensaje('Carpeta preparada: se cargaron los equipos y las inspecciones anteriores.');
-  await cargarDatos();
-  $('welcome').classList.add('hide');
+async function entrarAlSistema() {
+  try {
+    await cargarDatos();
+  } catch (err) {
+    mostrarMensaje('No se pudieron cargar los datos: ' + err.message, 'err');
+    if (!sesion()) return salir(); // la sesión guardada expiró (ver tokenValido en supabase.js)
+  }
+  $('login').classList.add('hide');
   $('nav').classList.remove('hide');
+  $('bSalir').classList.remove('hide');
   mostrarTab('tab-tablero');
 }
 
-async function elegir() {
+async function entrar() {
+  const usuario = $('lUsuario').value.trim();
+  const password = $('lPassword').value;
+  if (!usuario || !password) return mostrarMensaje('Escriba usuario y contraseña.', 'err');
+  $('bEntrar').disabled = true;
   try {
-    const { inicializado } = await elegirCarpeta();
-    await entrarAlTablero(carpetaActual(), inicializado);
-  } catch (e) {
-    if (e.name !== 'AbortError') mostrarMensaje('No se pudo abrir la carpeta: ' + e.message, 'err');
-  }
-}
-
-async function reconectarUltima() {
-  const h = await carpetaGuardada();
-  if (!h) return elegir();
-  try {
-    const { inicializado } = await reconectar(h);
-    await entrarAlTablero(h, inicializado);
+    await iniciarSesion(usuario, password);
+    $('lPassword').value = '';
+    await entrarAlSistema();
   } catch (err) {
     mostrarMensaje(err.message, 'err');
   }
+  $('bEntrar').disabled = false;
+}
+
+function salir() {
+  cerrarSesion();
+  D.equipos = [];
+  D.inspecciones = [];
+  D.config = {};
+  $('nav').classList.add('hide');
+  $('bSalir').classList.add('hide');
+  $('pUser').innerHTML = '';
+  $('lUsuario').value = '';
+  $('login').classList.remove('hide');
+  mostrarTab('tab-tablero');
 }
 
 function wire() {
@@ -113,9 +98,11 @@ function wire() {
     }
     $('bExcelProg').disabled = false;
   };
-  $('bPick').onclick = elegir;
-  $('bRe').onclick = reconectarUltima;
-  $('bCambiar').onclick = elegir;
+  $('bEntrar').onclick = entrar;
+  $('lPassword').onkeydown = (e) => {
+    if (e.key === 'Enter') entrar();
+  };
+  $('bSalir').onclick = salir;
   $('bRecargar').onclick = async () => {
     await cargarDatos();
     mostrarMensaje('Datos recargados.');
@@ -125,32 +112,9 @@ function wire() {
 async function iniciar() {
   llenarSelectoresEstaticos();
   wire();
-
-  if (!soportado()) {
-    $('noApi').classList.remove('hide');
-    $('bPick').disabled = true;
-    return;
+  if (sesion()) {
+    await entrarAlSistema();
   }
-
-  const h = await carpetaGuardada();
-  if (h) {
-    $('bRe').classList.remove('hide');
-    $('bRe').textContent = `Reconectar a «${h.name}»`;
-    if (await permisoConcedido(h)) {
-      const { inicializado } = await reconectar(h);
-      await entrarAlTablero(h, inicializado);
-    }
-  }
-
-  // Relee inspecciones.json cada 60 s (sección 4): detecta registros guardados por otros usuarios.
-  setInterval(async () => {
-    if (!carpetaActual() || document.visibilityState !== 'visible') return;
-    const nuevas = await leerJSON('inspecciones.json', null);
-    if (nuevas && nuevas.length !== D.inspecciones.length) {
-      D.inspecciones = nuevas;
-      renderTodo();
-    }
-  }, 60000);
 }
 
 iniciar();

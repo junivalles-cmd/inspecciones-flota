@@ -1,10 +1,11 @@
 // Pantalla Registrar inspección.
-import { $, hoyISO, mostrarMensaje, nombreUsuario, guardarNombreUsuario } from './dom.js';
+import { $, hoyISO, mostrarMensaje } from './dom.js';
 import { D } from '../state.js';
 import { buscarEquipo } from './compartido.js';
 import { tiposAplicables } from '../core/estado.js';
 import { CONTROLES_NOMBRE, FLOTAS, PROVEEDOR_AFEX, esControlAfex } from '../core/dominio.js';
-import { rutaDestino, guardarArchivos, actualizarJSON } from '../store/fs.js';
+import { crearInspeccion } from '../store/datos.js';
+import { sesion } from '../store/supabase.js';
 
 let onGuardado = () => {};
 
@@ -17,28 +18,20 @@ function actualizarInfoYTipos() {
   const tipos = e ? tiposAplicables(e) : ['GENERAL'];
   $('rTipo').innerHTML = tipos.map((t) => `<option value="${t}">${CONTROLES_NOMBRE[t]}</option>`).join('');
   if (tipos.includes(anterior)) $('rTipo').value = anterior;
-  actualizarProveedorYDestino();
+  actualizarProveedor();
 }
 
-function actualizarProveedorYDestino() {
+function actualizarProveedor() {
   const e = buscarEquipo($('rEq').value);
   if (!e) return;
   $('rProv').value = esControlAfex($('rTipo').value) ? PROVEEDOR_AFEX : e.proveedor;
-  actualizarDestino();
-}
-
-function actualizarDestino() {
-  const e = buscarEquipo($('rEq').value);
-  if (!e) return;
-  const fecha = $('rFecha').value || hoyISO();
-  $('rDest').textContent = 'Se guardará en: ' + rutaDestino(e, $('rTipo').value, fecha) + '/';
 }
 
 export function prepararFormulario(codigo, tipo) {
   $('rEq').value = codigo;
   actualizarInfoYTipos();
   if (tipo) $('rTipo').value = tipo;
-  actualizarProveedorYDestino();
+  actualizarProveedor();
   $('rFecha').value = hoyISO();
   $('rInsp').focus();
 }
@@ -50,15 +43,8 @@ async function guardar() {
   if (!e) return mostrarMensaje('Elija un equipo válido de la lista.', 'err');
   if (!fecha) return mostrarMensaje('Indique la fecha de la inspección.', 'err');
   if (fecha > hoyISO()) return mostrarMensaje('La fecha no puede ser futura.', 'err');
-  if (!nombreUsuario()) {
-    const n = prompt('Escriba su nombre (queda registrado en cada inspección):');
-    if (!n) return;
-    guardarNombreUsuario(n);
-  }
   $('bGuardar').disabled = true;
   try {
-    const archivos = [...$('rFiles').files];
-    const rutas = await guardarArchivos(e, fecha, tipo, archivos);
     const registro = {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       equipoId: e.id,
@@ -69,15 +55,15 @@ async function guardar() {
       inspector: $('rInsp').value.trim(),
       resultado: $('rRes').value,
       obs: $('rObs').value.trim(),
-      archivos: rutas,
+      archivos: [],
       creado: new Date().toISOString(),
-      usuario: nombreUsuario(),
+      usuario: sesion().nombre,
     };
-    D.inspecciones = await actualizarJSON('inspecciones.json', [], (actuales) => [...actuales, registro]);
+    const creado = await crearInspeccion(registro);
+    D.inspecciones = [creado, ...D.inspecciones];
     ['rObs', 'rInsp'].forEach((id) => ($(id).value = ''));
-    $('rFiles').value = '';
     onGuardado();
-    mostrarMensaje(`Inspección de ${e.codigo} guardada${rutas.length ? ' con ' + rutas.length + ' archivo(s)' : ''}.`);
+    mostrarMensaje(`Inspección de ${e.codigo} guardada.`);
   } catch (err) {
     mostrarMensaje('No se pudo guardar: ' + err.message, 'err');
   }
@@ -87,8 +73,7 @@ async function guardar() {
 export function initRegistrar(cbs) {
   onGuardado = cbs.onGuardado;
   $('rEq').oninput = actualizarInfoYTipos;
-  $('rTipo').onchange = actualizarProveedorYDestino;
-  $('rFecha').oninput = actualizarDestino;
+  $('rTipo').onchange = actualizarProveedor;
   $('bGuardar').onclick = guardar;
   // El HTML trae <select id="rTipo"> vacío; sin esto, el combo "Control" queda sin
   // opciones hasta que alguien escribe un código de equipo (bug reportado por el usuario).

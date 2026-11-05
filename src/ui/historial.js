@@ -1,9 +1,9 @@
-// Pantalla Historial: lista de inspecciones, filtros, abrir adjuntos, eliminar y exportar CSV.
+// Pantalla Historial: lista de inspecciones, filtros, eliminar y exportar CSV.
 import { $, esc, formatearFecha, hoyISO, mostrarMensaje } from './dom.js';
 import { exportarCSV } from './csv.js';
 import { D } from '../state.js';
 import { CONTROLES_NOMBRE } from '../core/dominio.js';
-import { abrirArchivo, actualizarJSON } from '../store/fs.js';
+import { eliminarInspeccion } from '../store/datos.js';
 import { iconoClip } from './iconos.js';
 
 const LIMITE_FILAS = 800;
@@ -26,13 +26,20 @@ function filasHistorial() {
     .sort((a, b) => b.fecha.localeCompare(a.fecha));
 }
 
+// Los adjuntos todavía no se pueden abrir desde la app (pendiente integración con Drive,
+// sección "Siguiente etapa"); por ahora solo se muestra cuántos tiene.
+function celdaArchivos(i) {
+  const n = (i.archivos || []).length;
+  return n ? `${iconoClip()}${n}` : '';
+}
+
 export function renderHistorial() {
   const f = filasHistorial();
   $('tbHis').innerHTML = f
     .slice(0, LIMITE_FILAS)
     .map(
-      (i) => `<tr><td>${formatearFecha(i.fecha)}</td><td><b>${esc(i.codigo)}</b></td><td>${CONTROLES_NOMBRE[i.tipo] || i.tipo}</td><td>${esc(i.proveedor)}</td><td>${esc(i.inspector)}</td><td class="right">${esc(i.horometro)}</td><td>${esc(i.resultado)}</td><td class="right">${esc(i.hallazgos)}</td><td>${esc(i.obs)}</td>
-     <td>${(i.archivos || []).map((a, k) => `<button class="lnk" data-accion="abrir" data-ruta="${esc(a)}">${iconoClip()}${k + 1}</button>`).join(' ')}</td><td class="mut">${esc(i.usuario)}</td><td><button class="lnk" data-accion="eliminar" data-id="${i.id}" title="Eliminar registro">✕</button></td></tr>`
+      (i) => `<tr><td>${formatearFecha(i.fecha)}</td><td><b>${esc(i.codigo)}</b></td><td>${CONTROLES_NOMBRE[i.tipo] || i.tipo}</td><td>${esc(i.proveedor)}</td><td>${esc(i.inspector)}</td><td>${esc(i.resultado)}</td><td>${esc(i.obs)}</td>
+     <td class="mut">${celdaArchivos(i)}</td><td class="mut">${esc(i.usuario)}</td><td><button class="lnk" data-accion="eliminar" data-id="${i.id}" title="Eliminar registro">✕</button></td></tr>`
     )
     .join('');
   $('cntHis').textContent = f.length + ' inspecciones' + (f.length > LIMITE_FILAS ? ` (se muestran las ${LIMITE_FILAS} más recientes)` : '');
@@ -47,11 +54,16 @@ export function irAHistorial(codigo) {
 async function eliminar(id) {
   const i = D.inspecciones.find((x) => x.id === id);
   if (!i) return;
-  if (!confirm(`¿Eliminar el registro de ${i.codigo} del ${formatearFecha(i.fecha)}? Los archivos adjuntos se quedan en la carpeta.`)) return;
-  D.inspecciones = await actualizarJSON('inspecciones.json', [], (actuales) => actuales.filter((x) => x.id !== id));
-  renderHistorial();
-  onCambio();
-  mostrarMensaje('Registro eliminado.');
+  if (!confirm(`¿Eliminar el registro de ${i.codigo} del ${formatearFecha(i.fecha)}?`)) return;
+  try {
+    await eliminarInspeccion(id);
+    D.inspecciones = D.inspecciones.filter((x) => x.id !== id);
+    renderHistorial();
+    onCambio();
+    mostrarMensaje('Registro eliminado.');
+  } catch (err) {
+    mostrarMensaje('No se pudo eliminar: ' + err.message, 'err');
+  }
 }
 
 export function initHistorial(cbs) {
@@ -60,25 +72,21 @@ export function initHistorial(cbs) {
   $('bCsvHis').onclick = () =>
     exportarCSV(
       `historial_inspecciones_${hoyISO()}.csv`,
-      ['Fecha', 'Código', 'Control', 'Proveedor', 'Inspector', 'Horómetro', 'Resultado', 'Hallazgos', 'Observaciones', 'Archivos', 'Registró'],
+      ['Fecha', 'Código', 'Control', 'Proveedor', 'Inspector', 'Resultado', 'Observaciones', 'Archivos', 'Registró'],
       filasVisibles.map((i) => [
         formatearFecha(i.fecha),
         i.codigo,
         CONTROLES_NOMBRE[i.tipo] || i.tipo,
         i.proveedor,
         i.inspector,
-        i.horometro,
         i.resultado,
-        i.hallazgos,
         i.obs,
-        (i.archivos || []).join(' | '),
+        (i.archivos || []).length,
         i.usuario,
       ])
     );
   $('tbHis').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-accion]');
-    if (!btn) return;
-    if (btn.dataset.accion === 'abrir') abrirArchivo(btn.dataset.ruta).catch(() => mostrarMensaje('No se encontró el archivo: ' + btn.dataset.ruta, 'err'));
-    else if (btn.dataset.accion === 'eliminar') eliminar(btn.dataset.id);
+    if (btn && btn.dataset.accion === 'eliminar') eliminar(btn.dataset.id);
   });
 }

@@ -16,14 +16,6 @@ export function formatearFecha(fechaISO) {
   return `${d}/${m}/${y}`;
 }
 
-export function nombreUsuario() {
-  return localStorage.getItem('insp_user') || '';
-}
-
-export function guardarNombreUsuario(nombre) {
-  localStorage.setItem('insp_user', nombre.trim());
-}
-
 export function mostrarMensaje(texto, tipo = 'ok') {
   $('msg').innerHTML = `<div class="msg ${tipo}">${texto}</div>`;
   if (tipo !== 'err') setTimeout(() => { $('msg').innerHTML = ''; }, 5000);
