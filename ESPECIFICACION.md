@@ -2,7 +2,7 @@
 
 **Cliente:** CONEQUISA – Departamento de Maquinaria Open Pit, Mina La Libertad (Volcán / Mojón), Equinox Gold
 **Dueño del producto:** Junior Valles, Ingeniero de Confiabilidad
-**Versión de la especificación:** 2.5 – 04/11/2026
+**Versión de la especificación:** 2.6 – 05/11/2026
 **Repositorio:** https://github.com/junivalles-cmd/inspecciones-flota
 **Referencia funcional:** `referencia/Sistema_Inspecciones_Flota_v1.html`. Es la v1 ya funcionando, un HTML de un solo archivo; usarla como base de comportamiento.
 
@@ -15,6 +15,7 @@
 - **2.3 (04/11/2026):** se llenó `codigo2` en `datos_iniciales/equipos.json` para 47 de los 112 equipos, usando la columna "Ahorrativo" de `EQUIPOS MINA LL 2026.xlsx` (sección 6).
 - **2.4 (04/11/2026):** tres controles nuevos — Rodajes, Baldes e Implementos (sección 3.2) — a partir del mecanismo de "banderas del equipo" (adelanto de la mejora sugerida en la sección 9.8). Se corrigieron de paso dos bugs que asumían que "todo lo que no es GENERAL es AFEX": el proveedor autocompletado y la carpeta de adjuntos de estos controles nuevos usaban "Jhon May"/`INSPECCIONES AFEX` por error; ahora usan el proveedor y la carpeta de la inspección general del equipo.
 - **2.5 (04/11/2026):** el buscador de equipo (Registrar/Historial) mostraba cada equipo dos veces, una por código y otra por Ahorrativo — ahora es una sola entrada por equipo. Se renombró "Código 2" a **Ahorrativo** en toda la interfaz. Repaso visual con la skill `ui-ux-pro-max` (sin su generador de paletas, que requiere Python no disponible en esta máquina): se reemplazaron los emojis estructurales (📁 👤 📅 📎) por iconos SVG en línea (`src/ui/iconos.js`), se le dio sombra sutil a tarjetas/modales, estados de foco visibles, y una pastilla de color con punto indicador en cada estado (no depende solo del color). Los colores de la sección 3.3 no se tocaron: ya cumplían contraste WCAG AA (4.5:1 o más en todos los pares texto/fondo, verificado).
+- **2.6 (05/11/2026):** con Python instalado, se corrió el generador de la skill `ui-ux-pro-max` (`--design-system`, dominios `ux`/`chart`/`typography`/`icons`) buscando específicamente "internal operations dashboard" (la primera búsqueda genérica devolvió un patrón de landing page de marketing, descartado por no aplicar). Confirmó que el rumbo tomado en la 2.5 ya encajaba con "Data-Dense Dashboard" + "Soft UI Evolution" (tarjetas redondeadas 10-12px con sombra suave, iconos de trazo/outline, color + texto en los estados) — no se cambió el estilo. Se agregaron las dos recomendaciones concretas que faltaban: pila de fuente del sistema completa (`-apple-system, ... Segoe UI, Roboto, ...`, sin Google Fonts, por el requisito de funcionar sin internet de la sección 10) y soporte para `prefers-reduced-motion`. El color institucional `#1E3A5F` de la sección 3.3 se mantuvo tal cual (es el color del cliente, no algo que la skill deba redefinir).
 
 ---
 
