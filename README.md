@@ -1,59 +1,62 @@
-# Sistema de Inspecciones de Flota — v2
+# Sistema de Inspecciones de Flota — v3 (Etapa 1: backend)
 
 CONEQUISA · Maquinaria Open Pit · Mina La Libertad (Volcán / Mojón)
 
 ## Uso (para el usuario final)
 
-1. Abra `dist/index.html` con doble clic. Se abre en su navegador (**debe ser Google Chrome o Microsoft Edge de escritorio**; no funciona en Firefox, Safari ni en el celular).
-2. La primera vez, haga clic en **Elegir carpeta** y seleccione la carpeta de Google Drive compartida (por ejemplo `G:\Mi unidad\INSPECCIONES FLOTA`).
-   - Si la carpeta está vacía, la app la prepara automáticamente con los equipos y el historial de inspecciones iniciales.
-   - Las siguientes veces, use **Reconectar a «carpeta»** para no tener que elegirla de nuevo.
+1. Abra `dist/index.html` con doble clic, o entre al link de GitHub Pages. Necesita **internet** (Google Chrome o Microsoft Edge).
+2. Escriba su **usuario y contraseña** (se las da el administrador) y haga clic en **Entrar**.
 3. Trabaje en las pestañas: **Tablero**, **Registrar inspección**, **Historial**, **Equipos**, **Configuración**.
-4. Todos los que abran la app sobre la misma carpeta de Drive ven la misma información (los cambios se reflejan al recargar o automáticamente cada 60 segundos).
+   - **Equipos** y **Configuración** solo se pueden editar con una cuenta de rol `admin`; con `inspector` se ven pero sin los botones de guardar.
+4. **Salir** (botón arriba a la derecha) cierra la sesión. La sesión se queda guardada en el navegador mientras no la cierre.
 
-No se necesita instalar nada ni tener internet para usar la app; solo para que Google Drive sincronice la carpeta compartida entre los usuarios.
+Los adjuntos (fotos/informes) están **deshabilitados por ahora** — pendientes de la Etapa 2 (integración con Google Drive). Ver `ESPECIFICACION.md` sección 9.
 
 ## Desarrollo
 
 ```bash
-npm install        # instala Vite, vite-plugin-singlefile y Vitest
-npm run dev         # servidor de desarrollo (http://localhost:5173)
-npm test            # pruebas unitarias (Vitest)
-npm run build        # genera dist/index.html — el archivo único para entregar
+npm install          # instala Vite, vite-plugin-singlefile y Vitest
+npm run dev           # servidor de desarrollo (http://localhost:5173)
+npm test              # pruebas unitarias (Vitest)
+npm run build:pages   # genera dist/index.html y lo copia a docs/index.html (GitHub Pages)
 ```
+
+### Backend (Supabase)
+
+- Esquema completo en `supabase/schema.sql` (tablas `perfiles`, `equipos`, `config`, `inspecciones`, con RLS de 2 roles: `admin`/`inspector`).
+- La Project URL y la `anon/publishable key` están embebidas en `src/store/supabase.js` — son públicas por diseño, la seguridad real la da RLS.
+- La `service_role`/`secret key` **nunca va en el código**; solo se usa puntual y manualmente (fuera del repo) para crear cuentas nuevas o correr migraciones de datos.
+- Para crear una cuenta nueva: Auth Admin API (`POST /auth/v1/admin/users` con la secret key) + un `insert` en `perfiles` con su `usuario`/`nombre`/`rol`.
 
 ### Estructura del código
 
 ```
 src/
   core/
-    estado.js        → regla de estado (ESPECIFICACION.md 3.3), pura, sin DOM ni almacenamiento
-    estado.test.js    → pruebas unitarias (casos 2 a 5 de la sección 8)
-    dominio.js        → constantes del dominio (flotas, carpetas, controles, colores)
+    estado.js        → regla de estado (ESPECIFICACION.md 3.3) + controles por bandera del equipo, pura
+    estado.test.js
+    equipos.js        → identidad de equipos (id oculto, codigo/codigo2), pura
+    equipos.test.js
+    dominio.js        → constantes del dominio (flotas, controles, colores, banderas)
   store/
-    idb.js            → persistencia del handle de carpeta en IndexedDB
-    fs.js             → File System Access API: conectar, leer/escribir JSON, guardar adjuntos
-    seed.js           → datos_iniciales/*.json embebidos en el build
+    supabase.js       → cliente mínimo (fetch directo, sin SDK): login, sesión, peticiones autenticadas
+    datos.js           → CRUD de equipos/inspecciones/config contra Supabase
   ui/
     tablero.js, registrar.js, historial.js, equipos.js, config.js  → una pantalla por archivo
-    dom.js, csv.js, modal.js, navegacion.js, compartido.js          → utilidades compartidas
-  state.js            → estado de la app en memoria (equipos, inspecciones, config cargados)
-  main.js             → arranque: conecta todas las piezas
+    dom.js, csv.js, excel.js, modal.js, navegacion.js, compartido.js, iconos.js → utilidades compartidas
+  state.js            → estado de la app en memoria (equipos, inspecciones, config de la sesión)
+  main.js             → arranque: login, carga de datos, conecta todas las piezas
 index.html, styles.css
-datos_iniciales/      → carga inicial (112 equipos, 150 inspecciones, config.json)
-referencia/           → v1 (HTML de un solo archivo), se usó como base de comportamiento
+supabase/schema.sql   → esquema de la base de datos
+datos_iniciales/      → histórico (v1/v2); ya no lo usa el código, los datos reales están en Supabase
+referencia/            → v1 (HTML de un solo archivo), se usó como base de comportamiento
 ```
-
-`npm run build` usa **vite-plugin-singlefile** para empacar todo (JS, CSS y los JSON de `datos_iniciales/`) en un único `dist/index.html`, que sigue abriéndose con doble clic como la v1.
-
-### Notas de la regla de estado
-
-`config.json` acepta las claves nuevas (`frecuencia_dias` / `anticipacion_dias`) y también las de la v1 (`f` / `a`); `normalizarConfig()` en `src/core/estado.js` hace la conversión.
 
 ## Página publicada
 
-`docs/index.html` es una copia de `dist/index.html` para que GitHub Pages pueda publicarla (Pages solo sirve desde la raíz del repo o desde `/docs`). Después de cada `npm run build`, corre `npm run build:pages` para regenerar esa copia y luego sube el cambio.
+`docs/index.html` es una copia de `dist/index.html` para GitHub Pages. Después de cada cambio, corre `npm run build:pages` y sube `dist/` y `docs/` junto con el código.
 
-## Siguiente etapa (no implementada aún)
+## Siguientes etapas (ver ESPECIFICACION.md sección 9)
 
-Las mejoras de la sección 9 de `ESPECIFICACION.md`, empezando por la versión móvil con backend, quedan pendientes para una próxima etapa. El código ya está modularizado (cálculo / almacenamiento / interfaz separados) para facilitar ese cambio: el módulo `core/` no depende de `store/` ni de `ui/`, así que una futura versión con backend puede reemplazar `store/fs.js` sin tocar la lógica de negocio.
+- **Etapa 2:** integración con la API de Google Drive para adjuntos, y PWA instalable.
+- **Etapa 3:** modo sin conexión real en campo (IndexedDB + motor de sincronización con manejo de conflictos, como `sync.js`/`db.js` de Control de Engrase) — la pieza más compleja, por eso va al final.
