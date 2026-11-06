@@ -23,6 +23,18 @@ export function carpetaTipoInspeccion(equipo, tipo) {
   return 'INSPECCIONES ' + proveedor.toUpperCase();
 }
 
+export function limpiarNombre(s) {
+  return String(s).replace(/[\\/:*?"<>|]/g, '-').trim();
+}
+
+// Segmentos de carpeta (de la raíz de Drive hacia adentro) donde van los adjuntos de un
+// control: INSPECCIONES/<tipo o AFEX>/<AAAA-MM>/<código>. Mismo criterio de la v2
+// (File System Access API), ahora para crear/encontrar las carpetas por la API de Drive.
+export function segmentosRutaAdjuntos(equipo, tipo, fecha) {
+  const mes = fecha.slice(0, 7);
+  return ['INSPECCIONES', carpetaTipoInspeccion(equipo, tipo), mes, equipo.codigo].map(limpiarNombre);
+}
+
 export const CONTROLES_NOMBRE = {
   GENERAL: 'Inspección general',
   AFEX_INSP: 'AFEX – Inspección',

@@ -62,7 +62,11 @@
         <div><label>Inspector / técnico</label><input id="rInsp"></div>
         <div><label>Resultado</label><select id="rRes"><option>Sin hallazgos</option><option>Con hallazgos</option><option>Equipo fuera de servicio</option></select></div>
         <div class="full"><label>Observaciones / hallazgos principales</label><textarea id="rObs"></textarea></div>
-        <div class="full"><label>Informe y fotos</label><input id="rFiles" type="file" multiple disabled><div class="mut">Próximamente: subida directa a Google Drive. Por ahora, suba los adjuntos a la carpeta de Drive del equipo por separado.</div></div>
+        <div class="full">
+          <label>Informe y fotos</label>
+          <p class="mut" id="rDriveEstado" style="margin:0 0 8px"><button class="btn sec sm" id="bConectarDrive" type="button">Conectar Google Drive</button></p>
+          <input id="rFiles" type="file" multiple disabled>
+        </div>
       </div>
       <p><button class="btn" id="bGuardar">Guardar inspección</button></p>
     </div>

@@ -2,7 +2,7 @@
 
 **Cliente:** CONEQUISA – Departamento de Maquinaria Open Pit, Mina La Libertad (Volcán / Mojón), Equinox Gold
 **Dueño del producto:** Junior Valles, Ingeniero de Confiabilidad
-**Versión de la especificación:** 3.0 (Etapa 1) – 05/11/2026
+**Versión de la especificación:** 3.1 (Etapa 2) – 06/11/2026
 **Repositorio:** https://github.com/junivalles-cmd/inspecciones-flota
 **Referencia funcional:** `referencia/Sistema_Inspecciones_Flota_v1.html`. Es la v1 ya funcionando, un HTML de un solo archivo; usarla como base de comportamiento.
 
@@ -20,9 +20,15 @@
   - **Autenticación real** con usuario/contraseña (Supabase Auth), reemplaza "escribir el nombre" de la v1/v2. Dos roles: `admin` (Equipos y Configuración) e `inspector` (registrar y consultar). Patrón tomado de Control de Engrase: usuario corto convertido a email sintético (`usuario@inspecciones.internal`) para no pedir un correo real.
   - **equipos, inspecciones y config** ya no son archivos JSON en una carpeta — son tablas Postgres (`supabase/schema.sql`) con RLS: cualquier autenticado lee todo; solo `admin` escribe equipos/config; cualquier autenticado registra/edita inspecciones.
   - Los 113 equipos y 133 inspecciones de la carpeta de Drive que ya estaba en uso se migraron a Supabase (sección 6).
-  - **Los adjuntos quedan pendientes** (campo "Informe y fotos" deshabilitado en Registrar) hasta integrar la API de Google Drive (Etapa 2).
+  - Los adjuntos quedaron pendientes de la Etapa 2 (ver 3.1 más abajo, ya hecha) — campo "Informe y fotos" deshabilitado en Registrar en esta Etapa 1.
   - La sección 10 ("sin dependencias de internet") ya **no aplica**: la app ahora necesita conexión para entrar y para leer/escribir datos. El modo sin conexión en campo es la Etapa 3, todavía no implementada.
   - Se retiraron `src/store/fs.js`, `src/store/idb.js` y `src/store/seed.js` (File System Access API) y las funciones de migración de la v2.1/2.2, ya innecesarias porque el esquema de Supabase siempre trae `id`/`equipo_id`.
+- **3.1 — Etapa 2 (06/11/2026): adjuntos por la API de Google Drive.** `src/store/drive.js` — Google Identity Services (OAuth en el navegador, sin backend propio) + API de Drive v3 por `fetch` directo (sin SDK, mismo criterio que `src/store/supabase.js`).
+  - Permiso de Drive **independiente** del login de Supabase: en Registrar inspección hay un botón "Conectar Google Drive" que hay que presionar una vez por sesión del navegador antes de que se habilite el campo de adjuntos — GIS necesita ese clic real para poder pedir el permiso.
+  - Se usa el scope completo `https://www.googleapis.com/auth/drive` (no `drive.file` + selector de carpeta): más simple de implementar, y como la app se queda en estado "Testing" del consentimiento OAuth con una lista fija de cuentas de prueba (el equipo real), no hace falta que Google revise/verifique la app.
+  - La carpeta raíz es la misma que ya se usaba con `showDirectoryPicker` en la v1/v2 (ID `1J-5EJ03_31p29t_TjszSeVepf9tolQoK`, "INSPECCIONES MINA LA LIBERTAD"); `core/dominio.js` ganó `segmentosRutaAdjuntos(equipo, tipo, fecha)` (pura, con pruebas) que arma la misma ruta de siempre (`INSPECCIONES/<tipo o AFEX>/<AAAA-MM>/<código>`) como lista de carpetas a buscar/crear por la API en vez de una ruta de sistema de archivos.
+  - Mismo nombrado de archivo que la v1/v2 (`AAAA-MM-DD_TIPO_n.ext`, sufijo `_2`/`_3`… si ya existe).
+  - En Historial, los adjuntos de registros nuevos abren en pestaña nueva (`archivos[].url`, el `webViewLink` de Drive); los de registros migrados de la v2 (rutas de texto sueltas, sin `url`) solo se muestran como referencia (tooltip con la ruta), no se pueden abrir desde ahí — los archivos siguen físicamente en la carpeta, solo que esta pantalla no tiene cómo convertir esa ruta vieja en un link.
 
 ---
 
@@ -117,13 +123,13 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
    - Fecha (por defecto hoy; no se permiten fechas futuras).
    - Proveedor (se autocompleta: el del equipo, o Jhon May si es AFEX).
    - Inspector / técnico, Resultado (Sin hallazgos / Con hallazgos / Equipo fuera de servicio) y Observaciones.
-   - Adjuntos múltiples (PDF, imágenes, Excel, Word) — **deshabilitado en la v3 Etapa 1**, pendiente de la integración con la API de Drive (sección 9).
+   - Adjuntos múltiples (PDF, imágenes, Excel, Word), a Google Drive vía su API (Etapa 2, sección 3.1 del historial). Antes de poder adjuntar, hay que presionar **"Conectar Google Drive"** una vez por sesión del navegador (permiso aparte del login).
    - El botón [Registrar] del tablero abre esta pantalla con equipo, control y fecha ya llenos.
    - **Quitados en la v2:** los campos Horómetro y N.º de hallazgos (no se piden al registrar; ver sección 5 sobre el historial de registros antiguos que sí los tienen).
 4. **Historial**
    - Lista de inspecciones, la más reciente primero.
    - Filtros: equipo, control, rango de fechas.
-   - Columna de adjuntos: muestra cuántos tiene cada registro — **abrirlos queda pendiente** hasta la Etapa 2 (Drive API); mientras tanto los archivos de inspecciones antiguas siguen donde estaban (sección 4.2).
+   - Columna de adjuntos: los de registros nuevos (Etapa 2) abren en pestaña nueva; los de inspecciones migradas de la v2 solo se muestran como referencia (siguen donde estaban, sección 4.2).
    - Permite eliminar un registro, con confirmación.
    - Exportar a CSV.
 5. **Equipos**
@@ -142,7 +148,7 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
 - **Tablas:** `perfiles`, `equipos`, `config`, `inspecciones` (detalle de columnas en la sección 5). `equipos.id` sigue siendo el formato `E001`, `E002`… (sección 3.4.5) para que la migración de datos fuera directa.
 - **RLS (seguridad por fila):** cualquier usuario autenticado puede leer las 4 tablas. Solo `rol = 'admin'` puede escribir en `equipos`/`config`. Cualquier autenticado puede crear/editar/borrar en `inspecciones`. Función auxiliar `es_admin()` en el esquema.
 - **Credenciales en el cliente:** la Project URL y la **anon/publishable key** están embebidas en `src/store/supabase.js` — son públicas por diseño (la seguridad real es la RLS de arriba), igual que en Control de Engrase. La **secret/service_role key** nunca va en el código; solo se usó, puntual y manualmente, para crear las cuentas iniciales y migrar los datos (sección 6).
-- **Adjuntos (fotos/informes):** **pendientes** — hasta la Etapa 2 (sección 9), el campo "Informe y fotos" de Registrar queda deshabilitado. Van a vivir en Google Drive (vía su API), no en Supabase Storage, para no generar costo de almacenamiento nuevo.
+- **Adjuntos (fotos/informes):** desde la Etapa 2, viven en Google Drive (vía su API, `src/store/drive.js`), no en Supabase Storage — así no se genera costo de almacenamiento nuevo, se sigue usando el Drive que ya está pagado.
 - **Concurrencia:** ya no aplica el patrón "releer antes de escribir" de la v1/v2 — Postgres lo resuelve solo (cada escritura es una transacción).
 
 ### 4.1 Distribución de la app (v3)
@@ -167,7 +173,7 @@ Carpeta local sincronizada con Google Drive para escritorio + File System Access
 
 - La carpeta de primer nivel dentro de `INSPECCIONES/` se elegía por **tipo de inspección** (quién inspecciona), no por flota: `INSPECCIONES <PROVEEDOR>` para el control GENERAL, y siempre `INSPECCIONES AFEX` para los tres controles AFEX.
 - **Nombre de los adjuntos:** `AAAA-MM-DD_TIPO_n.ext`, por ejemplo `2026-11-04_GENERAL_1.pdf`.
-- Esta carpeta sigue siendo donde vive físicamente todo lo adjuntado hasta ahora; cuando la Etapa 2 integre la API de Drive, los adjuntos nuevos seguirán yendo ahí (o a la misma estructura), ya sin pasar por `showDirectoryPicker`.
+- Esta carpeta sigue siendo donde vive físicamente todo lo adjuntado, de antes y de ahora: desde la Etapa 2, los adjuntos nuevos siguen yendo a la misma estructura, ya sin pasar por `showDirectoryPicker` — por la API de Drive, con la misma carpeta raíz como punto de partida (sección 3.1 del historial de versiones).
 
 ## 5. Modelo de datos
 
@@ -258,8 +264,8 @@ Esta sección describe los datos de la v1/v2. En la v3 (Etapa 1), los 113 equipo
 3. Inspección con fecha de hace 25 días (frecuencia 30, aviso 10) → días = 5 → PROGRAMAR.
 4. Inspección con fecha de hace 31 días → días = −1 → VENCIDA.
 5. 45-80, con última inspección general el 29/08/2025 → VENCIDA, con más de 400 días de atraso.
-6. ~~Registrar con 2 adjuntos~~ — pendiente hasta la Etapa 2 (Drive API); por ahora el campo de adjuntos está deshabilitado.
-7. ~~Registrar 2 veces el mismo día con adjuntos, sin sobrescribir~~ — mismo caso, pendiente de la Etapa 2.
+6. Registrar con 2 adjuntos (con Drive conectado) → quedan subidos a `INSPECCIONES/<tipo>/<AAAA-MM>/<código>/AAAA-MM-DD_GENERAL_1.<ext>` y `_2.<ext>` en Drive, y el registro guarda `{nombre, drive_file_id, url}` de cada uno.
+7. Registrar 2 veces el mismo día y tipo con adjuntos → no se sobrescriben (sufijo `_2`), igual que en la v1/v2.
 8. Dos personas registran casi a la vez → Postgres ya resuelve esto (cada INSERT es independiente), no hace falta el patrón de releer-antes-de-escribir de la v1/v2.
 9. Cambiar AFEX_MANT a 60 días → los estados se recalculan al guardar (solo admin puede hacerlo).
 10. Dar de baja un equipo → desaparece del tablero y su historial sigue visible.
@@ -269,8 +275,8 @@ Esta sección describe los datos de la v1/v2. En la v3 (Etapa 1), los 113 equipo
 
 ## 9. Mejoras sugeridas / siguientes etapas (priorizar con Junior)
 
-1. ~~**Uso desde el celular en campo:** pasar a PWA con backend~~ — **en marcha (v3).** Etapa 1 (esta versión): backend Supabase + login real, ya hecho. **Etapa 2 (siguiente):** integrar la API de Google Drive para que los adjuntos vuelvan a funcionar, y PWA instalable (`manifest.json` + Service Worker). **Etapa 3:** modo sin conexión real en campo (IndexedDB + motor de sincronización con manejo de conflictos, como `sync.js`/`db.js` de Control de Engrase) — es la pieza más compleja, se deja para el final a propósito.
-2. Captura de fotos directa con la cámara del teléfono y compresión de imágenes — depende de la Etapa 2 (Drive).
+1. ~~**Uso desde el celular en campo:** pasar a PWA con backend~~ — **en marcha (v3).** Etapa 1: backend Supabase + login real, hecho. Etapa 2: adjuntos por la API de Google Drive, hecho (sección 3.1) — **falta todavía la parte de PWA instalable** (`manifest.json` + Service Worker) de esta misma etapa. **Etapa 3:** modo sin conexión real en campo (IndexedDB + motor de sincronización con manejo de conflictos, como `sync.js`/`db.js` de Control de Engrase) — es la pieza más compleja, se deja para el final a propósito.
+2. Captura de fotos directa con la cámara del teléfono y compresión de imágenes — con la subida a Drive ya lista, esto ya se puede hacer; falta implementarlo.
 3. ~~Login simple por usuario y rol~~ — **hecho en la v3** (Etapa 1): Supabase Auth, roles `admin`/`inspector`.
 4. Correo o notificación semanal con las inspecciones VENCIDAS y por PROGRAMAR.
 5. Calendario mensual de inspecciones programadas por proveedor.

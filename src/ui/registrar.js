@@ -6,6 +6,7 @@ import { tiposAplicables } from '../core/estado.js';
 import { CONTROLES_NOMBRE, FLOTAS, PROVEEDOR_AFEX, esControlAfex } from '../core/dominio.js';
 import { crearInspeccion } from '../store/datos.js';
 import { sesion } from '../store/supabase.js';
+import { conectarDrive, driveConectado, subirAdjuntos } from '../store/drive.js';
 
 let onGuardado = () => {};
 
@@ -36,6 +37,18 @@ export function prepararFormulario(codigo, tipo) {
   $('rInsp').focus();
 }
 
+async function conectarGoogleDrive() {
+  $('bConectarDrive').disabled = true;
+  try {
+    await conectarDrive();
+    $('rDriveEstado').textContent = 'Google Drive conectado ✓';
+    $('rFiles').disabled = false;
+  } catch (err) {
+    mostrarMensaje(err.message, 'err');
+    $('bConectarDrive').disabled = false;
+  }
+}
+
 async function guardar() {
   const e = buscarEquipo($('rEq').value);
   const tipo = $('rTipo').value;
@@ -43,8 +56,13 @@ async function guardar() {
   if (!e) return mostrarMensaje('Elija un equipo válido de la lista.', 'err');
   if (!fecha) return mostrarMensaje('Indique la fecha de la inspección.', 'err');
   if (fecha > hoyISO()) return mostrarMensaje('La fecha no puede ser futura.', 'err');
+  const archivosElegidos = [...$('rFiles').files];
+  if (archivosElegidos.length && !driveConectado()) {
+    return mostrarMensaje('Conecta Google Drive antes de adjuntar archivos.', 'err');
+  }
   $('bGuardar').disabled = true;
   try {
+    const archivos = await subirAdjuntos(e, tipo, fecha, archivosElegidos);
     const registro = {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       equipoId: e.id,
@@ -55,15 +73,16 @@ async function guardar() {
       inspector: $('rInsp').value.trim(),
       resultado: $('rRes').value,
       obs: $('rObs').value.trim(),
-      archivos: [],
+      archivos,
       creado: new Date().toISOString(),
       usuario: sesion().nombre,
     };
     const creado = await crearInspeccion(registro);
     D.inspecciones = [creado, ...D.inspecciones];
     ['rObs', 'rInsp'].forEach((id) => ($(id).value = ''));
+    $('rFiles').value = '';
     onGuardado();
-    mostrarMensaje(`Inspección de ${e.codigo} guardada.`);
+    mostrarMensaje(`Inspección de ${e.codigo} guardada${archivos.length ? ' con ' + archivos.length + ' archivo(s)' : ''}.`);
   } catch (err) {
     mostrarMensaje('No se pudo guardar: ' + err.message, 'err');
   }
@@ -75,6 +94,7 @@ export function initRegistrar(cbs) {
   $('rEq').oninput = actualizarInfoYTipos;
   $('rTipo').onchange = actualizarProveedor;
   $('bGuardar').onclick = guardar;
+  $('bConectarDrive').onclick = conectarGoogleDrive;
   // El HTML trae <select id="rTipo"> vacío; sin esto, el combo "Control" queda sin
   // opciones hasta que alguien escribe un código de equipo (bug reportado por el usuario).
   actualizarInfoYTipos();

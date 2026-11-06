@@ -26,11 +26,17 @@ function filasHistorial() {
     .sort((a, b) => b.fecha.localeCompare(a.fecha));
 }
 
-// Los adjuntos todavía no se pueden abrir desde la app (pendiente integración con Drive,
-// sección "Siguiente etapa"); por ahora solo se muestra cuántos tiene.
+// Los adjuntos de registros nuevos (Etapa 2, objetos {nombre, drive_file_id, url}) se abren
+// en una pestaña nueva. Los de registros migrados de la v2 (rutas de texto sueltas) solo se
+// muestran como referencia — esos archivos siguen en la carpeta de Drive, sin link directo.
 function celdaArchivos(i) {
-  const n = (i.archivos || []).length;
-  return n ? `${iconoClip()}${n}` : '';
+  return (i.archivos || [])
+    .map((a, k) =>
+      a && typeof a === 'object' && a.url
+        ? `<a class="lnk" href="${esc(a.url)}" target="_blank" rel="noopener">${iconoClip()}${k + 1}</a>`
+        : `<span class="mut" title="${esc(typeof a === 'string' ? a : a?.nombre || '')}">${iconoClip()}${k + 1}</span>`
+    )
+    .join(' ');
 }
 
 export function renderHistorial() {
