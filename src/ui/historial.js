@@ -4,6 +4,7 @@ import { exportarCSV } from './csv.js';
 import { D } from '../state.js';
 import { CONTROLES_NOMBRE } from '../core/dominio.js';
 import { eliminarInspeccion } from '../store/datos.js';
+import { abrirArchivo } from '../store/carpetaLocal.js';
 import { iconoClip } from './iconos.js';
 
 const LIMITE_FILAS = 800;
@@ -26,14 +27,15 @@ function filasHistorial() {
     .sort((a, b) => b.fecha.localeCompare(a.fecha));
 }
 
-// Los adjuntos de registros nuevos (Etapa 2, objetos {nombre, drive_file_id, url}) se abren
-// en una pestaña nueva. Los de registros migrados de la v2 (rutas de texto sueltas) solo se
-// muestran como referencia — esos archivos siguen en la carpeta de Drive, sin link directo.
+// Los adjuntos de registros nuevos (objetos {nombre, ruta}) se abren con la carpeta local
+// conectada (store/carpetaLocal.js). Los de registros migrados de la v2 (rutas de texto
+// sueltas) solo se muestran como referencia — esos archivos siguen en la carpeta de Drive,
+// esta pantalla no tiene cómo convertir esa ruta vieja en algo que abrir directamente.
 function celdaArchivos(i) {
   return (i.archivos || [])
     .map((a, k) =>
-      a && typeof a === 'object' && a.url
-        ? `<a class="lnk" href="${esc(a.url)}" target="_blank" rel="noopener">${iconoClip()}${k + 1}</a>`
+      a && typeof a === 'object' && a.ruta
+        ? `<button class="lnk" data-accion="abrir" data-ruta="${esc(a.ruta)}">${iconoClip()}${k + 1}</button>`
         : `<span class="mut" title="${esc(typeof a === 'string' ? a : a?.nombre || '')}">${iconoClip()}${k + 1}</span>`
     )
     .join(' ');
@@ -93,6 +95,10 @@ export function initHistorial(cbs) {
     );
   $('tbHis').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-accion]');
-    if (btn && btn.dataset.accion === 'eliminar') eliminar(btn.dataset.id);
+    if (!btn) return;
+    if (btn.dataset.accion === 'eliminar') eliminar(btn.dataset.id);
+    else if (btn.dataset.accion === 'abrir') {
+      abrirArchivo(btn.dataset.ruta).catch((err) => mostrarMensaje(err.message, 'err'));
+    }
   });
 }

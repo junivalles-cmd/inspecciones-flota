@@ -6,7 +6,7 @@ import { tiposAplicables } from '../core/estado.js';
 import { CONTROLES_NOMBRE, FLOTAS, PROVEEDOR_AFEX, esControlAfex } from '../core/dominio.js';
 import { crearInspeccion } from '../store/datos.js';
 import { sesion } from '../store/supabase.js';
-import { conectarDrive, intentarConexionSilenciosa, driveConectado, subirAdjuntos } from '../store/drive.js';
+import { soportado, carpetaConectada, carpetaGuardada, elegirCarpeta, reconectarSiPosible, reconectarConPermiso, subirAdjuntos } from '../store/carpetaLocal.js';
 
 let onGuardado = () => {};
 
@@ -37,21 +37,30 @@ export function prepararFormulario(codigo, tipo) {
   $('rInsp').focus();
 }
 
-function actualizarEstadoDrive() {
-  if (!driveConectado()) return;
-  $('rDriveEstado').textContent = 'Google Drive conectado ✓';
+function actualizarEstadoCarpeta() {
+  const h = carpetaConectada();
+  if (!h) return;
+  $('rCarpetaEstado').textContent = `Carpeta conectada: «${h.name}» ✓`;
   $('rFiles').disabled = false;
 }
 
-async function conectarGoogleDrive() {
-  $('bConectarDrive').disabled = true;
+async function actualizarBotonCarpeta() {
+  if (carpetaConectada()) return actualizarEstadoCarpeta();
+  const guardada = await carpetaGuardada().catch(() => null);
+  if (guardada) $('bCarpetaAdjuntos').textContent = `Reconectar a «${guardada.name}»`;
+}
+
+async function elegirOReconectarCarpeta() {
+  $('bCarpetaAdjuntos').disabled = true;
   try {
-    await conectarDrive();
-    actualizarEstadoDrive();
+    const guardada = await carpetaGuardada().catch(() => null);
+    if (guardada) await reconectarConPermiso();
+    else await elegirCarpeta();
+    actualizarEstadoCarpeta();
   } catch (err) {
     mostrarMensaje(err.message, 'err');
-    $('bConectarDrive').disabled = false;
   }
+  $('bCarpetaAdjuntos').disabled = false;
 }
 
 async function guardar() {
@@ -64,10 +73,7 @@ async function guardar() {
   const archivosElegidos = [...$('rFiles').files];
   $('bGuardar').disabled = true;
   try {
-    // subirAdjuntos intenta reconectar en silencio sola si hiciera falta (drive.js); si
-    // de verdad no hay forma, el error de ahí mismo explica que hay que usar el botón.
     const archivos = await subirAdjuntos(e, tipo, fecha, archivosElegidos);
-    actualizarEstadoDrive();
     const registro = {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       equipoId: e.id,
@@ -99,11 +105,14 @@ export function initRegistrar(cbs) {
   $('rEq').oninput = actualizarInfoYTipos;
   $('rTipo').onchange = actualizarProveedor;
   $('bGuardar').onclick = guardar;
-  $('bConectarDrive').onclick = conectarGoogleDrive;
+  $('bCarpetaAdjuntos').onclick = elegirOReconectarCarpeta;
   // El HTML trae <select id="rTipo"> vacío; sin esto, el combo "Control" queda sin
   // opciones hasta que alguien escribe un código de equipo (bug reportado por el usuario).
   actualizarInfoYTipos();
-  // Si la persona ya autorizó Drive antes (en este navegador o en otro), esto reconecta
-  // sin pedirle nada; si no, el botón se queda disponible para la primera vez.
-  intentarConexionSilenciosa().then(actualizarEstadoDrive);
+  if (!soportado()) {
+    $('bCarpetaAdjuntos').disabled = true;
+    $('rCarpetaEstado').textContent = 'Este navegador no permite conectar una carpeta local (use Chrome o Edge de escritorio).';
+    return;
+  }
+  reconectarSiPosible().then((ok) => (ok ? actualizarEstadoCarpeta() : actualizarBotonCarpeta()));
 }
