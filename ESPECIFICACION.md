@@ -24,7 +24,7 @@
   - La sección 10 ("sin dependencias de internet") ya **no aplica**: la app ahora necesita conexión para entrar y para leer/escribir datos. El modo sin conexión en campo es la Etapa 3, todavía no implementada.
   - Se retiraron `src/store/fs.js`, `src/store/idb.js` y `src/store/seed.js` (File System Access API) y las funciones de migración de la v2.1/2.2, ya innecesarias porque el esquema de Supabase siempre trae `id`/`equipo_id`.
 - **3.1 — Etapa 2 (06/11/2026): adjuntos por la API de Google Drive.** `src/store/drive.js` — Google Identity Services (OAuth en el navegador, sin backend propio) + API de Drive v3 por `fetch` directo (sin SDK, mismo criterio que `src/store/supabase.js`).
-  - Permiso de Drive **independiente** del login de Supabase: en Registrar inspección hay un botón "Conectar Google Drive" que hay que presionar una vez por sesión del navegador antes de que se habilite el campo de adjuntos — GIS necesita ese clic real para poder pedir el permiso.
+  - Permiso de Drive **independiente** del login de Supabase, pero casi nunca hay que pedirlo: Google ya recuerda la autorización del lado de su servidor, así que al abrir Registrar (y antes de guardar, si hiciera falta) la app intenta reconectar **en silencio**, sin ventana emergente. El botón "Conectar Google Drive" solo aparece activo cuando de verdad hace falta — la primera vez, o si la persona revocó el acceso desde su cuenta de Google.
   - Se usa el scope completo `https://www.googleapis.com/auth/drive` (no `drive.file` + selector de carpeta): más simple de implementar, y como la app se queda en estado "Testing" del consentimiento OAuth con una lista fija de cuentas de prueba (el equipo real), no hace falta que Google revise/verifique la app.
   - La carpeta raíz es la misma que ya se usaba con `showDirectoryPicker` en la v1/v2 (ID `1J-5EJ03_31p29t_TjszSeVepf9tolQoK`, "INSPECCIONES MINA LA LIBERTAD"); `core/dominio.js` ganó `segmentosRutaAdjuntos(equipo, tipo, fecha)` (pura, con pruebas) que arma la misma ruta de siempre (`INSPECCIONES/<tipo o AFEX>/<AAAA-MM>/<código>`) como lista de carpetas a buscar/crear por la API en vez de una ruta de sistema de archivos.
   - Mismo nombrado de archivo que la v1/v2 (`AAAA-MM-DD_TIPO_n.ext`, sufijo `_2`/`_3`… si ya existe).
@@ -123,7 +123,7 @@ Color institucional: azul `#1E3A5F`. Fuente: Segoe UI / Arial.
    - Fecha (por defecto hoy; no se permiten fechas futuras).
    - Proveedor (se autocompleta: el del equipo, o Jhon May si es AFEX).
    - Inspector / técnico, Resultado (Sin hallazgos / Con hallazgos / Equipo fuera de servicio) y Observaciones.
-   - Adjuntos múltiples (PDF, imágenes, Excel, Word), a Google Drive vía su API (Etapa 2, sección 3.1 del historial). Antes de poder adjuntar, hay que presionar **"Conectar Google Drive"** una vez por sesión del navegador (permiso aparte del login).
+   - Adjuntos múltiples (PDF, imágenes, Excel, Word), a Google Drive vía su API (Etapa 2, sección 3.1 del historial). El permiso de Drive se reconecta solo, en silencio, casi siempre (ver sección 3.1); el botón **"Conectar Google Drive"** solo pide un clic la primera vez o si se revocó el acceso.
    - El botón [Registrar] del tablero abre esta pantalla con equipo, control y fecha ya llenos.
    - **Quitados en la v2:** los campos Horómetro y N.º de hallazgos (no se piden al registrar; ver sección 5 sobre el historial de registros antiguos que sí los tienen).
 4. **Historial**

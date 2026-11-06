@@ -1,8 +1,12 @@
 // Subida de adjuntos a Google Drive (Etapa 2). Usa Google Identity Services (OAuth en el
 // navegador, sin backend propio) y la API de Drive v3 directo por fetch.
 //
-// Permiso independiente del login de Supabase: cada sesión del navegador tiene que
-// "Conectar Google Drive" una vez (botón en Registrar) antes de poder adjuntar archivos.
+// Permiso independiente del login de Supabase. Google recuerda la autorización del lado de
+// su servidor (aparece en la cuenta de Google de la persona, no solo en este navegador); lo
+// único que no persiste aquí es el access_token (dura ~1 hora y vive solo en memoria). Por
+// eso casi nunca hace falta el botón "Conectar Google Drive": se intenta renovar en silencio
+// (sin ventana emergente) antes de pedir el clic, tanto al abrir la pantalla como al guardar.
+// El botón solo es necesario la primera vez (o si la persona revoca el acceso).
 import { segmentosRutaAdjuntos } from '../core/dominio.js';
 
 const CLIENT_ID = '559483715649-msvgn0tu7hep9hffeac5i4e7balnfgaq.apps.googleusercontent.com';
@@ -37,26 +41,56 @@ export function driveConectado() {
   return !!tokenActual && Date.now() < tokenActual.expira;
 }
 
-// Debe llamarse desde un clic real del usuario (botón "Conectar Google Drive"); GIS
-// necesita ese gesto para poder abrir la ventana de autorización la primera vez.
-export async function conectarDrive() {
+async function obtenerTokenClient() {
   await cargarGis();
   if (!tokenClient) {
     tokenClient = window.google.accounts.oauth2.initTokenClient({ client_id: CLIENT_ID, scope: SCOPE, callback: () => {} });
   }
+  return tokenClient;
+}
+
+function pedirToken(cliente, opciones) {
   return new Promise((resolve, reject) => {
-    tokenClient.callback = (resp) => {
-      if (resp.error) return reject(new Error('No se pudo autorizar el acceso a Google Drive (' + resp.error + ').'));
+    cliente.callback = (resp) => {
+      if (resp.error) return reject(new Error(resp.error));
       tokenActual = { access_token: resp.access_token, expira: Date.now() + (resp.expires_in || 3600) * 1000 };
       resolve(tokenActual.access_token);
     };
-    tokenClient.requestAccessToken();
+    cliente.requestAccessToken(opciones);
   });
 }
 
+// Intento silencioso (sin ventana emergente): funciona cuando la persona ya autorizó el
+// acceso antes (en este navegador o en otro) y sigue con sesión activa en Google. No lanza
+// error si falla — solo informa true/false para que quien llama decida qué mostrar.
+export async function intentarConexionSilenciosa() {
+  try {
+    const cliente = await obtenerTokenClient();
+    await pedirToken(cliente, { prompt: '' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Debe llamarse desde un clic real del usuario (botón "Conectar Google Drive"); GIS
+// necesita ese gesto para poder abrir la ventana de autorización cuando sí hace falta.
+export async function conectarDrive() {
+  const cliente = await obtenerTokenClient();
+  try {
+    return await pedirToken(cliente, {});
+  } catch (err) {
+    throw new Error('No se pudo autorizar el acceso a Google Drive (' + err.message + ').');
+  }
+}
+
+// Cualquier llamada a la API pasa por aquí: si el token ya no sirve, intenta renovarlo
+// en silencio antes de rendirse. Así ni "guardar" ni nada más tiene que preocuparse por
+// la reconexión — solo el botón explícito, para cuando la silenciosa no alcanza.
 async function tokenValido() {
   if (driveConectado()) return tokenActual.access_token;
-  throw new Error('Primero conecta Google Drive (botón arriba del formulario).');
+  if (await intentarConexionSilenciosa()) return tokenActual.access_token;
+  throw new Error('Conecta Google Drive (botón arriba del formulario) para subir adjuntos.');
 }
 
 async function peticionDrive(url, opciones = {}) {

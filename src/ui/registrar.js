@@ -6,7 +6,7 @@ import { tiposAplicables } from '../core/estado.js';
 import { CONTROLES_NOMBRE, FLOTAS, PROVEEDOR_AFEX, esControlAfex } from '../core/dominio.js';
 import { crearInspeccion } from '../store/datos.js';
 import { sesion } from '../store/supabase.js';
-import { conectarDrive, driveConectado, subirAdjuntos } from '../store/drive.js';
+import { conectarDrive, intentarConexionSilenciosa, driveConectado, subirAdjuntos } from '../store/drive.js';
 
 let onGuardado = () => {};
 
@@ -37,12 +37,17 @@ export function prepararFormulario(codigo, tipo) {
   $('rInsp').focus();
 }
 
+function actualizarEstadoDrive() {
+  if (!driveConectado()) return;
+  $('rDriveEstado').textContent = 'Google Drive conectado ✓';
+  $('rFiles').disabled = false;
+}
+
 async function conectarGoogleDrive() {
   $('bConectarDrive').disabled = true;
   try {
     await conectarDrive();
-    $('rDriveEstado').textContent = 'Google Drive conectado ✓';
-    $('rFiles').disabled = false;
+    actualizarEstadoDrive();
   } catch (err) {
     mostrarMensaje(err.message, 'err');
     $('bConectarDrive').disabled = false;
@@ -57,12 +62,12 @@ async function guardar() {
   if (!fecha) return mostrarMensaje('Indique la fecha de la inspección.', 'err');
   if (fecha > hoyISO()) return mostrarMensaje('La fecha no puede ser futura.', 'err');
   const archivosElegidos = [...$('rFiles').files];
-  if (archivosElegidos.length && !driveConectado()) {
-    return mostrarMensaje('Conecta Google Drive antes de adjuntar archivos.', 'err');
-  }
   $('bGuardar').disabled = true;
   try {
+    // subirAdjuntos intenta reconectar en silencio sola si hiciera falta (drive.js); si
+    // de verdad no hay forma, el error de ahí mismo explica que hay que usar el botón.
     const archivos = await subirAdjuntos(e, tipo, fecha, archivosElegidos);
+    actualizarEstadoDrive();
     const registro = {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       equipoId: e.id,
@@ -98,4 +103,7 @@ export function initRegistrar(cbs) {
   // El HTML trae <select id="rTipo"> vacío; sin esto, el combo "Control" queda sin
   // opciones hasta que alguien escribe un código de equipo (bug reportado por el usuario).
   actualizarInfoYTipos();
+  // Si la persona ya autorizó Drive antes (en este navegador o en otro), esto reconecta
+  // sin pedirle nada; si no, el botón se queda disponible para la primera vez.
+  intentarConexionSilenciosa().then(actualizarEstadoDrive);
 }
